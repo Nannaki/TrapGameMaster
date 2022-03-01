@@ -1,7 +1,11 @@
-import React, {useState} from 'react';
-import {Box, Button, Paper, TextField, Typography} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Box, Button, CircularProgress, Paper, TextField, Typography} from "@mui/material";
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
+import { login, reset } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {toast} from "react-toastify";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -10,6 +14,28 @@ const Login = () => {
     });
 
     const { email, password } = formData;
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if(isError) {
+            toast.error(message)
+        }
+
+        if(isSuccess || user) {
+            if(user.isAdmin === true) {
+                navigate('/dashboardadmin')
+            }
+            else {
+                navigate('/dashboardgm')
+            }
+
+        }
+
+        dispatch(reset())
+
+    }, [user, isError, isSuccess, message, navigate, dispatch])
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -20,6 +46,17 @@ const Login = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+
+        const userData = {
+            email,
+            password,
+        }
+
+        dispatch(login(userData))
+    }
+
+    if(isLoading) {
+        return <CircularProgress/>
     }
 
     return (

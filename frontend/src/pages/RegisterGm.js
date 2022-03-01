@@ -1,7 +1,13 @@
-import React, {useState} from 'react';
-import {Box, Button, Checkbox, FormControlLabel, Paper, TextField, Typography} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
+import { Box, Button, Checkbox, FormControlLabel, Paper, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
+import CircularProgress from '@mui/material/CircularProgress';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
+import { register, reset } from "../features/auth/authSlice";
+
 
 const RegisterGm = () => {
     const [formData, setFormData] = useState({
@@ -13,6 +19,10 @@ const RegisterGm = () => {
     });
 
     const { name, email, password, password2, isAdmin } = formData;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth);
+
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -21,8 +31,46 @@ const RegisterGm = () => {
         }))
     };
 
+    const onCheck = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.checked,
+        }))
+    }
+
+    useEffect(() => {
+        if(isError) {
+            toast.error(message)
+        }
+
+        if(isSuccess || user) {
+            navigate('/dashboardadmin')
+            toast.success('Utilisateur enregistré avec succes')
+        }
+
+        dispatch(reset());
+
+    }, [user, isError, isSuccess, message, navigate, dispatch])
+
     const onSubmit = (e) => {
         e.preventDefault();
+
+        if(password !== password2) {
+            toast.error('Les mots de passe ne correspondent pas')
+        }else {
+            const userData = {
+                name,
+                email,
+                password,
+                isAdmin
+            }
+
+            dispatch(register(userData));
+        }
+    }
+
+    if(isLoading) {
+        return <CircularProgress/>
     }
 
     return (
@@ -82,11 +130,11 @@ const RegisterGm = () => {
                     <span style={ {width: '100%' }} />
                     <FormControlLabel control={
                         <Checkbox
-                        onChange={onChange}
+                        onChange={onCheck}
                         id='isAdmin'
-                        required
                         value={isAdmin}
                         name='isAdmin'
+                        checked={isAdmin}
                         />
                     }
                     label='Admin'/>

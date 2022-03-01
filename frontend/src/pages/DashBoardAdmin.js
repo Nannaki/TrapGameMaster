@@ -1,13 +1,12 @@
 import React, {useEffect} from 'react';
-import {logout, reset} from "../features/auth/authSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
+import { logout, reset } from "../features/auth/authSlice";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 
 
-const DashBoardGM = () => {
-
+const DashBoardAdmin = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth);
@@ -29,10 +28,10 @@ const DashBoardGM = () => {
 
     return (
         <div>
-            <h1>Dashboard GM</h1>
+            <h1>Dashboard Admin</h1>
             <Button variant='contained'
                     color='error'
-                    sx={{ m: 30 }}
+                    sx={{ m: 3 }}
                     onClick={onLogout}
             >
                 Logout
@@ -41,4 +40,4 @@ const DashBoardGM = () => {
     );
 };
 
-export default DashBoardGM;
+export default DashBoardAdmin;
