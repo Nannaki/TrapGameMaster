@@ -7,6 +7,7 @@ import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import CircularProgress from '@mui/material/CircularProgress';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import { register, reset } from "../features/auth/authSlice";
+import Header from "../components/Header";
 
 
 const RegisterGm = () => {
@@ -39,13 +40,14 @@ const RegisterGm = () => {
     }
 
     useEffect(() => {
+        if(!user) {
+            navigate('/')
+        }
+    }, [])
+
+    useEffect(() => {
         if(isError) {
             toast.error(message)
-        }
-
-        if(isSuccess || user) {
-            navigate('/dashboardadmin')
-            toast.success('Utilisateur enregistré avec succes')
         }
 
         dispatch(reset());
@@ -66,6 +68,7 @@ const RegisterGm = () => {
             }
 
             dispatch(register(userData));
+            navigate('/dashboardadmin')
         }
     }
 
@@ -75,8 +78,8 @@ const RegisterGm = () => {
 
     return (
         <>
+            <Header/>
             <Paper elevation={4} sx={{ mt: 4, ml: 2, mr: 2}}>
-
                 <Typography variant='h4' component='div' align='center'><HowToRegOutlinedIcon sx={{ fontSize: '28px', marginTop: '5%'}}/> Register</Typography>
                 <Box
                     component='form'

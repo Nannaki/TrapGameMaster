@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
 import {toast} from "react-toastify";
+import Header from "../components/Header";
+
 
 
 const DashBoardGM = () => {
@@ -29,6 +31,7 @@ const DashBoardGM = () => {
 
     return (
         <div>
+            <Header/>
             <h1>Dashboard GM</h1>
             <Button variant='contained'
                     color='error'

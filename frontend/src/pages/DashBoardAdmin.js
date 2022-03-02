@@ -4,6 +4,7 @@ import { logout, reset } from "../features/auth/authSlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
+import Header from "../components/Header";
 
 
 const DashBoardAdmin = () => {
@@ -28,6 +29,7 @@ const DashBoardAdmin = () => {
 
     return (
         <div>
+            <Header/>
             <h1>Dashboard Admin</h1>
             <Button variant='contained'
                     color='error'

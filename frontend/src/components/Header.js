@@ -1,133 +1,139 @@
-import React, {useState} from 'react';
-import { Toolbar, AppBar, Typography, Box, Button, IconButton, Menu, Container, Avatar, Tooltip, MenuItem } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu'
+import {AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem, Button} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import React, {useState} from "react";
+import {useSelector} from "react-redux";
+import { useNavigate} from "react-router-dom";
 
-const pages = ['Page1', 'Page2', 'Page3'];
-const settings = ['Profil', 'Account', 'Dashboard', 'Logout'];
 
-const ResponsiveAppBar = () => {
+const Header = () => {
     const [anchorNav, setAnchorNav] = useState(null);
-    const [anchorUser, setAnchorUser] = useState(null);
+    const {user} = useSelector((state) => state.auth);
+    const optionsAdmin = ['Planning', 'Salles', 'GM']
+    const optionsGm = ['Disponibilités', 'Planning', 'Profil']
+    const navigate = useNavigate();
 
-
-    const handleOpenNavMenu = (e) => {
+    const handleOpenBurgerMenu = (e) => {
         setAnchorNav(e.currentTarget);
     };
 
-    const handleOpenUserMenu = (e) => {
-        setAnchorUser(e.currentTarget)
-    };
-
-    const handleCloseNavMenu = () => {
+    const handleCloseBurgerMenu = () => {
         setAnchorNav(null);
     };
 
-    const handleCloseUserMenu = () => {
-        setAnchorUser(null);
-    };
+    const handleNavigate = (e) => {
+        console.log(e.target.value);
+        if(e.target.value === 'GM') {
 
-    return (
-        <AppBar position="static" color='primary'>
-            <Container maxWidth="x1">
-                <Toolbar disableGutters>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-                        >
-                        TrapGameMaster
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size='Large'
-                            aria-label='account of current user'
-                            aria-controls='menu-appbar'
-                            aria-haspopup='true'
-                            onClick={handleOpenNavMenu}
-                            color='inherit'
-                            >
-                            <MenuIcon />
-                        </IconButton>
-                        <Menu
-                            id='menu-appbar'
-                            anchorEl={anchorNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left'
-                            }}
-                            open={Boolean(anchorNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{
-                                display: { xs: 'block', md: 'none' },
-                            }}
-                            >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign='center'>{page}</Typography>
-                                </MenuItem>
-                                ))}
-                        </Menu>
-                    </Box>
-                    <Typography
-                        variant='h6'
-                        noWrap
-                        component='div'
-                        sx={{ flexGrow: 1, display: { xs:'flex', md: 'none'} }}
-                        >
-                        TrapGameMaster
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                            key={page}
-                            onClick={handleCloseNavMenu}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
-                        ))}
-                    </Box>
+            navigate('/registergm')
+        }
+    }
 
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title='Open settings'>
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt='test' src='#' />
+    if (user) {
+        return (
+            <AppBar position="static" color='primary'>
+                <Container maxWidth='x1'>
+                    <Toolbar disableGutters>
+                        <Typography
+                            variant='h6'
+                            noWrap
+                            component='div'
+                            sx={{mr: 2, display: {xs: 'none', md: 'flex'}}}
+                        >
+                            TrapGameMaster
+                        </Typography>
+                        <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+                            <IconButton
+                                size='Large'
+                                aria-label='account of current user'
+                                aria-controls='menu-appbar'
+                                aria-haspopup='true'
+                                color='inherit'
+                                onClick={handleOpenBurgerMenu}
+                            >
+                                <MenuIcon/>
                             </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id='menu-appbar'
-                            anchorEl={anchorUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorUser)}
-                            onClose={handleCloseUserMenu}
+                            <Menu
+                                id='menu-appbar'
+                                anchorEl={anchorNav}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left'
+                                }}
+                                open={Boolean(anchorNav)}
+                                onClose={handleCloseBurgerMenu}
+                                sx={{
+                                    display: {xs: 'block', md: 'none'},
+                                }}
                             >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign='center'>{setting}</Typography>
-                                </MenuItem>
+                                {user.isAdmin ? optionsAdmin.map((option) => (
+                                    <MenuItem key={option} onClick={handleCloseBurgerMenu}>
+                                        <Button
+                                            key={option}
+                                            value={option}
+                                            onClick={handleNavigate}
+                                            sx={{color: 'black', display: 'block', fontSize: 12, textAlign: 'left'}}
+                                            size="small"
+                                        >
+                                            {option}
+                                        </Button>
+                                    </MenuItem>
+                                )) : optionsGm.map((option) => (
+                                    <MenuItem key={option} onClick={handleCloseBurgerMenu}>
+                                        <Button
+                                            key={option}
+                                            value={option}
+                                            onClick={handleNavigate}
+                                            sx={{color: 'black', display: 'block', fontSize: 12, textAlign: 'left'}}
+                                            size="small"
+                                        >
+                                            {option}
+                                        </Button>
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </Box>
+                        <Typography
+                            variant='h6'
+                            noWrap
+                            component='div'
+                            sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}
+                        >
+                            TrapGameMaster
+                        </Typography>
+                        <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+                            {user.isAdmin ? optionsAdmin.map((option) => (
+                                <Button
+                                    key={option}
+                                    onClick={handleNavigate}
+                                    value={option}
+                                    sx={{my: 2, color: 'white', display: 'block'}}
+                                >
+                                    {option}
+                                </Button>
+                            )) : optionsGm.map((option) => (
+                                <Button
+                                    key={option}
+                                    onClick={handleNavigate}
+                                    value={option}
+                                    sx={{my: 2, color: 'white', display: 'block'}}
+                                >
+                                    {option}
+                                </Button>
                             ))}
-                        </Menu>
-                    </Box>
-                </Toolbar>
-            </Container>
-        </AppBar>
-    );
-};
+                        </Box>
+                    </Toolbar>
+                </Container>
+            </AppBar>
+        );
+    } else {
+        return null;
+    }
+}
 
-export default ResponsiveAppBar;
 
+export default Header;
