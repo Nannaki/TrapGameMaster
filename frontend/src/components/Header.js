@@ -9,7 +9,7 @@ const Header = () => {
     const [anchorNav, setAnchorNav] = useState(null);
     const {user} = useSelector((state) => state.auth);
     const optionsAdmin = ['Planning', 'Salles', 'GM']
-    const optionsGm = ['Disponibilités', 'Planning', 'Profil']
+    const optionsGm = ['Disponibilités', 'Planning', 'Profil', 'Salles']
     const navigate = useNavigate();
 
     const handleOpenBurgerMenu = (e) => {
@@ -24,12 +24,16 @@ const Header = () => {
         if(e.target.value === 'GM') {
             navigate('/registergm')
         }
+
+        if(e.target.value === 'Salles') {
+            navigate('/rooms')
+        }
     }
 
     if (user) {
         return (
-            <AppBar position="static" color='primary'>
-                <Container maxWidth='x1'>
+            <AppBar elevation={12} position="fixed" enableColorOnDark sx={{ backgroundColor: "#358135" }}>
+                <Container maxWidth='xl'>
                     <Toolbar disableGutters>
                         <Typography
                             variant='h6'
@@ -66,7 +70,7 @@ const Header = () => {
                                 onClose={handleCloseBurgerMenu}
                                 sx={{
                                     display: {xs: 'block', md: 'none'},
-                                    position: {top:0, left:0}
+                                    position: {top:0, left:0},
                                 }}
                                 elevation={10}
                             >
@@ -87,6 +91,7 @@ const Header = () => {
                                 )) : optionsGm.map((option) => (
                                     <MenuItem key={option} onClick={handleCloseBurgerMenu}>
                                         <Button
+                                            variant="outlined"
                                             key={option}
                                             value={option}
                                             onClick={handleNavigate}
@@ -114,10 +119,10 @@ const Header = () => {
                                     key={option}
                                     onClick={handleNavigate}
                                     value={option}
-                                    sx={{my: 2, color: '#fffefe', display: 'block', textAlign: 'center', ml:3, mr:3}}
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
+                                    sx={{ color: '#fffefe', display: 'block', textAlign: 'left', ml:3, mr:3}}
+                                    variant="text"
+                                    color="lightHover"
+                                    size="medium"
                                 >
                                     {option}
                                 </Button>
@@ -126,10 +131,10 @@ const Header = () => {
                                     key={option}
                                     onClick={handleNavigate}
                                     value={option}
-                                    sx={{my: 2, color: '#fffefe', display: 'block', textAlign: 'left', ml: 3, mr:3}}
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
+                                    sx={{ color: '#fffefe', display: 'block', textAlign: 'left', ml: 3, mr:3}}
+                                    variant="text"
+                                    color="lightHover"
+                                    size="medium"
                                 >
                                     {option}
                                 </Button>

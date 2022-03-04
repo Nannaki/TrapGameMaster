@@ -1,17 +1,24 @@
 import {createTheme, ThemeProvider} from "@mui/material";
 import {CssBaseline} from "@mui/material";
-import { green, amber } from "@mui/material/colors";
+import {green, amber, purple, grey} from "@mui/material/colors";
+
 
 
 const Theme = createTheme( {
     palette: {
         mode: "dark",
         primary: {
-            main: green[800]
+            main: green[800],
         },
         secondary: {
             main: amber[700]
-        }
+        },
+        third: {
+            main: purple[200]
+        },
+        lightHover: {
+            main: grey[50]
+        },
     },
     components: {
         MuiOutlinedInput: {
@@ -20,15 +27,6 @@ const Theme = createTheme( {
                     '&:-webkit-autofill': {
                         'WebkitBoxShadow': '0 0 0 100px var(--primary-weak) inset',
                         'WebkitTextFillColor': 'var(--text-primary)',
-                    },
-                },
-            },
-            MuiCssBaseline: {
-                styleOverrides: {
-                    body: {
-                        backgroundColor: "primary",
-                        margin: 0,
-                        padding: 0,
                     },
                 },
             },

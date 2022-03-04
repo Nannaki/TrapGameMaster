@@ -6,6 +6,7 @@ import DashBoardAdmin from "./pages/DashBoardAdmin";
 import Login from "./pages/Login";
 import RegisterGm from "./pages/RegisterGm";
 import DashBoardGM from "./pages/DashBoardGM";
+import Rooms from "./pages/Rooms";
 
 
 const App = ({ children }) => {
@@ -18,6 +19,7 @@ const App = ({ children }) => {
                       <Route path='/dashboardadmin' element={<DashBoardAdmin />}/>
                       <Route path='/dashboardGM' element={<DashBoardGM />}/>
                       <Route path='/registergm' element={<RegisterGm />}/>
+                      <Route path='/rooms' element={<Rooms />}/>
                   </Routes>
               </div>
           </Router>
