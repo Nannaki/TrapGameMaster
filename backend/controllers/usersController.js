@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/usersModel');
 
 // @desc    Register new user
-// @route   POST /api/users
+// @route   POST /api/users/registerGm
 // @access  Public
 const registerUser = asyncHandler( async (req, res) => {
     const { name, email, password, isAdmin} = req.body;
@@ -19,6 +19,7 @@ const registerUser = asyncHandler( async (req, res) => {
 
     if(userExists) {
         res.status(400)
+        console.log('error', Error)
         throw new Error('L\'utilisateur existe déjà')
     }
 
@@ -53,7 +54,6 @@ const registerUser = asyncHandler( async (req, res) => {
 // @access  Public
 const loginUser = asyncHandler( async (req, res) => {
     const { email, password } = req.body
-
     //Check for user email
     const user = await User.findOne({email});
 
@@ -80,6 +80,7 @@ const getMe = asyncHandler( async (req, res) => {
 
 //Generate JWT
 const generateToken = (id) => {
+
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: '30d',
     })

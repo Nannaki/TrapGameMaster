@@ -3,7 +3,6 @@ import {Button} from "@mui/material";
 import { logout, reset } from "../features/auth/authSlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {toast} from "react-toastify";
 import Header from "../components/Header";
 
 
@@ -22,15 +21,13 @@ const DashBoardAdmin = () => {
         if(!user) {
             navigate('/');
         }
-        else {
-            toast.success('Bienvenue '+ user.name);
-        }
+
     }, [user, navigate])
 
     return (
         <div>
             <Header/>
-            <h1>Dashboard Admin</h1>
+            <h1>Bonjour {user ? user.name : null}</h1>
             <Button variant='contained'
                     color='error'
                     sx={{ m: 3 }}

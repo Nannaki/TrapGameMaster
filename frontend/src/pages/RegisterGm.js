@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import {toast} from "react-toastify";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Checkbox, FormControlLabel, Paper, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
+import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import CircularProgress from '@mui/material/CircularProgress';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import { register, reset } from "../features/auth/authSlice";
@@ -39,6 +40,7 @@ const RegisterGm = () => {
         }))
     }
 
+
     useEffect(() => {
         if(!user) {
             navigate('/')
@@ -48,6 +50,11 @@ const RegisterGm = () => {
     useEffect(() => {
         if(isError) {
             toast.error(message)
+        }
+
+        if(isSuccess) {
+            navigate('/dashboardadmin')
+            toast.success('Le nouveau GameMaster a bien été enregistré');
         }
 
         dispatch(reset());
@@ -68,7 +75,6 @@ const RegisterGm = () => {
             }
 
             dispatch(register(userData));
-            navigate('/dashboardadmin')
         }
     }
 
@@ -150,6 +156,15 @@ const RegisterGm = () => {
                     >
                         Submit
                     </Button>
+                    <Button variant='contained'
+                            color='secondary'
+                            sx={{ m: 3 }}
+                            endIcon={<BackspaceOutlinedIcon />}
+                            onClick={() => navigate('/dashboardadmin')}
+                    >
+                        Retour
+                    </Button>
+
                 </Box>
             </Paper>
         </>

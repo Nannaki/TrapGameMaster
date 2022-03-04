@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter as Router, Routes, Route, Redirect} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import {ToastContainer, Slide} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import DashBoardAdmin from "./pages/DashBoardAdmin";
@@ -8,7 +8,7 @@ import RegisterGm from "./pages/RegisterGm";
 import DashBoardGM from "./pages/DashBoardGM";
 
 
-const App = () => {
+const App = ({ children }) => {
   return (
       <>
           <Router>
@@ -18,7 +18,6 @@ const App = () => {
                       <Route path='/dashboardadmin' element={<DashBoardAdmin />}/>
                       <Route path='/dashboardGM' element={<DashBoardGM />}/>
                       <Route path='/registergm' element={<RegisterGm />}/>
-                      <Redirect to='/'/>
                   </Routes>
               </div>
           </Router>

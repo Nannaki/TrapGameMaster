@@ -24,15 +24,12 @@ const DashBoardGM = () => {
         if(!user) {
             navigate('/');
         }
-        else {
-            toast.success('Bienvenue '+ user.name);
-        }
     }, [user, navigate])
 
     return (
         <div>
             <Header/>
-            <h1>Dashboard GM</h1>
+            <h1>Bonjour {user ? user.name : null}</h1>
             <Button variant='contained'
                     color='error'
                     sx={{ m: 30 }}

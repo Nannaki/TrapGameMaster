@@ -21,9 +21,7 @@ const Header = () => {
     };
 
     const handleNavigate = (e) => {
-        console.log(e.target.value);
         if(e.target.value === 'GM') {
-
             navigate('/registergm')
         }
     }
@@ -37,7 +35,7 @@ const Header = () => {
                             variant='h6'
                             noWrap
                             component='div'
-                            sx={{mr: 2, display: {xs: 'none', md: 'flex'}}}
+                            sx={{mr: 2, ml: 5, display: {xs: 'none', md: 'flex'}}}
                         >
                             TrapGameMaster
                         </Typography>
@@ -68,7 +66,9 @@ const Header = () => {
                                 onClose={handleCloseBurgerMenu}
                                 sx={{
                                     display: {xs: 'block', md: 'none'},
+                                    position: {top:0, left:0}
                                 }}
+                                elevation={10}
                             >
                                 {user.isAdmin ? optionsAdmin.map((option) => (
                                     <MenuItem key={option} onClick={handleCloseBurgerMenu}>
@@ -76,8 +76,10 @@ const Header = () => {
                                             key={option}
                                             value={option}
                                             onClick={handleNavigate}
-                                            sx={{color: 'black', display: 'block', fontSize: 12, textAlign: 'left'}}
+                                            sx={{color: 'white', display: 'block', fontSize: 12, textAlign: 'left', letterSpacing: 0.5}}
                                             size="small"
+                                            variant="outlined"
+
                                         >
                                             {option}
                                         </Button>
@@ -88,8 +90,9 @@ const Header = () => {
                                             key={option}
                                             value={option}
                                             onClick={handleNavigate}
-                                            sx={{color: 'black', display: 'block', fontSize: 12, textAlign: 'left'}}
+                                            sx={{color: 'white', display: 'block', fontSize: 12}}
                                             size="small"
+
                                         >
                                             {option}
                                         </Button>
@@ -105,13 +108,16 @@ const Header = () => {
                         >
                             TrapGameMaster
                         </Typography>
-                        <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
+                        <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}, justifyContent: 'left', ml:3}}>
                             {user.isAdmin ? optionsAdmin.map((option) => (
                                 <Button
                                     key={option}
                                     onClick={handleNavigate}
                                     value={option}
-                                    sx={{my: 2, color: 'white', display: 'block'}}
+                                    sx={{my: 2, color: '#fffefe', display: 'block', textAlign: 'center', ml:3, mr:3}}
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
                                 >
                                     {option}
                                 </Button>
@@ -120,7 +126,10 @@ const Header = () => {
                                     key={option}
                                     onClick={handleNavigate}
                                     value={option}
-                                    sx={{my: 2, color: 'white', display: 'block'}}
+                                    sx={{my: 2, color: '#fffefe', display: 'block', textAlign: 'left', ml: 3, mr:3}}
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
                                 >
                                     {option}
                                 </Button>
