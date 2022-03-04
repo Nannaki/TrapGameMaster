@@ -19,7 +19,6 @@ const registerUser = asyncHandler( async (req, res) => {
 
     if(userExists) {
         res.status(400)
-        console.log('error', Error)
         throw new Error('L\'utilisateur existe déjà')
     }
 
@@ -45,7 +44,7 @@ const registerUser = asyncHandler( async (req, res) => {
         })
     }else {
         res.status(400);
-        throw new Error('Donnée d\'utilisateur invalide');
+        throw new Error('Données d\'utilisateur invalides');
     }
 })
 
