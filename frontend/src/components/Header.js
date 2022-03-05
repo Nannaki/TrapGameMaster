@@ -22,7 +22,7 @@ const Header = () => {
 
     const handleNavigate = (e) => {
         if(e.target.value === 'GM') {
-            navigate('/registergm')
+            navigate('/gm')
         }
 
         if(e.target.value === 'Salles') {
