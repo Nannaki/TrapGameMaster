@@ -37,6 +37,7 @@ const Rooms = () => {
                             variant="outlined"
                             color="third"
                             sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
+                            onClick={() => navigate('/showrooms')}
                         >
                             Voir les salles
                         </Button>

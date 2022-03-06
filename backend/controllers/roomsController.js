@@ -17,7 +17,8 @@ const getRooms = asyncHandler( async (req, res) => {
 // @access  Private
 
 const registerRoom = asyncHandler( async (req, res) => {
-    const { name, descritpion } = req.body;
+    const { name, description } = req.body;
+    console.log(req.body)
 
     if(!name) {
         res.status(400);
@@ -35,13 +36,14 @@ const registerRoom = asyncHandler( async (req, res) => {
     //Create room
     const room = await Room.create({
         name,
-        descritpion,
+        description,
     })
 
     if(room) {
         res.status(201).json({
             _id: room.id,
-            name: room.name
+            name: room.name,
+            descritpion: room.description,
         })
     }
     else {

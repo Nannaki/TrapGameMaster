@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import {toast} from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Checkbox, FormControlLabel, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, Card, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -85,14 +85,24 @@ const RegisterGm = () => {
     return (
         <>
             <Header/>
-            <Paper elevation={4} sx={{ mt: 4, ml: 2, mr: 2}}>
-                <Typography variant='h4' component='div' align='center'><HowToRegOutlinedIcon sx={{ fontSize: '28px', marginTop: '5%'}}/> Register</Typography>
                 <Box
-                    component='form'
-                    sx={{ m: 2 ,display: "flex", justifyContent:'center', flexWrap: 'wrap' }}
-                    noValidate
+                    sx={{ mt: 12, display: "flex", justifyContent:'center', alignItems: 'center', flexWrap: 'wrap', textAlign: 'center' }}
                     onSubmit={onSubmit}
                      >
+                    <Card
+                        component={"form"}
+                        elevation={8}
+                        square
+                        sx={{ width: {xs: "280px", md: "600px"}, display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems: 'center' }}
+                    >
+                        <Typography
+                            variant='h6'
+                            noWrap
+                            component='div'
+                            sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}}}
+                        >
+                            <HowToRegOutlinedIcon sx={{ fontSize: {xs: "18px", md: "30px"} }}/> Enregistrer un nouveau <br/> GameMaster
+                        </Typography>
                     <TextField id='name'
                                required
                                label='Name'
@@ -154,7 +164,7 @@ const RegisterGm = () => {
                             endIcon={<ExitToAppOutlinedIcon />}
                             type='submit'
                     >
-                        Submit
+                        Enregistrer
                     </Button>
                     <Button variant='contained'
                             color='secondary'
@@ -164,9 +174,8 @@ const RegisterGm = () => {
                     >
                         Retour
                     </Button>
-
+                    </Card>
                 </Box>
-            </Paper>
         </>
     );
 };

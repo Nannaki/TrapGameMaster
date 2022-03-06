@@ -8,6 +8,7 @@ import RegisterGm from "./pages/RegisterGm";
 import DashBoardGM from "./pages/DashBoardGM";
 import Rooms from "./pages/Rooms";
 import GM from "./pages/GM";
+import ShowRooms from "./pages/ShowRooms";
 
 
 const App = ({ children }) => {
@@ -22,6 +23,7 @@ const App = ({ children }) => {
                       <Route path='/registergm' element={<RegisterGm />}/>
                       <Route path='/rooms' element={<Rooms />}/>
                       <Route path='/gm' element={<GM />}/>
+                      <Route path='/showrooms' element = {<ShowRooms />} />
                   </Routes>
               </div>
           </Router>

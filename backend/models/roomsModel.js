@@ -9,6 +9,9 @@ const roomSchema = mongoose.Schema({
     description: {
         type: String,
     },
+    isActive: {
+        type: Boolean
+    },
 
 }, {
     timestamps: true
