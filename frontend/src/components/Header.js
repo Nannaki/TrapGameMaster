@@ -1,8 +1,9 @@
 import {AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem, Button} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, {useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useNavigate} from "react-router-dom";
+import {logout, reset} from "../features/auth/authSlice";
 
 
 const Header = () => {
@@ -11,6 +12,7 @@ const Header = () => {
     const optionsAdmin = ['Planning', 'Salles', 'GM']
     const optionsGm = ['Disponibilités', 'Planning', 'Profil', 'Salles']
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleOpenBurgerMenu = (e) => {
         setAnchorNav(e.currentTarget);
@@ -30,6 +32,12 @@ const Header = () => {
         }
     }
 
+    const onLogout = () => {
+        dispatch(logout());
+        dispatch(reset());
+        navigate('/');
+    }
+
     if (user) {
         return (
             <AppBar elevation={12} position="fixed" enableColorOnDark sx={{ backgroundColor: "#358135" }}>
@@ -39,7 +47,8 @@ const Header = () => {
                             variant='h6'
                             noWrap
                             component='div'
-                            sx={{mr: 2, ml: 5, display: {xs: 'none', md: 'flex'}}}
+                            sx={{mr: 2, ml: 5, display: {xs: 'none', md: 'flex'}, cursor: "pointer"}}
+                            onClick={user.isAdmin ? () => navigate('/dashboardadmin'): () => navigate('/dashboardGM')}
                         >
                             TrapGameMaster
                         </Typography>
@@ -140,6 +149,14 @@ const Header = () => {
                                 </Button>
                             ))}
                         </Box>
+                        <Button
+                            variant='contained'
+                            color='error'
+                            sx={{ m: 3 }}
+                            onClick={onLogout}
+                        >
+                            Logout
+                        </Button>
                     </Toolbar>
                 </Container>
             </AppBar>
