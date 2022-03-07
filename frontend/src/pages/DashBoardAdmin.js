@@ -4,12 +4,14 @@ import { logout, reset } from "../features/auth/authSlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 
+//TODO dans le menu planning, ajouter la possibilité d'enlever ou mettre une salle dans le planning
 
 const DashBoardAdmin = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {user} = useSelector((state) => state.auth);
+    const {user, isLoading } = useSelector((state) => state.auth);
 
     const onLogout = () => {
         dispatch(logout());
@@ -23,6 +25,10 @@ const DashBoardAdmin = () => {
         }
 
     }, [user, navigate])
+
+    if(isLoading) {
+        return <Loading />
+    }
 
     return (
         <>

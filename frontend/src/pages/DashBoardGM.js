@@ -3,8 +3,8 @@ import {logout, reset} from "../features/auth/authSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
-import {toast} from "react-toastify";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 
 
 
@@ -12,7 +12,7 @@ const DashBoardGM = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {user} = useSelector((state) => state.auth);
+    const {user, isLoading} = useSelector((state) => state.auth);
 
     const onLogout = () => {
         dispatch(logout());
@@ -25,6 +25,10 @@ const DashBoardGM = () => {
             navigate('/');
         }
     }, [user, navigate])
+
+    if(isLoading) {
+        return <Loading />
+    }
 
     return (
         <div>

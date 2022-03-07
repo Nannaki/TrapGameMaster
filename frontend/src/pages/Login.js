@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, Paper, TextField, Typography} from "@mui/material";
+import {Box, Button, Paper, TextField, Typography} from "@mui/material";
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import { login, reset } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
+import Loading from "../components/Loading";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -57,9 +58,8 @@ const Login = () => {
     }
 
     if(isLoading) {
-        return <CircularProgress/>
+        return <Loading />
     }
-
 
     return (
     <>

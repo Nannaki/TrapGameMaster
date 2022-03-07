@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Checkbox, FormControlLabel, Card, TextField, Typography } from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
-import CircularProgress from '@mui/material/CircularProgress';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import { register, reset } from "../features/auth/authSlice";
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 
 
 const RegisterGm = () => {
@@ -45,7 +45,7 @@ const RegisterGm = () => {
         if(!user) {
             navigate('/')
         }
-    }, [])
+    }, [user, navigate])
 
     useEffect(() => {
         if(isError) {
@@ -79,7 +79,7 @@ const RegisterGm = () => {
     }
 
     if(isLoading) {
-        return <CircularProgress/>
+        return <Loading />
     }
 
     return (

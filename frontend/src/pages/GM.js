@@ -7,11 +7,17 @@ import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
+import Loading from "../components/Loading";
+import React from "react";
 
 
 const Gm = () => {
     const navigate = useNavigate();
-    const {user} = useSelector((state) => state.auth);
+    const {user, isLoading} = useSelector((state) => state.auth);
+
+    if(isLoading) {
+        return <Loading />
+    }
 
     if (user.isAdmin) {
         return (

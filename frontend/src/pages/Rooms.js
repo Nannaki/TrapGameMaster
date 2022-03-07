@@ -4,14 +4,20 @@ import Header from "../components/Header";
 import {Typography, Box, Button, Card, CardContent} from "@mui/material";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
+import Loading from "../components/Loading";
+import React from "react";
 
 const Rooms = () => {
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.auth);
+    const { isLoading } = useSelector((state) => state.rooms)
+
+    if(isLoading) {
+        return <Loading />
+    }
 
     if(user.isAdmin) {
         return (
@@ -53,15 +59,6 @@ const Rooms = () => {
                         </Button>
                         <span style={ {width: '100%' }} />
                         <Button
-                            startIcon={<DateRangeOutlinedIcon />}
-                            variant="outlined"
-                            color="third"
-                            sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
-                        >
-                            Ajouter / Retirer du planning
-                        </Button>
-                        <span style={ {width: '100%' }} />
-                        <Button
                             startIcon={<MeetingRoomOutlinedIcon />}
                             variant="outlined"
                             color="third"
@@ -77,7 +74,7 @@ const Rooms = () => {
                             sx={{ p: 2, mt: 3, mb: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
                             onClick={() => navigate('/deleteRoom')}
                         >
-                            Supprimer une salle du le système
+                            Supprimer une salle du système
                         </Button>
                         <span style={ {width: '100%' }} />
                         <Button

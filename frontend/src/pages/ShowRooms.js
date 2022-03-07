@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { getRooms, reset } from "../features/rooms/roomsSlice";
 import Header from "../components/Header";
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material"
-import CircularProgress from "@mui/material/CircularProgress";
 //import SherlockImg from '../images/sherlockRoom.jpg'
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
+import Loading from "../components/Loading";
 
 const ShowRooms = () => {
 
@@ -33,7 +33,7 @@ const ShowRooms = () => {
 
 
     if(isLoading) {
-        return <CircularProgress/>
+        return <Loading />
     }
 
 //TODO Voir pour enregistrer image dans BDD, et voir pour bouton sous cartes
