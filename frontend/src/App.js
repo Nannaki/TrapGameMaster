@@ -9,6 +9,7 @@ import DashBoardGM from "./pages/DashBoardGM";
 import Rooms from "./pages/Rooms";
 import GM from "./pages/GM";
 import ShowRooms from "./pages/ShowRooms";
+import DeleteRoom from "./pages/DeleteRoom"
 
 
 const App = ({ children }) => {
@@ -24,6 +25,7 @@ const App = ({ children }) => {
                       <Route path='/rooms' element={<Rooms />}/>
                       <Route path='/gm' element={<GM />}/>
                       <Route path='/showrooms' element = {<ShowRooms />} />
+                      <Route path='/deleteRoom' element = {<DeleteRoom />} />
                   </Routes>
               </div>
           </Router>

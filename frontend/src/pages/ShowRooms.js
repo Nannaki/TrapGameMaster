@@ -5,7 +5,7 @@ import { getRooms, reset } from "../features/rooms/roomsSlice";
 import Header from "../components/Header";
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material"
 import CircularProgress from "@mui/material/CircularProgress";
-import SherlockImg from '../images/sherlockRoom.jpg'
+//import SherlockImg from '../images/sherlockRoom.jpg'
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 
 const ShowRooms = () => {
@@ -57,7 +57,7 @@ const ShowRooms = () => {
                         <CardMedia
                             component="img"
                             height="140"
-                            image={SherlockImg}
+                            //image={SherlockImg}
                             alt="Room Sherlock Holmes"
                         />
                         <CardContent>

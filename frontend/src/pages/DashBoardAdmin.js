@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Button} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import { logout, reset } from "../features/auth/authSlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -25,17 +25,22 @@ const DashBoardAdmin = () => {
     }, [user, navigate])
 
     return (
-        <div>
+        <>
             <Header/>
-            <h1>Bonjour {user ? user.name : null}</h1>
-            <Button variant='contained'
-                    color='error'
-                    sx={{ m: 3 }}
-                    onClick={onLogout}
+            <Box
+                sx={{ mt: 12, display: "flex", justifyContent: "center", flexWrap: 'wrap', textAlign: 'center' }}
             >
-                Logout
-            </Button>
-        </div>
+                <h1>Bonjour {user ? user.name : null}</h1>
+                <Button variant='contained'
+                        color='error'
+                        sx={{ m: 3 }}
+                        onClick={onLogout}
+                >
+                    Logout
+                </Button>
+            </Box>
+
+        </>
     );
 };
 

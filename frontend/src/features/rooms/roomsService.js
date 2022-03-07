@@ -8,8 +8,15 @@ const getRooms = async () => {
     return response.data;
 };
 
+//Delete room
+const deleteRoom = async (roomId) => {
+    const response = await axios.delete(API_URL + "delete" +roomId);
+    return response.data;
+}
+
 const roomsService = {
     getRooms,
+    deleteRoom,
 }
 
 export default roomsService

@@ -6,7 +6,8 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
-import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
+import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
 
 const Rooms = () => {
     const navigate = useNavigate();
@@ -61,12 +62,22 @@ const Rooms = () => {
                         </Button>
                         <span style={ {width: '100%' }} />
                         <Button
-                            startIcon={<AdminPanelSettingsOutlinedIcon />}
+                            startIcon={<MeetingRoomOutlinedIcon />}
+                            variant="outlined"
+                            color="third"
+                            sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
+                        >
+                            Ajouter une salle dans le système
+                        </Button>
+                        <span style={ {width: '100%' }} />
+                        <Button
+                            startIcon={<NoMeetingRoomOutlinedIcon />}
                             variant="outlined"
                             color="third"
                             sx={{ p: 2, mt: 3, mb: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
+                            onClick={() => navigate('/deleteRoom')}
                         >
-                            Ajouter / Retirer du système
+                            Supprimer une salle du le système
                         </Button>
                         <span style={ {width: '100%' }} />
                         <Button
