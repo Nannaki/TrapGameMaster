@@ -8,6 +8,12 @@ const getRooms = async () => {
     return response.data;
 };
 
+//Add room
+const addRoom = async (roomData) => {
+    const response = await axios.post(API_URL + 'addroom', roomData);
+    return response.data;
+};
+
 //Delete room
 const deleteRoom = async (roomId) => {
     const response = await axios.delete(API_URL + "delete" +roomId);
@@ -16,6 +22,7 @@ const deleteRoom = async (roomId) => {
 
 const roomsService = {
     getRooms,
+    addRoom,
     deleteRoom,
 }
 
