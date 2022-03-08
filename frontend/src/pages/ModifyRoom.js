@@ -9,28 +9,36 @@ import {
     List,
     Button,
     Dialog,
-    Slide,
-    DialogTitle
+    DialogTitle,
+    TextField,
+    DialogContent, Checkbox, FormControlLabel
 } from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getRoomById, getRooms, reset} from "../features/rooms/roomsSlice";
+import {addRoom, getRoomById, getRooms, reset} from "../features/rooms/roomsSlice";
 import Loading from "../components/Loading";
 import {toast} from "react-toastify";
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutlined';
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 
 //TODO changer les icons
 
 
 const ModifyRoom = () => {
 
+    const { rooms, room, isLoading } = useSelector((state) => state.rooms);
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        isActive: false
+    });
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-    const { rooms, room, isLoading } = useSelector((state) => state.rooms);
+    const { name, description, isActive } = formData;
     const { user } = useSelector((state)=> state.auth);
     const handleCloseModal = () => {setOpen(false)};
     const handleOpenModal = () => {setOpen(true)}
@@ -40,6 +48,34 @@ const ModifyRoom = () => {
         dispatch(getRooms());
     }, [dispatch])
 
+
+    const onChange = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }))
+    };
+
+    const onCheck = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.checked,
+        }))
+    };
+
+    const onSubmit = (e) => {
+
+        e.preventDefault();
+
+        const roomData = {
+            name,
+            description,
+            isActive
+        }
+
+        console.log(roomData)
+        //dispatch(updateRoom(roomData));
+    }
 
     if(isLoading) {
         return <Loading />
@@ -100,8 +136,10 @@ const ModifyRoom = () => {
                 </Paper>
                 <Dialog
                     open={open}
+                    onSubmit={onSubmit}
                     onClose={handleCloseModal}
                     onBackdropClick={handleCloseModal}
+                    sx={{ p:2, display: "flex", justifyContent: "center" }}
                 >
                     <DialogTitle
                         variant='h6'
@@ -109,9 +147,65 @@ const ModifyRoom = () => {
                         component='div'
                         sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}, width: "100%"}}
                     >
-                        {room.name}
+                       Modifier {room.name}
                     </DialogTitle>
-
+                    <DialogContent
+                        component="form"
+                        sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap", textAlign: "center"}}
+                    >
+                        <TextField
+                            sx={{ mt:2 }}
+                            autoFocus
+                            variant="outlined"
+                            fullWidth
+                            name="name"
+                            label="nom"
+                            value={name}
+                            onChange={onChange}
+                        />
+                        <p> Donnée actuelle : {room.name}</p>
+                        <span style={ {width: '100%' }} />
+                        <TextField
+                            sx={{ my:2 }}
+                            variant="outlined"
+                            multiline
+                            fullWidth
+                            name="description"
+                            label="Description"
+                            value={description}
+                            onChange={onChange}
+                        />
+                        <p>Description actuelle : {room.description} </p>
+                        <span style={ {width: '100%' }} />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    onChange={onCheck}
+                                    id='isActive'
+                                    value={isActive}
+                                    name='isActive'
+                                    checked={isActive}
+                                />
+                            }
+                        label='Active' />
+                        <span style={ {width: '100%' }} />
+                        <Button variant='contained'
+                                color='success'
+                                sx={{ m: 3 }}
+                                endIcon={<ExitToAppOutlinedIcon />}
+                                type='submit'
+                        >
+                            Modifier
+                        </Button>
+                        <Button variant='contained'
+                                color='secondary'
+                                sx={{ m: 3 }}
+                                endIcon={<BackspaceOutlinedIcon />}
+                                onClick={() => navigate('/gm')}
+                        >
+                            Retour
+                        </Button>
+                    </DialogContent>
                 </Dialog>
             </Box>
         </>
