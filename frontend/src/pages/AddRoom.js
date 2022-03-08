@@ -142,7 +142,7 @@ const AddRoom = () => {
                             color='secondary'
                             sx={{ m: 3 }}
                             endIcon={<BackspaceOutlinedIcon />}
-                            onClick={() => navigate('/gm')}
+                            onClick={() => navigate('/rooms')}
                     >
                         Retour
                     </Button>

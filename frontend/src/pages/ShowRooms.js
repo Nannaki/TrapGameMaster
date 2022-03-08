@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getRooms, reset } from "../features/rooms/roomsSlice";
+import { getRooms } from "../features/rooms/roomsSlice";
 import Header from "../components/Header";
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material"
 //import SherlockImg from '../images/sherlockRoom.jpg'
@@ -17,7 +17,7 @@ const ShowRooms = () => {
 
     useEffect(() => {
         dispatch(getRooms());
-    }, [dispatch])
+    }, [])
 
     useEffect(() => {
 
@@ -25,11 +25,7 @@ const ShowRooms = () => {
             navigate('/')
         }
 
-        return () => {
-            dispatch(reset());
-        }
-
-    }, [user, navigate, dispatch])
+    }, [user, navigate])
 
 
     if(isLoading) {

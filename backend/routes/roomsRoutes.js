@@ -5,7 +5,7 @@ const { registerRoom, getRooms, getRoomById, updateRoom, deleteRoom } = require(
 router.get('/show', getRooms );
 router.get('/getOne:id', getRoomById)
 router.post('/addroom', registerRoom);
-router.put('/:id', updateRoom);
+router.put('/updateroom:id', updateRoom);
 router.delete('/delete:id', deleteRoom)
 
 module.exports = router;

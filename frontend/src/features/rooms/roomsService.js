@@ -20,6 +20,13 @@ const addRoom = async (roomData) => {
     return response.data;
 };
 
+//Update Room
+const updateRoom = async (roomData) => {
+    const response = await axios.put( API_URL + 'updateroom' +roomData.id, roomData);
+    console.log(roomData.id)
+    return response.data;
+}
+
 //Delete room
 const deleteRoom = async (roomId) => {
     const response = await axios.delete(API_URL + "delete" +roomId);
@@ -30,6 +37,7 @@ const roomsService = {
     getRooms,
     getRoomById,
     addRoom,
+    updateRoom,
     deleteRoom,
 }
 

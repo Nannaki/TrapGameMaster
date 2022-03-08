@@ -16,7 +16,7 @@ import {
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {addRoom, getRoomById, getRooms, reset} from "../features/rooms/roomsSlice";
+import {updateRoom, getRoomById, getRooms, reset} from "../features/rooms/roomsSlice";
 import Loading from "../components/Loading";
 import {toast} from "react-toastify";
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
@@ -29,7 +29,7 @@ import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 
 const ModifyRoom = () => {
 
-    const { rooms, room, isLoading } = useSelector((state) => state.rooms);
+    const { rooms, room, isLoading, isSuccess, isError, message } = useSelector((state) => state.rooms);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -46,7 +46,15 @@ const ModifyRoom = () => {
 
     useEffect(() => {
         dispatch(getRooms());
-    }, [dispatch])
+    }, [dispatch]);
+
+    useEffect(() => {
+
+        if(!user) {
+            navigate('/')
+        }
+
+    }, [user, navigate, dispatch])
 
 
     const onChange = (e) => {
@@ -63,19 +71,6 @@ const ModifyRoom = () => {
         }))
     };
 
-    const onSubmit = (e) => {
-
-        e.preventDefault();
-
-        const roomData = {
-            name,
-            description,
-            isActive
-        }
-
-        console.log(roomData)
-        //dispatch(updateRoom(roomData));
-    }
 
     if(isLoading) {
         return <Loading />
@@ -136,7 +131,32 @@ const ModifyRoom = () => {
                 </Paper>
                 <Dialog
                     open={open}
-                    onSubmit={onSubmit}
+                    component="form"
+                    onSubmit={ (e) => {
+                        e.preventDefault()
+
+                        const roomData = {
+                            name,
+                            description,
+                            isActive
+                        }
+
+                        dispatch(updateRoom({
+                            data: roomData,
+                            id: room._id
+                        }));
+
+                        if(isError) {
+                            toast.error(message)
+                        }
+
+                        if(isSuccess) {
+                            navigate('/rooms')
+                            toast.success('La salle '+room.name+' a bien été mise à jour')
+
+                        }
+
+                    }}
                     onClose={handleCloseModal}
                     onBackdropClick={handleCloseModal}
                     sx={{ p:2, display: "flex", justifyContent: "center" }}
@@ -150,7 +170,6 @@ const ModifyRoom = () => {
                        Modifier {room.name}
                     </DialogTitle>
                     <DialogContent
-                        component="form"
                         sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap", textAlign: "center"}}
                     >
                         <TextField

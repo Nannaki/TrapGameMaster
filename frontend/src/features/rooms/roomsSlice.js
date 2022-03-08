@@ -44,6 +44,19 @@ export const addRoom = createAsyncThunk('rooms/addroom', async (room, thunkAPI) 
     }
 })
 
+//Update room
+export const updateRoom = createAsyncThunk('rooms/updateroom', async ( roomData, thunkAPI) =>{
+
+    try {
+        return await roomsService.updateRoom(roomData);
+
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
 //Delete Room
 export const deleteRoom = createAsyncThunk('rooms/delete', async (roomId,thunkAPI) => {
     try {
@@ -71,6 +84,7 @@ export const roomsSlice = createSlice({
     },
     extraReducers: (builder =>  {
       builder
+          //Builder getRooms
           .addCase(getRooms.pending, (state) => {
               state.isLoading = true
         })
@@ -84,24 +98,48 @@ export const roomsSlice = createSlice({
               state.isError = true
               state.message = action.payload
           })
+
+          //Builder GetRoomById
           .addCase(getRoomById.fulfilled, (state, action) => {
               state.isLoading = false
               state.isSuccess = true
               state.room = action.payload
           })
+          .addCase(getRoomById.rejected, (state, action) =>{
+              state.isLoading = false
+              state.isError = true
+              state.message = action.payload
+          })
+
+          //Builder AddRoom
           .addCase(addRoom.pending, (state) => {
               state.isLoading = true
           })
           .addCase(addRoom.fulfilled, (state, action) => {
               state.isLoading = false
               state.isSuccess = true
-              state.rooms = state.rooms.push(action.payload)
           })
           .addCase(addRoom.rejected, (state, action) =>{
               state.isLoading = false
               state.isError = true
               state.message = action.payload
           })
+
+          //Builder UpdateRoom
+          .addCase(updateRoom.pending, (state) =>{
+              state.isloading = true
+          })
+          .addCase(updateRoom.fulfilled, (state, action) =>{
+              state.isLoading = false
+              state.isSuccess = true
+          })
+          .addCase(updateRoom.rejected, (state, action) => {
+              state.isLoading = false
+              state.isError = true
+              state.message = action.payload
+          })
+
+          //Builde DeleteRoom
           .addCase(deleteRoom.pending, (state) => {
               state.isLoading = true
           })

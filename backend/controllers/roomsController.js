@@ -36,7 +36,6 @@ const getRoomById = asyncHandler( async (req, res) =>{
 
 const registerRoom = asyncHandler( async (req, res) => {
     const { name, description, isActive } = req.body;
-    console.log(req.body)
 
     if(!name) {
         res.status(400);
@@ -76,16 +75,29 @@ const registerRoom = asyncHandler( async (req, res) => {
 // @access  Private
 
 const updateRoom = asyncHandler(async (req,res) => {
-    const room = await Room.findById(req.params.id);
+    const room = await Room.findById(req.body.id);
 
     if(!room) {
         res.status(400);
         throw new Error('La salle n\'a pas été trouvée');
     }
 
-    const updatedRoom = await Room.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    if(req.body.data.name === '') {
+        req.body.data.name = room.name
+    }
 
-    res.status(200).json(updatedRoom);
+    if(req.body.data.description === '') {
+        req.body.data.description = room.description;
+    }
+
+    const updatedRoom = await Room.findByIdAndUpdate(req.body.id, {
+        name: req.body.data.name,
+        description: req.body.data.description,
+        isActive: req.body.data.isActive
+    })
+
+        res.status(200).json(updatedRoom);
+
 })
 
 // @desc    Delete room
