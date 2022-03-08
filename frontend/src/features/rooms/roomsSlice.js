@@ -4,6 +4,7 @@ import roomsService from './roomsService'
 
 const initialState = {
     rooms: [],
+    room: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -19,6 +20,18 @@ export const getRooms = createAsyncThunk('rooms/show', async () => {
         return error.response;
     }
 });
+
+//Get RoomById
+export const getRoomById = createAsyncThunk('rooms/getOne', async (roomId, thunkAPI) => {
+    try {
+        return await roomsService.getRoomById(roomId);
+
+    }
+    catch (error){
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
 
 //Add Room
 export const addRoom = createAsyncThunk('rooms/addroom', async (room, thunkAPI) => {
@@ -53,6 +66,7 @@ export const roomsSlice = createSlice({
             state.isSuccess = false
             state.message = ''
             state.rooms = []
+            state.room = []
         }
     },
     extraReducers: (builder =>  {
@@ -64,6 +78,16 @@ export const roomsSlice = createSlice({
               state.isLoading = false
               state.isSuccess = true
               state.rooms = action.payload
+          })
+          .addCase(getRooms.rejected, (state, action) => {
+              state.isLoading = false
+              state.isError = true
+              state.message = action.payload
+          })
+          .addCase(getRoomById.fulfilled, (state, action) => {
+              state.isLoading = false
+              state.isSuccess = true
+              state.room = action.payload
           })
           .addCase(addRoom.pending, (state) => {
               state.isLoading = true

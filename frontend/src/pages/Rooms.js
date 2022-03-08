@@ -50,6 +50,7 @@ const Rooms = () => {
                         </Button>
                         <span style={ {width: '100%' }} />
                         <Button
+                            onClick={() => navigate('/modifyroom')}
                             startIcon={<EditOutlinedIcon />}
                             variant="outlined"
                             color="third"

@@ -11,6 +11,7 @@ import GM from "./pages/GM";
 import ShowRooms from "./pages/ShowRooms";
 import DeleteRoom from "./pages/DeleteRoom"
 import AddRoom from "./pages/AddRoom";
+import ModifyRoom from "./pages/ModifyRoom";
 
 
 
@@ -29,6 +30,7 @@ const App = ({ children }) => {
                       <Route path='/showrooms' element = {<ShowRooms />} />
                       <Route path='/deleteRoom' element = {<DeleteRoom />} />
                       <Route path='/addroom' element= {<AddRoom />} />
+                      <Route path='/modifyroom' element={<ModifyRoom />} />
                   </Routes>
               </div>
           </Router>

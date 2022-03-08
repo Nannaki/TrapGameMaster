@@ -39,7 +39,7 @@ const DeleteRoom = () => {
                     component='div'
                     sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}, width: "100%"}}
                 >
-                    <NoMeetingRoomOutlinedIcon sx={{ fontSize: {xs: "18px", md: "xx-large"}}}/> Supprimer un salle du système
+                    <NoMeetingRoomOutlinedIcon sx={{ fontSize: {xs: "18px", md: "xx-large"}}}/> Supprimer une salle du système
                 </Typography>
                 <Paper elevation={6} sx={{ width: {xs: "225px", md: "300px"} }}>
                     <List>
@@ -67,7 +67,6 @@ const DeleteRoom = () => {
                                 </ListItem>
                             </Card>
                         ))}
-
                             </List>
                         <Button
                             variant='contained'
