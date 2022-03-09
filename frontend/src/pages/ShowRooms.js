@@ -7,6 +7,7 @@ import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from
 //import SherlockImg from '../images/sherlockRoom.jpg'
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 import Loading from "../components/Loading";
+import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 
 const ShowRooms = () => {
 
@@ -17,7 +18,7 @@ const ShowRooms = () => {
 
     useEffect(() => {
         dispatch(getRooms());
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
 
@@ -93,6 +94,15 @@ const ShowRooms = () => {
                         </CardActions>
                     </Card>
                 ))}
+                <span style={ {width: '100%' }} />
+                <Button variant='contained'
+                        color='secondary'
+                        sx={{ m: 3 }}
+                        endIcon={<BackspaceOutlinedIcon />}
+                        onClick={() => navigate('/rooms')}
+                >
+                    Retour
+                </Button>
             </Box>
         </>
     );

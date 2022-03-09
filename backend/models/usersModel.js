@@ -18,6 +18,9 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         required: [true, 'Merci d\'indiquer le rôle de l\'utilisateur']
     },
+    rooms: {
+        type: Array,
+    },
 }, {
     timestamps: true
 })

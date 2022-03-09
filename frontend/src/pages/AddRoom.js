@@ -23,7 +23,7 @@ const AddRoom = () => {
     const { name, description, isActive } = formData;
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading, isSuccess, isError, message } = useSelector((state) => state.rooms)
+    const { isLoading, isError, message } = useSelector((state) => state.rooms)
     const { user } = useSelector((state) => state.auth)
 
     const onChange = (e) => {
@@ -51,14 +51,9 @@ const AddRoom = () => {
             toast.error(message)
         }
 
-        if(isSuccess) {
-            navigate('/rooms')
-            toast.success('La nouvelle salle a bien été enregistrée');
-        }
-
         dispatch(reset());
 
-    }, [isError, isSuccess, message, navigate, dispatch])
+    }, [isError, message, navigate, dispatch])
 
     const onSubmit = (e) => {
 
@@ -71,6 +66,8 @@ const AddRoom = () => {
         }
 
             dispatch(addRoom(roomData));
+            navigate('/rooms')
+            toast.success('La nouvelle salle a bien été enregistrée');
         }
 
     if(isLoading) {

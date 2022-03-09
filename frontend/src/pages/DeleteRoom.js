@@ -1,8 +1,17 @@
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
-import { getRooms, deleteRoom } from "../features/rooms/roomsSlice";
-import {Box, IconButton, List, ListItem, Typography, Paper, Card, Button} from "@mui/material";
+import {getRooms, deleteRoom} from "../features/rooms/roomsSlice";
+import {
+    Box,
+    IconButton,
+    List,
+    ListItem,
+    Typography,
+    Paper,
+    Card,
+    Button,
+} from "@mui/material";
 import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, {useEffect} from "react";
@@ -54,7 +63,7 @@ const DeleteRoom = () => {
                                     variant="outlined"
                                     secondaryAction={
                                     <IconButton
-                                        onClick={user.isAdmin ? () => {dispatch(deleteRoom(room._id)) && toast.success('La salle '+room.name+' a bien été supprimée')}: () => {navigate('/') }}
+                                        onClick={user.isAdmin ? () => {dispatch(deleteRoom(room._id)) && toast.success('La salle '+room.name+' a bien été supprimée')}: () => {navigate('/')}}
                                         variant="outlined"
                                         color={"error"}
                                         edge={"end"}
