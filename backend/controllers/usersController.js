@@ -97,7 +97,7 @@ const getUserById = asyncHandler( async (req, res) => {
 })
 
 // @desc    Update user data
-// @route   PUT /api/users/delete
+// @route   PUT /api/users/modifyuser
 // @access  Private
 const updateUser = asyncHandler( async (req, res) => {
     const user = await User.findById(req.body.id)

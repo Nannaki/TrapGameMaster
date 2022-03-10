@@ -34,7 +34,7 @@ const ModifyGm = () => {
     const [open, setOpen] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {users, userInfo, user, message, isSuccess, isError} = useSelector((state) => state.auth)
+    const {users, userInfo, message, isSuccess, isError} = useSelector((state) => state.auth)
 
 
     const handleOpenModal = () => {setOpen(true)}
@@ -62,7 +62,7 @@ const ModifyGm = () => {
                     component='div'
                     sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '22px', md: 'xx-large'}, width: "100%"}}
                 >
-                    <MeetingRoomOutlinedIcon sx={{ fontSize: {xs: "20px", md: "xx-large"}}}/> Modifier un GameMaster
+                    <MeetingRoomOutlinedIcon sx={{ fontSize: {xs: "20px", md: "xx-large"}}}/> Modifier les données d'un GameMaster
                 </Typography>
                 <Paper elevation={6} sx={{ width: {xs: "225px", md: "300px"} }}>
                     <List>
@@ -106,16 +106,16 @@ const ModifyGm = () => {
                     open={open}
                     component="form"
                     onSubmit={(e) => {
-                        e.preventDefault()
 
                         const userData = {
                             name,
                             email
                         };
+                        console.log(userInfo)
 
                         dispatch(updateUser({
                             data: userData,
-                            id: user._id
+                            id: userInfo._id
                         }));
 
                         if(isError) {
@@ -124,7 +124,7 @@ const ModifyGm = () => {
 
                         if(isSuccess) {
                             navigate('/gm')
-                            toast.success('Les données du GameMaster '+user.name+' a bien été mis à jour')
+                            toast.success('Les données du GameMaster '+userInfo.name+' a bien été mis à jour')
                         }
                     }}
                     onClose={handleCloseModal}
@@ -137,7 +137,7 @@ const ModifyGm = () => {
                         component="div"
                         sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}, width: "100%"}}
                     >
-                        Modifier les données de {user.name}
+                        Modifier les données de {userInfo.name}
 
                     </DialogTitle>
                     <DialogContent
@@ -166,6 +166,7 @@ const ModifyGm = () => {
                             value={email}
                             onChange={onChange}
                         />
+                        <p> Donnée actuelle : {userInfo.email}</p>
                         <span style={ {width: '100%' }} />
                         <Button variant='contained'
                                 color='success'

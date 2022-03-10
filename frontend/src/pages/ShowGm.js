@@ -4,7 +4,7 @@ import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getUsers, reset} from "../features/auth/authSlice";
+import {getUsers} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 
 //TODO change icons
@@ -13,7 +13,7 @@ const ShowGm = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {users, isLoading} = useSelector((state) => state.auth)
+    const {users} = useSelector((state) => state.auth)
 
 
     useEffect(() => {
