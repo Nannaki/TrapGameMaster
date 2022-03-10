@@ -18,6 +18,7 @@ import ModifyGm from "./pages/ModifyGm";
 import DeleteRoomOfGm from "./pages/DeleteRoomOfGm"
 //TODO mettre user isAdmin ? dans routes
 //TODO contrôler les icons
+//TODO Changer le bouton logout
 
 const App = ({ children }) => {
   return (

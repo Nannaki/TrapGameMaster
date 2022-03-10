@@ -7,6 +7,7 @@ const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
     users: [],
+    rooms: [],
     userInfo: [],
     user: user ? user : null,
     isError: false,
@@ -105,6 +106,7 @@ export const authSlice = createSlice({
             state.message = ''
             state.users = []
             state.userInfo = []
+            state.rooms = []
         }
     },
     extraReducers: (builder) => {
@@ -157,6 +159,8 @@ export const authSlice = createSlice({
             })
             .addCase(deleteRoomOfUser.fulfilled, (state, action) =>{
                 state.isLoading = false
+                state.isSuccess = true
+                state.rooms = state.rooms.filter((rooms) => rooms.name !== action.payload.name);
             })
             .addCase(deleteRoomOfUser.rejected, (state, action) => {
                 state.isLoading = false

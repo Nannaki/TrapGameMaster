@@ -4,7 +4,7 @@ import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteRoomOfUser, getUsers} from "../features/auth/authSlice";
+import {deleteRoomOfUser, getUsers, reset} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {toast} from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -16,12 +16,20 @@ const AddRoomTomGm = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {users, isLoading} = useSelector((state) => state.auth)
+    const {users, isLoading, isSuccess} = useSelector((state) => state.auth)
 
 
     useEffect(() => {
         dispatch(getUsers())
     }, [dispatch])
+
+    useEffect(() => {
+        if(isSuccess) {
+            dispatch(getUsers())
+        }
+
+        dispatch(reset())
+    },[isSuccess, dispatch])
 
     if(isLoading) {
         return <Loading />
@@ -73,7 +81,7 @@ const AddRoomTomGm = () => {
                                             onClick={() => dispatch(deleteRoomOfUser({
                                                 data: room,
                                                 id: user._id
-                                            }))&& toast.success('La salle a bien été supprimé du profil du gm')&& navigate('/deleteroomofgm')  }
+                                            }))&& toast.success('La salle a bien été supprimé du profil du gm')&& navigate('/deleteroomofgm')}
                                             variant="outlined"
                                             color="error"
                                             edge="end"
