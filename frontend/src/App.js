@@ -13,7 +13,7 @@ import DeleteRoom from "./pages/DeleteRoom"
 import AddRoom from "./pages/AddRoom";
 import ModifyRoom from "./pages/ModifyRoom";
 
-
+//TODO mettre user isAdmin ? dans routes
 
 const App = ({ children }) => {
   return (

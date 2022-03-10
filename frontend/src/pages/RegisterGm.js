@@ -1,22 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {
     Box,
     Button,
-    Checkbox,
-    FormControlLabel,
     Card,
-    TextField,
-    Typography,
+    Checkbox,
     FormControl,
-    FormLabel, FormGroup, FormHelperText
+    FormControlLabel,
+    FormGroup,
+    FormHelperText,
+    FormLabel,
+    TextField,
+    Typography
 } from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
-import { register, reset } from "../features/auth/authSlice";
+import {register, reset} from "../features/auth/authSlice";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import {getRooms} from "../features/rooms/roomsSlice";
@@ -37,8 +39,8 @@ const RegisterGm = () => {
     const navigate = useNavigate();
     const {user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth);
     const {rooms} = useSelector((state) => state.rooms)
+    const [roomChecked, setRoomChecked] = useState([]);
 
-    //TODO Push les valeur des checkBox dans le tableau (actuellemnt push mais se multiplie)
 
     useEffect(() => {
         dispatch(getRooms())
@@ -58,15 +60,22 @@ const RegisterGm = () => {
         }))
     }
 
-    const onCheckRoom = (e) => {
-        setFormData( (prevState)  => ({
-            ...prevState,
-            [formData.rooms]: formData.rooms.push(e.target.value)
-        }))
-        console.log(formData.rooms)
+    const onCheckRoom = (e, value) => {
+        e.preventDefault()
+
+        let cloneRoomChecked = [...roomChecked];
+        if(e.target.checked) {
+            cloneRoomChecked.push(value)
+            setRoomChecked(cloneRoomChecked)
+
+        } else {
+            cloneRoomChecked = roomChecked.filter((room) => {
+                return room !== value
+
+            });
+            setRoomChecked(cloneRoomChecked);
+        }
     }
-
-
 
     useEffect(() => {
         if(!user) {
@@ -80,7 +89,7 @@ const RegisterGm = () => {
         }
 
         if(isSuccess) {
-            navigate('/dashboardadmin')
+            navigate('/gm')
             toast.success('Le nouveau GameMaster a bien été enregistré');
         }
 
@@ -91,6 +100,10 @@ const RegisterGm = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
+        for (let i = 0; i < roomChecked.length; i++) {
+            formData.rooms.push(roomChecked[i])
+        }
+
         if(password !== password2) {
             toast.error('Les mots de passe ne correspondent pas')
         }else {
@@ -98,11 +111,12 @@ const RegisterGm = () => {
                 name,
                 email,
                 password,
-                isAdmin
+                isAdmin,
+                rooms: formData.rooms
             }
-
             dispatch(register(userData));
         }
+        formData.rooms= [];
     }
 
     if(isLoading) {
@@ -183,10 +197,11 @@ const RegisterGm = () => {
                                         key={room._id}
                                         control={
                                             <Checkbox
+                                                checked={roomChecked.indexOf(room._id) > -1 ? true : false}
+                                                name="roomChecked"
                                                 color="secondary"
-                                                onChange={onCheckRoom}
+                                                onChange={(e) => {onCheckRoom(e, room._id)}}
                                                 value={room._id}
-                                                name={room._id}
                                             />
                                         }
                                         label={room.name} />
