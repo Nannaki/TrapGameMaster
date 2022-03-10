@@ -52,6 +52,16 @@ const Gm = () => {
                         </Button>
                         <span style={ {width: '100%' }} />
                         <Button
+                            startIcon={<EditOutlinedIcon />}
+                            variant="outlined"
+                            color="third"
+                            sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
+                            onClick={user.isAdmin ? () => navigate('/modifygm'): () => navigate('/')}
+                        >
+                            Modifier un GM dans le système
+                        </Button>
+                        <span style={ {width: '100%' }} />
+                        <Button
                             startIcon={<PersonAddAltOutlinedIcon />}
                             variant="outlined"
                             color="third"
@@ -69,15 +79,6 @@ const Gm = () => {
                             onClick={user.isAdmin ? () => navigate('/deletegm'): () => navigate('/')}
                         >
                             Retirer un GM dans le sytème
-                        </Button>
-                        <span style={ {width: '100%' }} />
-                        <Button
-                            startIcon={<EditOutlinedIcon />}
-                            variant="outlined"
-                            color="third"
-                            sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
-                        >
-                           Modifier un GM dans le système
                         </Button>
                         <Button
                             startIcon={<AccessTimeOutlinedIcon />}

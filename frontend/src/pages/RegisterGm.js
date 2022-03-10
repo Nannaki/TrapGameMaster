@@ -25,6 +25,7 @@ import {getRooms} from "../features/rooms/roomsSlice";
 
 
 const RegisterGm = () => {
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',

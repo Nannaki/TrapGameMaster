@@ -82,6 +82,43 @@ const getUsers = asyncHandler( async (req, res) => {
     res.status(200).json(users);
 })
 
+// @desc    Get user by ID
+// @route   GET /api/users/getOne
+// @access  Private
+const getUserById = asyncHandler( async (req, res) => {
+    const user = await User.findById(req.params.id)
+
+    if(!user) {
+        res.status(400);
+        throw new Error('L\'utilisateur n\'a pas été trouvé');
+    }
+
+    res.status(200).json(user);
+})
+
+// @desc    Update user data
+// @route   PUT /api/users/delete
+// @access  Private
+const updateUser = asyncHandler( async (req, res) => {
+    const user = await User.findById(req.body.id)
+
+    if(req.body.data.name === '') {
+        req.body.data.name = user.name
+    }
+
+    if(req.body.data.email === '') {
+        req.body.data.email = user.email
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.body.id, {
+        name: req.body.data.name,
+        email: req.body.data.email,
+    })
+
+    res.status(200).json(updatedUser)
+
+})
+
 // @desc    Delete user data
 // @route   Delete /api/users/delete
 // @access  Private
@@ -118,5 +155,7 @@ module.exports = {
     loginUser,
     getMe,
     getUsers,
+    getUserById,
+    updateUser,
     deleteUser
 }

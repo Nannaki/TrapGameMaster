@@ -1,4 +1,3 @@
-import Header from "../components/Header";
 import {
     Box,
     Typography,
@@ -10,93 +9,66 @@ import {
     Button,
     Dialog,
     DialogTitle,
+    DialogContent,
     TextField,
-    DialogContent, Checkbox, FormControlLabel
 } from "@mui/material";
+import Header from "../components/Header";
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {updateRoom, getRoomById, getRooms} from "../features/rooms/roomsSlice";
-import Loading from "../components/Loading";
-import {toast} from "react-toastify";
+import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
+import {useDispatch, useSelector} from "react-redux";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
-import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutlined';
+import {useNavigate} from "react-router-dom";
+import {getUserById, getUsers, updateUser} from "../features/auth/authSlice";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import {toast} from "react-toastify";
 
-//TODO changer les icons
+//TODO change icons
+const ModifyGm = () => {
 
-
-const ModifyRoom = () => {
-
-    const { rooms, room, isLoading, isSuccess, isError, message } = useSelector((state) => state.rooms);
     const [formData, setFormData] = useState({
         name: '',
-        description: '',
-        isActive: false
+        email: '',
     });
+    const {name, email} = formData
+    const [open, setOpen] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [open, setOpen] = useState(false);
-    const { name, description, isActive } = formData;
-    const { user } = useSelector((state)=> state.auth);
-    const handleCloseModal = () => {setOpen(false)};
+    const {users, userInfo, user, message, isSuccess, isError} = useSelector((state) => state.auth)
+
+
     const handleOpenModal = () => {setOpen(true)}
-
-
-    useEffect(() => {
-        dispatch(getRooms());
-    }, [dispatch]);
+    const handleCloseModal = () => {setOpen(false)}
 
     useEffect(() => {
-
-        if(!user) {
-            navigate('/')
-        }
-
-    }, [user, navigate, dispatch])
-
+        dispatch(getUsers());
+    }, [dispatch])
 
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value,
         }))
-    };
-
-    const onCheck = (e) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.checked,
-        }))
-    };
-
-
-    if(isLoading) {
-        return <Loading />
     }
-
 
     return (
         <>
             <Header />
-            <Box
-                sx={{ mt: 12, display: "flex", justifyContent:'center', alignItems: 'center', flexWrap: 'wrap', textAlign: 'center' }}
-
+            <Box sx={{ mt: 12, display: "flex", justifyContent:'center', alignItems: 'center', flexWrap: 'wrap', textAlign: 'center' }}
             >
                 <Typography
                     variant='h6'
                     noWrap
                     component='div'
-                    sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}, width: "100%"}}
+                    sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '22px', md: 'xx-large'}, width: "100%"}}
                 >
-                    <RoomPreferencesOutlinedIcon sx={{ fontSize: {xs: "18px", md: "xx-large"}}}/> Modifier une salle du système
+                    <MeetingRoomOutlinedIcon sx={{ fontSize: {xs: "20px", md: "xx-large"}}}/> Modifier un GameMaster
                 </Typography>
                 <Paper elevation={6} sx={{ width: {xs: "225px", md: "300px"} }}>
                     <List>
-                        {rooms.map((room) => (
+                        {users.map((user) => (
                             <Card
-                                key={room.name}
+                                key={user._id}
                                 sx={{ maxWidth: 345, m:4, border: "1px solid #f2f2f2"}}
                                 elevation={18}
                             >
@@ -104,18 +76,19 @@ const ModifyRoom = () => {
                                     sx={{ my: 2, fontSize: {xs: "18px", md: "21px"}, display: "flex", justifyContent: "center"}}
                                     variant="outlined"
                                     secondaryAction={
-                                        <IconButton
-                                            onClick={()=>dispatch(getRoomById(room._id)) && handleOpenModal()}
-                                            variant="outlined"
-                                            color="secondary"
-                                            edge="end"
-                                        >
-                                            <AutoFixHighOutlinedIcon />
-                                        </IconButton>
+                                    <IconButton
+                                        onClick={() => dispatch(getUserById(user._id)) && handleOpenModal()}
+                                        variant="outlined"
+                                        color="secondary"
+                                        edge="end"
+                                    >
+                                        <AutoFixHighOutlinedIcon />
+                                    </IconButton>
                                     }
                                 >
-                                    {room.name}
+                                    {user.name}
                                 </ListItem>
+
                             </Card>
                         ))}
                     </List>
@@ -124,7 +97,7 @@ const ModifyRoom = () => {
                         color='secondary'
                         sx={{ mb: 3 }}
                         endIcon={<BackspaceOutlinedIcon />}
-                        onClick={() => navigate('/rooms')}
+                        onClick={() => navigate('/gm')}
                     >
                         Retour
                     </Button>
@@ -132,18 +105,17 @@ const ModifyRoom = () => {
                 <Dialog
                     open={open}
                     component="form"
-                    onSubmit={ (e) => {
+                    onSubmit={(e) => {
                         e.preventDefault()
 
-                        const roomData = {
+                        const userData = {
                             name,
-                            description,
-                            isActive
-                        }
+                            email
+                        };
 
-                        dispatch(updateRoom({
-                            data: roomData,
-                            id: room._id
+                        dispatch(updateUser({
+                            data: userData,
+                            id: user._id
                         }));
 
                         if(isError) {
@@ -151,23 +123,22 @@ const ModifyRoom = () => {
                         }
 
                         if(isSuccess) {
-                            navigate('/rooms')
-                            toast.success('La salle '+room.name+' a bien été mise à jour')
-
+                            navigate('/gm')
+                            toast.success('Les données du GameMaster '+user.name+' a bien été mis à jour')
                         }
-
                     }}
                     onClose={handleCloseModal}
                     onBackdropClick={handleCloseModal}
                     sx={{ p:2, display: "flex", justifyContent: "center" }}
                 >
                     <DialogTitle
-                        variant='h6'
+                        variant="h6"
                         noWrap
-                        component='div'
+                        component="div"
                         sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}, width: "100%"}}
                     >
-                       Modifier {room.name}
+                        Modifier les données de {user.name}
+
                     </DialogTitle>
                     <DialogContent
                         sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap", textAlign: "center"}}
@@ -182,31 +153,19 @@ const ModifyRoom = () => {
                             value={name}
                             onChange={onChange}
                         />
-                        <p> Donnée actuelle : {room.name}</p>
+                        <p> Donnée actuelle : {userInfo.name}</p>
                         <span style={ {width: '100%' }} />
                         <TextField
                             sx={{ my:2 }}
+                            type="email"
                             variant="outlined"
                             multiline
                             fullWidth
-                            name="description"
-                            label="Description"
-                            value={description}
+                            name="email"
+                            label="Email"
+                            value={email}
                             onChange={onChange}
                         />
-                        <p>Description actuelle : {room.description} </p>
-                        <span style={ {width: '100%' }} />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    onChange={onCheck}
-                                    id='isActive'
-                                    value={isActive}
-                                    name='isActive'
-                                    checked={isActive}
-                                />
-                            }
-                        label='Active' />
                         <span style={ {width: '100%' }} />
                         <Button variant='contained'
                                 color='success'
@@ -231,4 +190,4 @@ const ModifyRoom = () => {
     );
 };
 
-export default ModifyRoom;
+export default ModifyGm;

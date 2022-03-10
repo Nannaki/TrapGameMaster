@@ -14,6 +14,7 @@ import DeleteRoom from "./pages/DeleteRoom"
 import AddRoom from "./pages/AddRoom";
 import ModifyRoom from "./pages/ModifyRoom";
 import DeleteGm from "./pages/DeleteGm";
+import ModifyGm from "./pages/ModifyGm";
 
 //TODO mettre user isAdmin ? dans routes
 //TODO contrôler les icons
@@ -28,6 +29,7 @@ const App = ({ children }) => {
                       <Route path='/dashboardadmin' element={<DashBoardAdmin />}/>
                       <Route path='/dashboardGM' element={<DashBoardGM />}/>
                       <Route path='/showgm' element={<ShowGm />} />
+                      <Route path='/modifygm' element={<ModifyGm />} />
                       <Route path='/registergm' element={<RegisterGm />}/>
                       <Route path='/deletegm' element={<DeleteGm />} />
                       <Route path='/rooms' element={<Rooms />}/>

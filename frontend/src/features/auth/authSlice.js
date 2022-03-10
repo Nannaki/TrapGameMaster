@@ -7,6 +7,7 @@ const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
     users: [],
+    userInfo: [],
     user: user ? user : null,
     isError: false,
     isSuccess: false,
@@ -22,6 +23,28 @@ export const getUsers = createAsyncThunk('auth/show', async () => {
     }
     catch (error) {
         return error.response
+    }
+})
+
+//Get user by Id
+export const getUserById = createAsyncThunk('auth/getOne', async (userId, thunkAPI) =>{
+    try {
+        return await authService.getUserById(userId);
+    }
+    catch (error){
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+//Update user
+export const updateUser = createAsyncThunk('/auth/updateuser', async (userData, thunkAPI) => {
+    try {
+        return await authService.updateUser(userData);
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
     }
 })
 
@@ -70,6 +93,7 @@ export const authSlice = createSlice({
             state.isSuccess = false
             state.message = ''
             state.users = []
+            state.userInfo = []
         }
     },
     extraReducers: (builder) => {
@@ -80,10 +104,37 @@ export const authSlice = createSlice({
             })
             .addCase(getUsers.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.isSuccess = true
                 state.users = action.payload
             })
             .addCase(getUsers.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+            //Builder getUserById
+            .addCase(getUserById.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getUserById.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.user = action.payload
+            })
+            .addCase(getUserById.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+            //Builder updateUser
+            .addCase(updateUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+            })
+            .addCase(updateUser.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
@@ -95,7 +146,6 @@ export const authSlice = createSlice({
             })
             .addCase(deleteUser.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.isSuccess = true
                 state.users = state.users.filter((users) => users._id !== action.payload.id);
             })
             .addCase(deleteUser.rejected, (state, action) => {
@@ -118,7 +168,7 @@ export const authSlice = createSlice({
                 state.message = action.payload
             })
 
-            //Builder Logiin
+            //Builder Login
             .addCase(login.pending, (state) => {
                 state.isLoading = true
             })

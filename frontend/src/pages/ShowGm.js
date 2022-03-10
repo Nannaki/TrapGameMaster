@@ -1,12 +1,10 @@
 import {Box, Button, Card, CardContent, Typography} from "@mui/material"
 import Header from "../components/Header";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
-import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined';
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getUsers} from "../features/auth/authSlice";
-import {getRooms} from "../features/rooms/roomsSlice";
+import {getUsers, reset} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 
 //TODO change icons
@@ -39,7 +37,7 @@ const ShowGm = () => {
                 </Typography>
                 { users.map((user) => (
                     <Card
-                        sx={{ maxWidth: 345, m:4}} key={user.name}
+                        sx={{ maxWidth: {xs: 340, md: 500}, m:4}} key={user.name}
                         square
                     >
                         <CardContent>

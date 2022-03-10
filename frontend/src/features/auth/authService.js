@@ -8,12 +8,24 @@ const getUsers = async () => {
     return response.data;
 }
 
+//Get user by ID
+const getUserById = async (userId) => {
+    const response = await axios.get( API_URL + 'getOne' +userId);
+    return response.data;
+}
+
 //Register user
 const register = async (userData) => {
     const response = await axios.post(API_URL + 'registerGm', userData);
     return response.data;
 
 };
+
+//Update user
+const updateUser = async (userData) => {
+    const response = await axios.put( API_URL + 'updateuser' +userData.id, userData);
+    return response.data
+}
 
 //Delete user
 const deleteUser = async (userId) => {
@@ -40,6 +52,8 @@ const logout = () => {
 
 const authService = {
     getUsers,
+    getUserById,
+    updateUser,
     deleteUser,
     register,
     logout,

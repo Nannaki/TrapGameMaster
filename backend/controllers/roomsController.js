@@ -93,7 +93,7 @@ const updateRoom = asyncHandler(async (req,res) => {
     const updatedRoom = await Room.findByIdAndUpdate(req.body.id, {
         name: req.body.data.name,
         description: req.body.data.description,
-        isActive: req.body.data.isActive
+        isActive: req.body.data.isActive,
     })
 
         res.status(200).json(updatedRoom);
