@@ -38,9 +38,20 @@ export const getUserById = createAsyncThunk('auth/getOne', async (userId, thunkA
 })
 
 //Update user
-export const updateUser = createAsyncThunk('/auth/updateuser', async (userData, thunkAPI) => {
+export const updateUser = createAsyncThunk('auth/updateuser', async (userData, thunkAPI) => {
     try {
         return await authService.updateUser(userData);
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+//Delete room of user
+export const deleteRoomOfUser = createAsyncThunk('auth/deleteuserroom', async (userData, thunkAPI) => {
+    try {
+        return await authService.deleteRoomOfUser(userData);
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -130,11 +141,24 @@ export const authSlice = createSlice({
             .addCase(updateUser.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(updateUser.fulfilled, (state, action) => {
+            .addCase(updateUser.fulfilled, (state) => {
                 state.isLoading = false
                 state.isSuccess = true
             })
             .addCase(updateUser.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+            //Builder deleteRoomOfUser
+            .addCase(deleteRoomOfUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(deleteRoomOfUser.fulfilled, (state, action) =>{
+                state.isLoading = false
+            })
+            .addCase(deleteRoomOfUser.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

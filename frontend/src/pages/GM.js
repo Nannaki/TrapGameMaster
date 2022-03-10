@@ -80,6 +80,27 @@ const Gm = () => {
                         >
                             Retirer un GM du système
                         </Button>
+                        <span style={ {width: '100%' }} />
+                        <Button
+                            startIcon={<EditOutlinedIcon />}
+                            variant="outlined"
+                            color="third"
+                            sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
+                            onClick={user.isAdmin ? () => navigate('/deleteroomofgm'): () => navigate('/')}
+                        >
+                            Ajouter une salle au un GM
+                        </Button>
+                        <span style={ {width: '100%' }} />
+                        <Button
+                            startIcon={<EditOutlinedIcon />}
+                            variant="outlined"
+                            color="third"
+                            sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
+                            onClick={user.isAdmin ? () => navigate('/deleteroomofgm'): () => navigate('/')}
+                        >
+                            Retirer une salle au GM
+                        </Button>
+                        <span style={ {width: '100%' }} />
                         <Button
                             startIcon={<AccessTimeOutlinedIcon />}
                             variant="outlined"

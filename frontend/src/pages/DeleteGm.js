@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import NoMeetingRoomOutlinedIcon from "@mui/icons-material/NoMeetingRoomOutlined";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getUsers, deleteUser, reset} from "../features/auth/authSlice"
+import {getUsers, deleteUser} from "../features/auth/authSlice"
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -26,7 +26,6 @@ const DeleteGm = () => {
         return <Loading />
     }
 
-    console.log(users)
     return (
         <>
             <Header />

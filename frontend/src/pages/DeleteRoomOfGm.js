@@ -1,25 +1,31 @@
-import {Box, Button, Card, CardContent, Typography} from "@mui/material"
+import {Box, Button, Card, CardContent, IconButton, ListItem, Typography} from "@mui/material"
 import Header from "../components/Header";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getUsers} from "../features/auth/authSlice";
+import {deleteRoomOfUser, getUsers} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
+import {toast} from "react-toastify";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Loading from "../components/Loading";
 
 //TODO change icons
 
-const ShowGm = () => {
+const AddRoomTomGm = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {users} = useSelector((state) => state.auth)
+    const {users, isLoading} = useSelector((state) => state.auth)
 
 
     useEffect(() => {
         dispatch(getUsers())
     }, [dispatch])
 
+    if(isLoading) {
+        return <Loading />
+    }
 
     return (
         <>
@@ -33,7 +39,7 @@ const ShowGm = () => {
                     component='div'
                     sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '22px', md: 'xx-large'}, width: "100%"}}
                 >
-                    <MeetingRoomOutlinedIcon sx={{ fontSize: {xs: "20px", md: "xx-large"}}}/> Les GameMaster
+                    <MeetingRoomOutlinedIcon sx={{ fontSize: {xs: "20px", md: "xx-large"}}}/> Retirer une salle à un GameMaster
                 </Typography>
                 { users.map((user) => (
                     <Card
@@ -55,31 +61,29 @@ const ShowGm = () => {
                                 sx={{ mt: 2, fontSize: {xs: '18px', md: 'large'} }}
                                 color="secondary"
                             >
-                                Adresse email :
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                sx={{ mb: 2, fontSize: {xs: '16px', md: 'medium'} }}
-                            >
-                               {user.email}
-                            </Typography>
-                            <div style={ {maxWidth: "345px", borderBottom: "1px solid #f1f1f1"}}/>
-                            <Typography
-                                component="div"
-                                sx={{ mt: 2, fontSize: {xs: '18px', md: 'large'} }}
-                                color="secondary"
-                            >
                                 Salles masterisées :
                             </Typography>
                             { user.rooms.map((room) => (
-                                <Typography
+                                <ListItem
                                     key={room}
-                                    component="div"
-                                    sx={{ mb: 1, fontSize: {xs: '16px', md: 'medium'} }}
+                                    sx={{ my: 2, fontSize: {xs: "18px", md: "21px"}, display: "flex", justifyContent: "center"}}
+                                    variant="outlined"
+                                    secondaryAction={
+                                        <IconButton
+                                            onClick={() => dispatch(deleteRoomOfUser({
+                                                data: room,
+                                                id: user._id
+                                            }))&& toast.success('La salle a bien été supprimé du profil du gm')&& navigate('/deleteroomofgm')  }
+                                            variant="outlined"
+                                            color="error"
+                                            edge="end"
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    }
                                 >
                                     {room}
-                                </Typography>
+                                </ListItem>
                             ))}
                             <div style={ {maxWidth: "345px", borderBottom: "1px solid #f1f1f1", marginTop:"15px"}}/>
                         </CardContent>
@@ -99,4 +103,4 @@ const ShowGm = () => {
     );
 };
 
-export default ShowGm;
+export default AddRoomTomGm;

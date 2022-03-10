@@ -27,6 +27,12 @@ const updateUser = async (userData) => {
     return response.data
 }
 
+//Delete room of user
+const deleteRoomOfUser = async (userData) => {
+    const response = await axios.put( API_URL + 'deleteuserroom' +userData.id, userData)
+    return response.data
+}
+
 //Delete user
 const deleteUser = async (userId) => {
     const response = await axios.delete( API_URL + "delete" +userId);
@@ -55,6 +61,7 @@ const authService = {
     getUserById,
     updateUser,
     deleteUser,
+    deleteRoomOfUser,
     register,
     logout,
     login,

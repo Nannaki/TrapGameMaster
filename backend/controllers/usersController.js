@@ -135,6 +135,23 @@ const deleteUser = asyncHandler( async (req, res) => {
     res.status(200).json({id: req.params.id});
 } )
 
+// @desc    Delete room of a user
+// @route   Put /api/users/deleteRoomFromUSer
+// @access  Private
+const deleteRoomFromUser = asyncHandler ( async (req, res) => {
+    const user = await User.findById(req.body.id);
+    const toRemove = user.rooms.indexOf(req.body.data)
+    user.rooms.splice(toRemove, 1)
+
+    const updatedUser =  await User.findByIdAndUpdate(req.body.id, {
+        rooms:  user.rooms
+    })
+
+    res.status(200).json(updatedUser)
+
+
+})
+
 // @desc    Get user data
 // @route   GET /api/users/me
 // @access  Private
@@ -157,5 +174,6 @@ module.exports = {
     getUsers,
     getUserById,
     updateUser,
+    deleteRoomFromUser,
     deleteUser
 }
