@@ -197,11 +197,11 @@ const RegisterGm = () => {
                                         key={room._id}
                                         control={
                                             <Checkbox
-                                                checked={roomChecked.indexOf(room._id) > -1 ? true : false}
+                                                checked={roomChecked.indexOf(room.name) > -1}
                                                 name="roomChecked"
                                                 color="secondary"
-                                                onChange={(e) => {onCheckRoom(e, room._id)}}
-                                                value={room._id}
+                                                onChange={(e) => {onCheckRoom(e, room.name)}}
+                                                value={room.name}
                                             />
                                         }
                                         label={room.name} />

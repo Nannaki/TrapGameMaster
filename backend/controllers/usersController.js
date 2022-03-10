@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/usersModel');
 
+
 // @desc    Register new user
 // @route   POST /api/users/registerGm
 // @access  Public
@@ -72,6 +73,31 @@ const loginUser = asyncHandler( async (req, res) => {
     }
 })
 
+// @desc    Get users
+// @route   GET /api/users/show
+// @access  Private
+const getUsers = asyncHandler( async (req, res) => {
+    const users = await User.find().select('-password');
+
+    res.status(200).json(users);
+})
+
+// @desc    Delete user data
+// @route   Delete /api/users/delete
+// @access  Private
+const deleteUser = asyncHandler( async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if(!user) {
+        res.status(400);
+        throw new Error('L\'utilisateur recherché n\'existe pas');
+    }
+
+    await user.remove();
+
+    res.status(200).json({id: req.params.id});
+} )
+
 // @desc    Get user data
 // @route   GET /api/users/me
 // @access  Private
@@ -91,4 +117,6 @@ module.exports = {
     registerUser,
     loginUser,
     getMe,
+    getUsers,
+    deleteUser
 }

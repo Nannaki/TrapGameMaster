@@ -7,6 +7,7 @@ import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import Loading from "../components/Loading";
 import React from "react";
 
@@ -41,6 +42,16 @@ const Gm = () => {
                         </CardContent>
                         <span style={ {width: '100%' }} />
                         <Button
+                            startIcon={<VisibilityOutlinedIcon />}
+                            variant="outlined"
+                            color="third"
+                            sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
+                            onClick={user.isAdmin ? () => navigate('/showgm'): () => navigate('/')}
+                        >
+                            Voir les GM
+                        </Button>
+                        <span style={ {width: '100%' }} />
+                        <Button
                             startIcon={<PersonAddAltOutlinedIcon />}
                             variant="outlined"
                             color="third"
@@ -55,6 +66,7 @@ const Gm = () => {
                             variant="outlined"
                             color="third"
                             sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
+                            onClick={user.isAdmin ? () => navigate('/deletegm'): () => navigate('/')}
                         >
                             Retirer un GM dans le sytème
                         </Button>
