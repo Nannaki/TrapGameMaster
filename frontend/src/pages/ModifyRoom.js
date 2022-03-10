@@ -16,7 +16,7 @@ import {
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {updateRoom, getRoomById, getRooms, reset} from "../features/rooms/roomsSlice";
+import {updateRoom, getRoomById, getRooms} from "../features/rooms/roomsSlice";
 import Loading from "../components/Loading";
 import {toast} from "react-toastify";
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';

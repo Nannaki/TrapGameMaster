@@ -7,7 +7,7 @@ const User = require('../models/usersModel');
 // @route   POST /api/users/registerGm
 // @access  Public
 const registerUser = asyncHandler( async (req, res) => {
-    const { name, email, password, isAdmin} = req.body;
+    const { name, email, password, isAdmin, rooms} = req.body;
 
     if(!name || !email || !password || isAdmin === null) {
         res.status(400)
@@ -32,6 +32,7 @@ const registerUser = asyncHandler( async (req, res) => {
         email,
         password: hashedPassword,
         isAdmin,
+        rooms,
     })
 
     if(user) {
@@ -40,6 +41,7 @@ const registerUser = asyncHandler( async (req, res) => {
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
+            rooms: user.rooms,
             token: generateToken(user._id),
         })
     }else {

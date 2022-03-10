@@ -2,13 +2,24 @@ import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import {toast} from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Checkbox, FormControlLabel, Card, TextField, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    Card,
+    TextField,
+    Typography,
+    FormControl,
+    FormLabel, FormGroup, FormHelperText
+} from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import { register, reset } from "../features/auth/authSlice";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
+import {getRooms} from "../features/rooms/roomsSlice";
 
 
 const RegisterGm = () => {
@@ -17,14 +28,21 @@ const RegisterGm = () => {
         email: '',
         password:'',
         password2: '',
-        isAdmin: false
+        isAdmin: false,
+        rooms: [],
     });
 
     const { name, email, password, password2, isAdmin } = formData;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth);
+    const {rooms} = useSelector((state) => state.rooms)
 
+    //TODO Push les valeur des checkBox dans le tableau (actuellemnt push mais se multiplie)
+
+    useEffect(() => {
+        dispatch(getRooms())
+    }, [dispatch])
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -39,6 +57,15 @@ const RegisterGm = () => {
             [e.target.name]: e.target.checked,
         }))
     }
+
+    const onCheckRoom = (e) => {
+        setFormData( (prevState)  => ({
+            ...prevState,
+            [formData.rooms]: formData.rooms.push(e.target.value)
+        }))
+        console.log(formData.rooms)
+    }
+
 
 
     useEffect(() => {
@@ -103,77 +130,104 @@ const RegisterGm = () => {
                         >
                             <HowToRegOutlinedIcon sx={{ fontSize: {xs: "18px", md: "30px"} }}/> Enregistrer un nouveau <br/> GameMaster
                         </Typography>
-                    <TextField id='name'
-                               required
-                               label='Name'
-                               variant='outlined'
-                               sx={{ m: 1, width: '50%'}}
-                               fullWidth
-                               onChange={onChange}
-                               value={name}
-                               name='name'
-                    />
-                    <TextField id='email'
-                               required
-                               label='Email'
-                               variant='outlined'
-                               sx={{ m: 1, width: '50%'}}
-                               fullWidth
-                               type='email'
-                               onChange={onChange}
-                               value={email}
-                               name='email'
-                    />
-                    <TextField id='password'
-                               required
-                               label='Password'
-                               variant='outlined'
-                               sx={{ m: 1, width: '50%'}}
-                               fullWidth
-                               type='password'
-                               onChange={onChange}
-                               value={password}
-                               name='password'
-                    />
-                    <TextField id='password2'
-                               required
-                               label='Check password'
-                               variant='outlined'
-                               sx={{ m: 1, width: '50%'}}
-                               fullWidth
-                               type='password'
-                               onChange={onChange}
-                               value={password2}
-                               name='password2'
-                    />
-                    <span style={ {width: '100%' }} />
-                    <FormControlLabel control={
-                        <Checkbox
-                        onChange={onCheck}
-                        id='isAdmin'
-                        value={isAdmin}
-                        name='isAdmin'
-                        checked={isAdmin}
+                        <TextField id='name'
+                                   required
+                                   label='Name'
+                                   variant='outlined'
+                                   sx={{ m: 1, width: '50%'}}
+                                   fullWidth
+                                   onChange={onChange}
+                                   value={name}
+                                   name='name'
                         />
-                    }
-                    label='Admin'/>
-                    <span style={ {width: '100%' }} />
-                    <Button variant='contained'
-                            color='success'
-                            sx={{ m: 3 }}
-                            endIcon={<ExitToAppOutlinedIcon />}
-                            type='submit'
-                    >
-                        Enregistrer
-                    </Button>
-                    <Button variant='contained'
-                            color='secondary'
-                            sx={{ m: 3 }}
-                            endIcon={<BackspaceOutlinedIcon />}
-                            onClick={() => navigate('/gm')}
-                    >
-                        Retour
-                    </Button>
+                        <TextField id='email'
+                                   required
+                                   label='Email'
+                                   variant='outlined'
+                                   sx={{ m: 1, width: '50%'}}
+                                   fullWidth
+                                   type='email'
+                                   onChange={onChange}
+                                   value={email}
+                                   name='email'
+                        />
+                        <TextField id='password'
+                                   required
+                                   label='Password'
+                                   variant='outlined'
+                                   sx={{ m: 1, width: '50%'}}
+                                   fullWidth
+                                   type='password'
+                                   onChange={onChange}
+                                   value={password}
+                                   name='password'
+                        />
+                        <TextField id='password2'
+                                   required
+                                   label='Check password'
+                                   variant='outlined'
+                                   sx={{ m: 1, width: '50%'}}
+                                   fullWidth
+                                   type='password'
+                                   onChange={onChange}
+                                   value={password2}
+                                   name='password2'
+                        />
+
+                        <span style={ {width: '100%' }} />
+                        <FormControl color="secondary" sx={{width: "50%", mt: 2, borderBottom: '1px solid #f1f1f1', borderTop: '1px solid #f1f1f1'}}>
+                            <FormLabel component="legend">Salles masterisées</FormLabel>
+                            <FormGroup>
+                                { rooms.map((room) => (
+                                    <FormControlLabel
+                                        key={room._id}
+                                        control={
+                                            <Checkbox
+                                                color="secondary"
+                                                onChange={onCheckRoom}
+                                                value={room._id}
+                                                name={room._id}
+                                            />
+                                        }
+                                        label={room.name} />
+                                    ))}
+                            </FormGroup>
+                            <FormHelperText>Ne pas cocher si le gm n'a pas encore de salle</FormHelperText>
+                        </FormControl>
+                        <span style={ {width: '100%' }} />
+                        <FormControl color="secondary" sx={{mt: 1, borderBottom: '1px solid #f1f1f1', width: "50%"}}>
+                            <FormLabel component="legend">Rôle de l'utilisateur</FormLabel>
+                            <FormGroup>
+                                <FormControlLabel control={
+                                    <Checkbox
+                                        color="secondary"
+                                        onChange={onCheck}
+                                        value={isAdmin}
+                                        name="isAdmin"
+                                        checked={isAdmin}
+                                    />
+                                }
+                                label='Admin'/>
+                            </FormGroup>
+                            <FormHelperText>Cocher si l'utilisateur est administrateur</FormHelperText>
+                        </FormControl>
+                        <span style={ {width: '100%' }} />
+                        <Button variant='contained'
+                                color='success'
+                                sx={{ m: 3 }}
+                                endIcon={<ExitToAppOutlinedIcon />}
+                                type='submit'
+                        >
+                            Enregistrer
+                        </Button>
+                        <Button variant='contained'
+                                color='secondary'
+                                sx={{ m: 3 }}
+                                endIcon={<BackspaceOutlinedIcon />}
+                                onClick={() => navigate('/gm')}
+                        >
+                            Retour
+                        </Button>
                     </Card>
                 </Box>
         </>
