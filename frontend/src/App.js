@@ -16,9 +16,11 @@ import ModifyRoom from "./pages/ModifyRoom";
 import DeleteGm from "./pages/DeleteGm";
 import ModifyGm from "./pages/ModifyGm";
 import DeleteRoomOfGm from "./pages/DeleteRoomOfGm"
+import AddRoomToGm from "./pages/AddRoomToGm";
 //TODO mettre user isAdmin ? dans routes
 //TODO contrôler les icons
 //TODO Changer le bouton logout
+// TODO voir ou mettre les horaires
 
 const App = ({ children }) => {
   return (
@@ -33,6 +35,7 @@ const App = ({ children }) => {
                       <Route path='/modifygm' element={<ModifyGm />} />
                       <Route path='/registergm' element={<RegisterGm />}/>
                       <Route path='/deletegm' element={<DeleteGm />} />
+                      <Route path='addroomtogm' element={<AddRoomToGm />} />
                       <Route path='/deleteroomofgm' element={<DeleteRoomOfGm />} />
                       <Route path='/rooms' element={<Rooms />}/>
                       <Route path='/gm' element={<GM />}/>

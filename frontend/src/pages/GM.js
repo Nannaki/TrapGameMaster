@@ -5,7 +5,6 @@ import {Typography, Box, Button, Card, CardContent} from "@mui/material";
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import Loading from "../components/Loading";
@@ -86,7 +85,7 @@ const Gm = () => {
                             variant="outlined"
                             color="third"
                             sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
-                            onClick={user.isAdmin ? () => navigate('/deleteroomofgm'): () => navigate('/')}
+                            onClick={user.isAdmin ? () => navigate('/addroomtogm') : () => navigate('/')}
                         >
                             Ajouter une salle au un GM
                         </Button>
@@ -95,19 +94,10 @@ const Gm = () => {
                             startIcon={<EditOutlinedIcon />}
                             variant="outlined"
                             color="third"
-                            sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
+                            sx={{ p: 2, mt: 3, mb: 3,  width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
                             onClick={user.isAdmin ? () => navigate('/deleteroomofgm'): () => navigate('/')}
                         >
                             Retirer une salle au GM
-                        </Button>
-                        <span style={ {width: '100%' }} />
-                        <Button
-                            startIcon={<AccessTimeOutlinedIcon />}
-                            variant="outlined"
-                            color="third"
-                            sx={{ p: 2, mt: 3, mb: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
-                        >
-                            Consulter les heures
                         </Button>
                         <span style={ {width: '100%' }} />
                         <Button

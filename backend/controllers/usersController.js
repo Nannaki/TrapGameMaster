@@ -135,6 +135,35 @@ const deleteUser = asyncHandler( async (req, res) => {
     res.status(200).json({id: req.params.id});
 } )
 
+// @desc    Add room to a user
+// @route   Put /api/users/AddRoomFromUSer
+// @access  Private
+const addRoomToUser = asyncHandler( async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const actualRooms = user.rooms;
+    const addedRoom = req.body;
+
+    if(!user) {
+        res.status(400)
+        throw new Error('L\'utilisateur n\'a pas été trouvé')
+    }
+
+    for (let i = 0; i < addedRoom.length; i++) {
+
+        if (!actualRooms.includes(addedRoom[i])) {
+
+            actualRooms.push(addedRoom[i]);
+
+        }
+    }
+
+    await User.findByIdAndUpdate(req.params.id, {
+        rooms: actualRooms
+    })
+
+    res.status(200).json(actualRooms);
+})
+
 // @desc    Delete room of a user
 // @route   Put /api/users/deleteRoomFromUSer
 // @access  Private
@@ -174,6 +203,7 @@ module.exports = {
     getUsers,
     getUserById,
     updateUser,
+    addRoomToUser,
     deleteRoomFromUser,
     deleteUser
 }
