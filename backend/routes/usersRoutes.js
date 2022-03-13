@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { registerUser, loginUser, getMe, getUsers, deleteUser, getUserById, updateUser, deleteRoomFromUser,
-    addRoomToUser
+    addRoomToUser, getUnmasterizedRoomOfUser
 } = require('../controllers/usersController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -13,6 +13,7 @@ router.delete('/delete:id', deleteUser)
 router.post('/login', loginUser);
 router.get('/show', getUsers)
 router.get('/getOne:id', getUserById);
+router.get('/getunmasterizedroomsfromuser:id', getUnmasterizedRoomOfUser)
 router.get('/me',protect, getMe);
 
 module.exports = router;

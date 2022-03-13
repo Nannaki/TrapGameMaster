@@ -14,6 +14,12 @@ const getUserById = async (userId) => {
     return response.data;
 }
 
+//Get unmasterized room from user
+const getUnmasterizedRoomFromUser = async (userId) => {
+    const response = await axios.get( API_URL +'getunmasterizedroomsfromuser' +userId)
+    return response.data;
+}
+
 //Register user
 const register = async (userData) => {
     const response = await axios.post(API_URL + 'registerGm', userData);
@@ -59,6 +65,7 @@ const logout = () => {
 const authService = {
     getUsers,
     getUserById,
+    getUnmasterizedRoomFromUser,
     updateUser,
     deleteUser,
     deleteRoomOfUser,

@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/usersModel');
+const Rooms = require('../models/roomsModel');
 
 
 // @desc    Register new user
@@ -96,6 +97,41 @@ const getUserById = asyncHandler( async (req, res) => {
     res.status(200).json(user);
 })
 
+// @desc    Get unmasterized rooms of user
+// @route   GET /api/users/getUnmasterizedRoomOfUser
+// @access  Private
+const getUnmasterizedRoomOfUser = asyncHandler( async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const userRooms = user.rooms;
+    const allRooms = await Rooms.find();
+    const allRoomsName = [];
+    const roomsUnmasterized = [];
+
+    if(!user) {
+        res.status(400);
+        throw new Error('L\'utilisateur n\'a pas été trouvé');
+    }
+
+    for (let i = 0; i < allRooms.length; i++) {
+        allRoomsName.push(allRooms[i].name)
+    }
+
+    for (let j = 0; j < allRoomsName.length; j++) {
+        if(!userRooms.includes(allRoomsName[j])) {
+            roomsUnmasterized.push(allRoomsName[j])
+        }
+    }
+
+    if(roomsUnmasterized.length > 0) {
+        res.status(200).json(roomsUnmasterized);
+    }
+    else {
+        res.status(400)
+        throw new Error('Aucune salle disponibles pour ce GameMaster');
+    }
+
+})
+
 // @desc    Update user data
 // @route   PUT /api/users/modifyuser
 // @access  Private
@@ -165,7 +201,7 @@ const addRoomToUser = asyncHandler( async (req, res) => {
 })
 
 // @desc    Delete room of a user
-// @route   Put /api/users/deleteRoomFromUSer
+// @route   Put /api/users/deleteRoomFromUser
 // @access  Private
 const deleteRoomFromUser = asyncHandler ( async (req, res) => {
     const user = await User.findById(req.body.id);
@@ -201,6 +237,7 @@ module.exports = {
     loginUser,
     getMe,
     getUsers,
+    getUnmasterizedRoomOfUser,
     getUserById,
     updateUser,
     addRoomToUser,

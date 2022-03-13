@@ -9,6 +9,7 @@ const initialState = {
     users: [],
     rooms: [],
     userInfo: [],
+    unmasterized: [],
     user: user ? user : null,
     isError: false,
     isSuccess: false,
@@ -31,6 +32,17 @@ export const getUsers = createAsyncThunk('auth/show', async () => {
 export const getUserById = createAsyncThunk('auth/getOne', async (userId, thunkAPI) =>{
     try {
         return await authService.getUserById(userId);
+    }
+    catch (error){
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+//getUnmasterized rooms from user
+export const getUnmasterizedRoomsFromUser = createAsyncThunk('auth//getunmasterizedroomsfromuser', async (userId, thunkAPI) => {
+    try {
+        return await authService.getUnmasterizedRoomFromUser(userId);
     }
     catch (error){
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -107,6 +119,7 @@ export const authSlice = createSlice({
             state.users = []
             state.userInfo = []
             state.rooms = []
+            state.unmasterized = []
         }
     },
     extraReducers: (builder) => {
@@ -134,6 +147,21 @@ export const authSlice = createSlice({
                 state.userInfo = action.payload
             })
             .addCase(getUserById.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+            //Builder getUnmasterizedRoomFromUser
+            .addCase(getUnmasterizedRoomsFromUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getUnmasterizedRoomsFromUser.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isError = false
+                state.unmasterized = action.payload
+            })
+            .addCase(getUnmasterizedRoomsFromUser.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload

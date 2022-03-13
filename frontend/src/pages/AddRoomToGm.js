@@ -1,15 +1,26 @@
-import {Box, Button, Card, CardContent, IconButton, ListItem, Typography} from "@mui/material"
+import {
+    Box,
+    Button,
+    Card,
+    CardContent, Checkbox,
+    Dialog,
+    DialogContent,
+    DialogTitle, FormControl,
+    FormControlLabel, FormGroup, FormHelperText, FormLabel,
+    ListItem,
+    Typography
+} from "@mui/material"
 import Header from "../components/Header";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteRoomOfUser, getUsers, reset} from "../features/auth/authSlice";
+import {getUnmasterizedRoomsFromUser, getUserById, getUsers, reset} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {toast} from "react-toastify";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Loading from "../components/Loading";
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 
 //TODO change icons
 
@@ -17,11 +28,16 @@ const AddRoomToGm = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {users, isLoading, isSuccess} = useSelector((state) => state.auth)
+    const [open, setOpen] = useState(false);
+    const {users, userInfo, isLoading, isSuccess, isError, unmasterized, message} = useSelector((state) => state.auth);
+    const [roomChecked, setRoomChecked] = useState([]);
 
+    const handleOpenModal = () => {setOpen(true)};
+    const handleCloseModal = () => {setOpen(false)};
 
     useEffect(() => {
         dispatch(getUsers())
+
     }, [dispatch])
 
     useEffect(() => {
@@ -31,6 +47,23 @@ const AddRoomToGm = () => {
 
         dispatch(reset())
     },[isSuccess, dispatch])
+
+    const onCheckRoom = (e, value) => {
+        e.preventDefault()
+
+        let cloneRoomChecked = [...roomChecked];
+        if(e.target.checked) {
+            cloneRoomChecked.push(value)
+            setRoomChecked(cloneRoomChecked)
+
+        } else {
+            cloneRoomChecked = roomChecked.filter((room) => {
+                return room !== value
+
+            });
+            setRoomChecked(cloneRoomChecked);
+        }
+    }
 
     if(isLoading) {
         return <Loading />
@@ -88,6 +121,7 @@ const AddRoomToGm = () => {
                                 color='secondary'
                                 sx={{ m: 3, p: 1, height: {xs: "28px", md: "35px"} }}
                                 endIcon={<AutoFixHighOutlinedIcon />}
+                                onClick={() => dispatch(getUserById(user._id)) && dispatch(getUnmasterizedRoomsFromUser(user._id)) && handleOpenModal()}
                         >
                             Modifier
                         </Button>
@@ -102,6 +136,76 @@ const AddRoomToGm = () => {
                 >
                     Retour
                 </Button>
+                <Dialog
+                    open={open}
+                    component="form"
+                    //onSubmit={}
+                >
+                    <DialogTitle
+                        variant="h6"
+                        noWrap
+                        component="div"
+                        sx={{mt: 1, mb:1, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}, width: "100%"}}
+                    >
+                        Ajouter une salle à {userInfo.name}
+                    </DialogTitle>
+                    <DialogContent
+                        sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap", textAlign: "center"}}
+                    >
+                            <FormControl
+                                color="secondary"
+                                sx={{width: "50%" }}
+                                >
+                                <FormLabel
+                                    component="legend"
+                                    sx={{mb:2}}
+                                >
+                                    Salles disponibles
+                                </FormLabel>
+                                <FormGroup>
+                                    {unmasterized.map((room) => (
+                                        <FormControlLabel
+                                            key={room}
+                                            control={
+                                                <Checkbox
+                                                    checked={roomChecked.indexOf(room) > -1}
+                                                    name="roomChecked"
+                                                    color="secondary"
+                                                    onChange={(e) => {onCheckRoom(e, room)}}
+                                                    value={room}
+                                                />
+                                            }
+                                        label={room}
+                                        />
+                                    ))}
+                                </FormGroup>
+                                <FormHelperText
+                                    sx={{mt: 2}}
+                                >
+                                    Cocher les salles à ajouter au GM
+                                </FormHelperText>
+                            </FormControl>
+                        <span style={ {width: '100%' }} />
+                        <Button
+                            variant='contained'
+                            color='secondary'
+                            endIcon={<BackspaceOutlinedIcon />}
+                            onClick={() => handleCloseModal() && dispatch(reset())}
+                            sx={{m:1}}
+                        >
+                            Retour
+                        </Button>
+                        <Button variant='contained'
+                                color='success'
+                                endIcon={<ExitToAppOutlinedIcon />}
+                                type='submit'
+                                sx={{m:1}}
+                        >
+                            Ajouter
+                        </Button>
+                    </DialogContent>
+
+                </Dialog>
             </Box>
         </>
     );
