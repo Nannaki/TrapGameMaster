@@ -8,17 +8,27 @@ import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 import Loading from "../components/Loading";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
+import {getUserById} from "../features/auth/authSlice";
 
 const ShowRooms = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { rooms, isLoading } = useSelector((state) => state.rooms);
-    const { user } = useSelector((state) => state.auth)
+    const { user, userInfo} = useSelector((state) => state.auth)
+    const id = JSON.parse(localStorage.getItem("user"))
+
 
     useEffect(() => {
         dispatch(getRooms());
     }, [dispatch])
+
+    useEffect(() => {
+        dispatch(getUserById(id._id))
+    }, [dispatch, id._id])
+
+    console.log(userInfo.rooms)
+
 
     useEffect(() => {
 
@@ -49,7 +59,7 @@ const ShowRooms = () => {
                     <MeetingRoomOutlinedIcon sx={{ fontSize: {xs: "18px", md: "xx-large"}}}/> Les salles actuelles
                 </Typography>
 
-                { rooms.map((room) => (
+                {user.isAdmin ? rooms.map((room) => (
                     <Card sx={{ maxWidth: 345, m:4 }} key={room.name}>
                         <CardMedia
                             component="img"
@@ -93,7 +103,51 @@ const ShowRooms = () => {
                             </Button>
                         </CardActions>
                     </Card>
-                ))}
+                )):userInfo.rooms ? userInfo.rooms.map((room) => (
+                    <Card sx={{ maxWidth: 345, m:4 }} key={room}>
+                        <CardMedia
+                            component="img"
+                            height="140"
+                            //image={SherlockImg}
+                            alt="Room Sherlock Holmes"
+                        />
+                        <CardContent>
+                            <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="div"
+                            >
+                                {room}
+                            </Typography>
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                            >
+                                {room}
+                            </Typography>
+                        </CardContent>
+                        <CardActions sx={{ textAlign: "center", display:"flex", justifyContent: "center" }}>
+                            <Button
+                                size="small"
+                                color="secondary"
+                            >
+                                Brief
+                            </Button>
+                            <Button
+                                size="small"
+                                color="secondary"
+                            >
+                                Rangement
+                            </Button>
+                            <Button
+                                size="small"
+                                color="secondary"
+                            >
+                                Tips
+                            </Button>
+                        </CardActions>
+                    </Card>
+                )): <p></p>}
                 <span style={ {width: '100%' }} />
                 <Button variant='contained'
                         color='secondary'

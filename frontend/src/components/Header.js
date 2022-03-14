@@ -10,7 +10,7 @@ const Header = () => {
     const [anchorNav, setAnchorNav] = useState(null);
     const {user} = useSelector((state) => state.auth);
     const optionsAdmin = ['Planning', 'Salles', 'GM']
-    const optionsGm = ['Disponibilités', 'Planning', 'Profil', 'Salles']
+    const optionsGm = ['Disponibilités', 'Planning', 'Profil', 'Mes salles']
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -29,6 +29,10 @@ const Header = () => {
 
         if(e.target.value === 'Salles') {
             navigate('/rooms')
+        }
+
+        if(e.target.value === 'Mes salles') {
+            navigate('/showrooms')
         }
 
         if(e.target.value === 'Disponibilités') {
@@ -53,7 +57,7 @@ const Header = () => {
                             noWrap
                             component='div'
                             sx={{mr: 2, ml: 5, display: {xs: 'none', md: 'flex'}, cursor: "pointer"}}
-                            onClick={user.isAdmin ? () => navigate('/dashboardadmin'): () => navigate('/dashboardGM')}
+                            onClick={user.isAdmin ? () => navigate('/dashboardadmin'): () => navigate('/dashboardGm'+user._id)}
                         >
                             TrapGameMaster
                         </Typography>
@@ -123,7 +127,9 @@ const Header = () => {
                             variant='h6'
                             noWrap
                             component='div'
-                            sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}
+                            sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}, cursor: "pointer"}}
+                            onClick={user.isAdmin ? () => navigate('/dashboardadmin'): () => navigate('/dashboardGm'+user._id)}
+
                         >
                             TrapGameMaster
                         </Typography>
