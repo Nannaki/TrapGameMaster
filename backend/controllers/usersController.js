@@ -175,9 +175,9 @@ const deleteUser = asyncHandler( async (req, res) => {
 // @route   Put /api/users/AddRoomFromUSer
 // @access  Private
 const addRoomToUser = asyncHandler( async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.body.id);
     const actualRooms = user.rooms;
-    const addedRoom = req.body;
+    const addedRoom = req.body.roomsToSend;
 
     if(!user) {
         res.status(400)

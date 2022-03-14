@@ -15,7 +15,7 @@ import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getUnmasterizedRoomsFromUser, getUserById, getUsers, reset} from "../features/auth/authSlice";
+import {addRoomToUser, getUnmasterizedRoomsFromUser, getUserById, getUsers, reset} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {toast} from "react-toastify";
 import Loading from "../components/Loading";
@@ -31,6 +31,7 @@ const AddRoomToGm = () => {
     const [open, setOpen] = useState(false);
     const {users, userInfo, isLoading, isSuccess, isError, unmasterized, message} = useSelector((state) => state.auth);
     const [roomChecked, setRoomChecked] = useState([]);
+    let roomsToSend = [];
 
     const handleOpenModal = () => {setOpen(true)};
     const handleCloseModal = () => {setOpen(false)};
@@ -43,10 +44,19 @@ const AddRoomToGm = () => {
     useEffect(() => {
         if(isSuccess) {
             dispatch(getUsers())
+            dispatch(reset())
+
         }
 
-        dispatch(reset())
-    },[isSuccess, dispatch])
+        if(isError) {
+            handleCloseModal()
+            toast.error(message)
+            dispatch(getUsers())
+            dispatch(reset())
+
+        }
+
+    },[isSuccess, isError, dispatch, message])
 
     const onCheckRoom = (e, value) => {
         e.preventDefault()
@@ -63,6 +73,23 @@ const AddRoomToGm = () => {
             });
             setRoomChecked(cloneRoomChecked);
         }
+    }
+
+    const OnSubmit = (e, id) => {
+        e.preventDefault();
+
+        for (let i= 0; i < roomChecked.length; i++) {
+            roomsToSend.push(roomChecked[i])
+        }
+
+        const userData = {
+            id,
+            roomsToSend
+        }
+
+        dispatch(addRoomToUser(userData))
+        handleCloseModal()
+        setRoomChecked([])
     }
 
     if(isLoading) {
@@ -121,7 +148,7 @@ const AddRoomToGm = () => {
                                 color='secondary'
                                 sx={{ m: 3, p: 1, height: {xs: "28px", md: "35px"} }}
                                 endIcon={<AutoFixHighOutlinedIcon />}
-                                onClick={() => dispatch(getUserById(user._id)) && dispatch(getUnmasterizedRoomsFromUser(user._id)) && handleOpenModal()}
+                                onClick={() => {dispatch(getUserById(user._id)) && dispatch(getUnmasterizedRoomsFromUser(user._id)) && handleOpenModal()}}
                         >
                             Modifier
                         </Button>
@@ -139,7 +166,7 @@ const AddRoomToGm = () => {
                 <Dialog
                     open={open}
                     component="form"
-                    //onSubmit={}
+                    onSubmit={(e) => OnSubmit(e, userInfo._id)}
                 >
                     <DialogTitle
                         variant="h6"

@@ -33,6 +33,12 @@ const updateUser = async (userData) => {
     return response.data
 }
 
+//Add room to user
+const addRoomToUser = async (userData) => {
+    const response = await axios.put( API_URL + 'addroomtouser' +userData.id, userData)
+    return response.data
+}
+
 //Delete room of user
 const deleteRoomOfUser = async (userData) => {
     const response = await axios.put( API_URL + 'deleteuserroom' +userData.id, userData)
@@ -68,6 +74,7 @@ const authService = {
     getUnmasterizedRoomFromUser,
     updateUser,
     deleteUser,
+    addRoomToUser,
     deleteRoomOfUser,
     register,
     logout,

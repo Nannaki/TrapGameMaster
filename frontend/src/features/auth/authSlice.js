@@ -61,6 +61,17 @@ export const updateUser = createAsyncThunk('auth/updateuser', async (userData, t
     }
 })
 
+//Add room to user
+export const addRoomToUser = createAsyncThunk('auth/addroomtouser', async (userData, thunkAPI) => {
+    try {
+        return await authService.addRoomToUser(userData);
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
 //Delete room of user
 export const deleteRoomOfUser = createAsyncThunk('auth/deleteuserroom', async (userData, thunkAPI) => {
     try {
@@ -181,6 +192,20 @@ export const authSlice = createSlice({
                 state.message = action.payload
             })
 
+            //Builder addRoomToUser
+            .addCase(addRoomToUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(addRoomToUser.fulfilled, (state) => {
+                state.isLoading = false
+                state.isSuccess = true
+            })
+            .addCase(addRoomToUser.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
             //Builder deleteRoomOfUser
             .addCase(deleteRoomOfUser.pending, (state) => {
                 state.isLoading = true
@@ -193,6 +218,7 @@ export const authSlice = createSlice({
             .addCase(deleteRoomOfUser.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
+                state.unmasterized = []
                 state.message = action.payload
             })
 
