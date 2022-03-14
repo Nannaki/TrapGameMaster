@@ -51,10 +51,10 @@ const Header = () => {
         return (
             <AppBar elevation={12} position="fixed" enableColorOnDark sx={{ backgroundColor: "#358135" }}>
                 <Container maxWidth='xl'>
-                    <Toolbar disableGutters>
+                    <Toolbar>
                         <Typography
                             variant='h6'
-                            noWrap
+
                             component='div'
                             sx={{mr: 2, ml: 5, display: {xs: 'none', md: 'flex'}, cursor: "pointer"}}
                             onClick={user.isAdmin ? () => navigate('/dashboardadmin'): () => navigate('/dashboardGm'+user._id)}
@@ -127,7 +127,7 @@ const Header = () => {
                             variant='h6'
                             noWrap
                             component='div'
-                            sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}, cursor: "pointer"}}
+                            sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}, cursor: "pointer", fontSize: "16px"}}
                             onClick={user.isAdmin ? () => navigate('/dashboardadmin'): () => navigate('/dashboardGm'+user._id)}
 
                         >
@@ -163,7 +163,7 @@ const Header = () => {
                         <Button
                             variant='contained'
                             color='error'
-                            sx={{ m: 3 }}
+                            sx={{ ml:1, fontSize: {xs: "12px", md:"14px"}}}
                             onClick={onLogout}
                         >
                             Logout

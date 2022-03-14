@@ -27,8 +27,6 @@ const ShowRooms = () => {
         dispatch(getUserById(id._id))
     }, [dispatch, id._id])
 
-    console.log(userInfo.rooms)
-
 
     useEffect(() => {
 
@@ -153,7 +151,7 @@ const ShowRooms = () => {
                         color='secondary'
                         sx={{ m: 3 }}
                         endIcon={<BackspaceOutlinedIcon />}
-                        onClick={() => navigate('/rooms')}
+                        onClick={() => navigate(-1)}
                 >
                     Retour
                 </Button>
