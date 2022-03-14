@@ -17,10 +17,12 @@ import DeleteGm from "./pages/DeleteGm";
 import ModifyGm from "./pages/ModifyGm";
 import DeleteRoomOfGm from "./pages/DeleteRoomOfGm"
 import AddRoomToGm from "./pages/AddRoomToGm";
+import DispoGm from "./pages/DispoGM";
 //TODO mettre user isAdmin ? dans routes
 //TODO contrôler les icons
 //TODO Changer le bouton logout
-// TODO voir ou mettre les horaires
+//TODO voir ou mettre les horaires
+//TODO proteger les routes avec contrôle token
 
 const App = ({ children }) => {
   return (
@@ -30,7 +32,6 @@ const App = ({ children }) => {
                   <Routes>
                       <Route path='/' element={<Login />}/>
                       <Route path='/dashboardadmin' element={<DashBoardAdmin />}/>
-                      <Route path='/dashboardGM' element={<DashBoardGM />}/>
                       <Route path='/showgm' element={<ShowGm />} />
                       <Route path='/modifygm' element={<ModifyGm />} />
                       <Route path='/registergm' element={<RegisterGm />}/>
@@ -43,6 +44,9 @@ const App = ({ children }) => {
                       <Route path='/deleteRoom' element = {<DeleteRoom />} />
                       <Route path='/addroom' element= {<AddRoom />} />
                       <Route path='/modifyroom' element={<ModifyRoom />} />
+
+                      <Route path='/dashboardGM:id' element={<DashBoardGM />}/>
+                      <Route path='/dispogm:id' element={<DispoGm />} />
                   </Routes>
               </div>
           </Router>

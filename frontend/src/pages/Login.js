@@ -29,7 +29,7 @@ const Login = () => {
                 navigate('/dashboardadmin')
             }
             else {
-                navigate('/dashboardgm')
+                navigate('/dashboardgm' +user._id)
             }
 
         }

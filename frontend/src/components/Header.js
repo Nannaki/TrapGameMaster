@@ -30,6 +30,11 @@ const Header = () => {
         if(e.target.value === 'Salles') {
             navigate('/rooms')
         }
+
+        if(e.target.value === 'Disponibilités') {
+
+            navigate('/dispogm' +user.name)
+        }
     }
 
     const onLogout = () => {
