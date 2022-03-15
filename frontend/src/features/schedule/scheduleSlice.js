@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import scheduleService from "./scheduleService";
 import {getRooms, roomsSlice} from "../rooms/roomsSlice";
+import {getAllDaysInMonth} from "../../../../backend/controllers/scheduleController";
 
 const initialState = {
     months: [],
@@ -13,6 +14,15 @@ const initialState = {
 export const getActualsMonths = createAsyncThunk('schedule/actualsMonths', async () => {
     try {
         return await scheduleService.getActualsRooms()
+    }
+    catch (error) {
+        return error.response;
+    }
+})
+
+export const allDaysInMonth = createAsyncThunk('schedule/alldaysinmonth', async () => {
+    try {
+        return await scheduleService.getAllDaysInMonth()
     }
     catch (error) {
         return error.response;
@@ -47,6 +57,9 @@ export const scheduleSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
+
+            //Builder getAllDaysInMonth
+            .addCase(getAllDaysInMonth.pending)
     })
 })
 

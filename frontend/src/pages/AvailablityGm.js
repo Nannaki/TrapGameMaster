@@ -12,21 +12,10 @@ import {
     FormLabel, FormGroup, FormControlLabel, Checkbox
 } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
-import React, {useEffect, useState} from "react";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
-import {getFullMonth} from "../utils/getFullMonth";
 
 const AvailablityGm = () => {
 
-    let monthToday = new Date(Date.now()).toLocaleDateString('fr-ch', {month: 'long'});
-    let actualYears = new Date(Date.now()).getFullYear();
-
-    const [month, setMonth] = useState("");
-    const [year, setYear] = useState("")
-    let daysInMonth = getFullMonth(month, year)
-
-    const handleChangeMonth = (e) => {setMonth(e.target.value)}
-    const handleChangeYear = (e) => {setYear(e.target.value)}
 
 
     return (
@@ -62,9 +51,9 @@ const AvailablityGm = () => {
                         <Select
                             labelId="month"
                             id="monthSelect"
-                            value={month}
+                            //value={month}
                             label="Mois"
-                            onChange={handleChangeMonth}
+                            //onChange={handleChangeMonth}
                         >
                             {//actualMonths.map((month) => (
                                 //<MenuItem key={month} value={month}>{month}</MenuItem>
@@ -90,12 +79,12 @@ const AvailablityGm = () => {
                         <Select
                             labelId="year"
                             id="yearSelect"
-                            value={year}
+                            //value={year}
                             label="Année"
-                            onChange={handleChangeYear}
+                            //onChange={handleChangeYear}
                         >
-                            <MenuItem value={actualYears}>{actualYears}</MenuItem>
-                            <MenuItem value={actualYears +1}>{actualYears +1}</MenuItem>
+                            <MenuItem value="">2022</MenuItem>
+                            <MenuItem value="">2023</MenuItem>
                         </Select>
                         <FormHelperText
                             sx={{mb:2, fontSize: {sx: "12px", md: "14px"}}}
@@ -120,10 +109,10 @@ const AvailablityGm = () => {
                 <Box
                     sx={{ width: {xs: "80%", md: "60%"}, mt: 4, display: "flex", justifyContent:'center', flexWrap: 'wrap', textAlign: 'center' }}
                 >
-                {daysInMonth ? daysInMonth.map((day) => (
+
                     <Card
                         elevation={8}
-                        key={day}
+                        //key={day}
                         square
                         sx={{border: '1px solid #f1f1f1', m: 2, width: {xs: "80%", md: "40%"}, display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems: 'center', textAlign: "center" }}
                     >
@@ -133,11 +122,11 @@ const AvailablityGm = () => {
                                 component="legend"
                                 sx={{ my:2 ,textAlign: "center", fontSize: {sx: "16px", md: "20px"}, borderBottom: '1px solid #f1f1f1', width: "70%"}}
                             >
-                                {day}
+                                JOUR
                             </FormLabel>
                             <FormGroup>
                                 <FormControlLabel
-                                    key={day}
+                                    //key={day}
                                     control={
                                         <Checkbox
                                             //checked={roomChecked.indexOf(room.name) > -1}
@@ -179,7 +168,6 @@ const AvailablityGm = () => {
                         <span style={{width: "100%"}} />
                         <FormHelperText>Cochez si vous êtes disponibles</FormHelperText>
                     </Card>
-                )): null}
                 </Box>
             </Box>
         </>

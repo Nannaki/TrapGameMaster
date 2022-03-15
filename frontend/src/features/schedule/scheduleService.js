@@ -8,9 +8,16 @@ const getActualsRooms = async () => {
     return response.data;
 };
 
+//GetAllDaysInMonth
+const getAllDaysInMonth = async () => {
+    const response = await axios.get( API_URL + 'alldaysinmonth');
+    return response.data;
+}
+
 
 const scheduleService = {
     getActualsRooms,
+    getAllDaysInMonth,
 }
 
 export default scheduleService
