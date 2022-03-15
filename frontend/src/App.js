@@ -17,7 +17,7 @@ import DeleteGm from "./pages/DeleteGm";
 import ModifyGm from "./pages/ModifyGm";
 import DeleteRoomOfGm from "./pages/DeleteRoomOfGm"
 import AddRoomToGm from "./pages/AddRoomToGm";
-import DispoGm from "./pages/DispoGM";
+import AvailablityGm from "./pages/AvailablityGm";
 //TODO mettre user isAdmin ? dans routes
 //TODO contrôler les icons
 //TODO Changer le bouton logout
@@ -46,7 +46,7 @@ const App = ({ children }) => {
                       <Route path='/modifyroom' element={<ModifyRoom />} />
 
                       <Route path='/dashboardGM:id' element={<DashBoardGM />}/>
-                      <Route path='/dispogm:id' element={<DispoGm />} />
+                      <Route path='/dispogm:id' element={<AvailablityGm />} />
                   </Routes>
               </div>
           </Router>
