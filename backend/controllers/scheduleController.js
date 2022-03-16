@@ -28,7 +28,11 @@ const getActualsMonths = asyncHandler( async (req,res) => {
         let tmp = []
 
         tmp.push(getTmpMonth[0][i])
-        finalMonth.push(tmp[0].toLocaleDateString('fr-ch', {month: 'long'}))
+        finalMonth.push( {
+                monthNumeric: tmp[0].getMonth(),
+                month: tmp[0].toLocaleDateString('fr-ch', {month: 'long'})
+            }
+        )
     }
 
 

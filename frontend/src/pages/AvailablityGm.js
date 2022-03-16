@@ -13,8 +13,49 @@ import {
 } from "@mui/material";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {getActualsMonths, reset} from "../features/schedule/scheduleSlice";
 
 const AvailablityGm = () => {
+
+    let today = new Date();
+    const [formData, setFormData] = useState( {
+        month: today.getMonth(),
+        year: today.getFullYear(),
+    });
+    const {month, year, yearPlusOne} = formData;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { months } = useSelector((state) => state.schedule);
+
+    useEffect(() => {
+        dispatch(getActualsMonths())
+    }, [dispatch])
+
+    const onChange = (e) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }))
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+
+
+        setFormData({
+            month: today.getMonth(),
+            year: today.getFullYear()
+        })
+        console.log(formData)
+    }
+
+
+
+
+
 
 
 
@@ -23,11 +64,13 @@ const AvailablityGm = () => {
             <Header />
             <Box
                 sx={{ mt: 12, display: "flex", justifyContent:'center', flexWrap: 'wrap', textAlign: 'center' }}
+
             >
                 <Card
                     component="form"
                     elevation={8}
                     square
+                    onSubmit={(e)=>onSubmit(e)}
                     sx={{ width: "60%", display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems: 'center' }}
                 >
                     <Typography
@@ -50,15 +93,15 @@ const AvailablityGm = () => {
                         </InputLabel>
                         <Select
                             labelId="month"
+                            name="month"
                             id="monthSelect"
-                            //value={month}
+                            value={month}
                             label="Mois"
-                            //onChange={handleChangeMonth}
+                            onChange={onChange}
                         >
-                            {//actualMonths.map((month) => (
-                                //<MenuItem key={month} value={month}>{month}</MenuItem>
-                            //))
-                                }
+                            {months.map((month) => (
+                                <MenuItem key={month.month} value={month.monthNumeric}>{month.month}</MenuItem>
+                            ))}
                         </Select>
                         <FormHelperText
                             sx={{mb:2, fontSize: {sx: "12px", md: "14px"}}}
@@ -79,12 +122,13 @@ const AvailablityGm = () => {
                         <Select
                             labelId="year"
                             id="yearSelect"
-                            //value={year}
+                            name="year"
+                            value={year}
                             label="Année"
-                            //onChange={handleChangeYear}
+                            onChange={onChange}
                         >
-                            <MenuItem value="">2022</MenuItem>
-                            <MenuItem value="">2023</MenuItem>
+                            <MenuItem value={year}>{year}</MenuItem>
+                            <MenuItem value={year+1}>{year+1}</MenuItem>
                         </Select>
                         <FormHelperText
                             sx={{mb:2, fontSize: {sx: "12px", md: "14px"}}}
@@ -99,7 +143,6 @@ const AvailablityGm = () => {
                         sx={{ my: 2 }}
                         type="submit"
                         endIcon={<ExitToAppOutlinedIcon />}
-                        //onClick={handleDisplayMonth}
                     >
                         Planning
                     </Button>
@@ -110,7 +153,7 @@ const AvailablityGm = () => {
                     sx={{ width: {xs: "80%", md: "60%"}, mt: 4, display: "flex", justifyContent:'center', flexWrap: 'wrap', textAlign: 'center' }}
                 >
 
-                    <Card
+                    <Card //TODO boucler ici
                         elevation={8}
                         //key={day}
                         square

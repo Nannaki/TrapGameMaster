@@ -1,31 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import scheduleService from "./scheduleService";
-import {getRooms, roomsSlice} from "../rooms/roomsSlice";
-import {getAllDaysInMonth} from "../../../../backend/controllers/scheduleController";
+
 
 const initialState = {
-    months: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
-    message: ''
+    message: '',
+    months: [],
 }
 
-export const getActualsMonths = createAsyncThunk('schedule/actualsMonths', async () => {
+export const getActualsMonths = createAsyncThunk('schedule/actualsMonths', async (_, thunkAPI) => {
     try {
-        return await scheduleService.getActualsRooms()
+        return await scheduleService.getActualsMonths()
     }
     catch (error) {
-        return error.response;
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
     }
 })
 
-export const allDaysInMonth = createAsyncThunk('schedule/alldaysinmonth', async () => {
+export const allDaysInMonth = createAsyncThunk('schedule/alldaysinmonth', async (dateData, thunkAPI) => {
     try {
-        return await scheduleService.getAllDaysInMonth()
+        return await scheduleService.getAllDaysInMonth(dateData)
     }
     catch (error) {
-        return error.response;
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
     }
 })
 
@@ -44,22 +45,20 @@ export const scheduleSlice = createSlice({
     extraReducers: (builder => {
         builder
             //Builder getActualsMonths
-            .addCase(getRooms.pending, (state) => {
+            .addCase(getActualsMonths.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(getRooms.fulfilled, (state, action) => {
+            .addCase(getActualsMonths.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
                 state.months = action.payload
             })
-            .addCase(getRooms.rejected, (state, action) => {
+            .addCase(getActualsMonths.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
             })
 
-            //Builder getAllDaysInMonth
-            .addCase(getAllDaysInMonth.pending)
     })
 })
 
