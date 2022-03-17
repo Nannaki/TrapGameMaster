@@ -46,7 +46,6 @@ const getActualsMonths = asyncHandler( async (req,res) => {
 // @access  Private
 const getAllDaysInMonth = asyncHandler( async (req, res) => {
 
-    console.log(req.body)
     const month = parseInt(req.body.month);
     const year = parseInt(req.body.year);
     let daysInYear = [];
@@ -85,17 +84,24 @@ const getAllDaysInMonth = asyncHandler( async (req, res) => {
 // @access  Private
 
 const registerUserAvailblity = asyncHandler(async (req, res) => {
-    const { name, month, year, availblity} = req.body
+    const { name, availblity} = req.body
+
+    const exists = await AvailblitySchedule.findOne({name})
+
+    if(exists) {
+        res.status(400)
+        throw new Error('Vous avez déjà envoyé vos disponibilités pour ce mois')
+    }
 
     const availblityUser = await AvailblitySchedule.create({
         name,
-        month,
-        year,
+        month: req.body.choosedMonth,
+        year: req.body.chooseYear,
         availblity,
     })
 
     if(availblityUser) {
-        req.status(201)
+        req.status(201).json(availblityUser)
     }
     else {
         res.status(400);

@@ -31,6 +31,16 @@ export const getAllDaysInMonth = createAsyncThunk('schedule/alldaysinmonth', asy
     }
 })
 
+export const registerUserAvailblity = createAsyncThunk('schedule/registerUserAvailblity', async (availblityData, thunkAPI) =>{
+    try {
+        return await scheduleService.registerUserAvailblity(availblityData)
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
 export const scheduleSlice = createSlice({
     name: 'schedule',
     initialState,
@@ -52,7 +62,6 @@ export const scheduleSlice = createSlice({
             })
             .addCase(getActualsMonths.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.isSuccess = true
                 state.months = action.payload
             })
             .addCase(getActualsMonths.rejected, (state, action) => {
@@ -67,14 +76,25 @@ export const scheduleSlice = createSlice({
             })
             .addCase(getAllDaysInMonth.fulfilled, (state, action) => {
                 state.isLoading = false
-                state.isSuccess = true
                 state.days = action.payload
             })
             .addCase(getAllDaysInMonth.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
-        })
+            })
+            .addCase(registerUserAvailblity.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(registerUserAvailblity.fulfilled, (state) => {
+                state.isLoading = false
+                state.isSuccess = true
+            })
+            .addCase(registerUserAvailblity.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
 
     })
 })

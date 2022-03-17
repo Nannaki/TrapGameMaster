@@ -14,10 +14,17 @@ const getAllDaysInMonth = async (dateData) => {
     return response.data;
 }
 
+//RegisterUserAvailblity
+const registerUserAvailblity = async (availblityData) => {
+    const response = await axios.post( API_URL + 'registerUserAvailblity', availblityData);
+    return response.data
+}
+
 
 const scheduleService = {
     getActualsMonths,
     getAllDaysInMonth,
+    registerUserAvailblity,
 }
 
 export default scheduleService

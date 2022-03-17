@@ -16,9 +16,11 @@ import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {getActualsMonths, getAllDaysInMonth, reset} from "../features/schedule/scheduleSlice";
+import {getActualsMonths, getAllDaysInMonth, registerUserAvailblity, reset} from "../features/schedule/scheduleSlice";
 import {getUserById} from "../features/auth/authSlice";
 import Loading from "../components/Loading";
+import {toast} from "react-toastify";
+import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 
 const AvailablityGm = () => {
 
@@ -31,7 +33,7 @@ const AvailablityGm = () => {
     const {month, year} = formData;
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { months, days, isLoading } = useSelector((state) => state.schedule);
+    const { months, days, isLoading, isSuccess, isError, message } = useSelector((state) => state.schedule);
     const {userInfo} = useSelector((state) => state.auth);
     const finalDays = [];
     const dayAvailable = [];
@@ -39,10 +41,28 @@ const AvailablityGm = () => {
 
 
     useEffect(() => {
+
         dispatch(getActualsMonths())
         dispatch(getUserById(id._id))
 
-    }, [dispatch])
+    }, [dispatch, id._id])
+
+
+    useEffect(() => {
+        if(isSuccess) {
+            dispatch(reset())
+            navigate('/dashboardGM:id')
+            toast.success('Vos disponibilités ont bien été enregistrées')
+        }
+
+        if(isError) {
+            toast.error(message)
+            dispatch(reset())
+            dispatch(getActualsMonths())
+            dispatch(getUserById(id._id))
+            setHidden(true)
+        }
+    }, [isSuccess, isError, dispatch, message, navigate, id._id])
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -53,19 +73,12 @@ const AvailablityGm = () => {
 
     const onSubmit = (e) => {
         e.preventDefault()
-
         const dateData = {
             month,
             year,
         }
 
         dispatch(getAllDaysInMonth(dateData))
-
-        setFormData({
-            month: today.getMonth(),
-            year: today.getFullYear()
-        })
-
         setHidden(false)
     }
 
@@ -91,13 +104,13 @@ const AvailablityGm = () => {
         }
 
         const availblity = {
-            name: userInfo.name,
-            choosedMonth: month,
-            chooseYear: year,
+            name: userInfo.name+month.toString()+year.toString(),
+            choosedMonth: month.toString(),
+            chooseYear: year.toString(),
             availblity: dayAvailable
         }
 
-        console.log(availblity)
+        dispatch(registerUserAvailblity(availblity));
     }
 
 
@@ -185,10 +198,18 @@ const AvailablityGm = () => {
                         </FormHelperText>
                     </FormControl>
                     <span style={{width: "100%"}} />
+                    <Button variant='contained'
+                            color='secondary'
+                            sx={{ m: 1 }}
+                            startIcon={<BackspaceOutlinedIcon />}
+                            onClick={() => navigate('/dashboardGM:id')}
+                    >
+                        Retour
+                    </Button>
                     <Button
                         variant='contained'
                         color='success'
-                        sx={{ my: 2 }}
+                        sx={{ m: 1 }}
                         type="submit"
                         endIcon={<ExitToAppOutlinedIcon />}
                     >
@@ -199,7 +220,7 @@ const AvailablityGm = () => {
 
                 {hidden ? <Box /> :
                 <Box
-                    sx={{ width: {xs: "80%", md: "60%"}, mt: 4, display: "flex", justifyContent:'center', flexWrap: 'wrap', textAlign: 'center' }}
+                    sx={{mb: 2, width: {xs: "80%", md: "60%"}, mt: 4, display: "flex", justifyContent:'center', flexWrap: 'wrap', textAlign: 'center' }}
                     component="form"
                     onSubmit={handleAvailablityForm}
                 >
@@ -213,10 +234,18 @@ const AvailablityGm = () => {
                             </Card>
                     ))}
                     <span style={{width: "100%"}} />
+                    <Button variant='contained'
+                            color='secondary'
+                            sx={{ m: 1 }}
+                            startIcon={<BackspaceOutlinedIcon />}
+                            onClick={() => navigate('/dashboardGM:id')}
+                    >
+                        Retour
+                    </Button>
                     <Button
                         variant='contained'
                         color='success'
-                        sx={{ my: 2 }}
+                        sx={{ m: 1 }}
                         type="submit"
                         endIcon={<ExitToAppOutlinedIcon />}
                     >

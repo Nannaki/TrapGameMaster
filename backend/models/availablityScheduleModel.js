@@ -8,7 +8,7 @@ const availablityScheduleSchema = mongoose.Schema({
         type: String,
     },
     year: {
-        type: Number,
+        type: String,
     },
     availblity: {
         type: Array,
