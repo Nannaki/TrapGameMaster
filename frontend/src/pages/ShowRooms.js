@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { getRooms } from "../features/rooms/roomsSlice";
 import Header from "../components/Header";
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material"
-//import SherlockImg from '../images/sherlockRoom.jpg'
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 import Loading from "../components/Loading";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
@@ -22,6 +21,7 @@ const ShowRooms = () => {
     useEffect(() => {
         dispatch(getRooms());
     }, [dispatch])
+
 
     useEffect(() => {
         dispatch(getUserById(id._id))
@@ -62,7 +62,6 @@ const ShowRooms = () => {
                         <CardMedia
                             component="img"
                             height="140"
-                            //image={SherlockImg}
                             alt="Room Sherlock Holmes"
                         />
                         <CardContent>
@@ -150,7 +149,7 @@ const ShowRooms = () => {
                 <Button variant='contained'
                         color='secondary'
                         sx={{ m: 3 }}
-                        endIcon={<BackspaceOutlinedIcon />}
+                        startIcon={<BackspaceOutlinedIcon />}
                         onClick={() => navigate(-1)}
                 >
                     Retour

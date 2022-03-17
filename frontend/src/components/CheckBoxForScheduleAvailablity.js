@@ -21,7 +21,6 @@ const CheckBoxForScheduleAvailablity = (props) => {
             setIcon(<EventAvailableIcon/>)
             setChecked(!checked)
         }
-
     }
 
     return (

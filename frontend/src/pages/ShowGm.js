@@ -1,13 +1,12 @@
 import {Box, Button, Card, CardContent, Typography} from "@mui/material"
 import Header from "../components/Header";
-import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
+import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 
-//TODO change icons
 
 const ShowGm = () => {
 
@@ -33,7 +32,7 @@ const ShowGm = () => {
                     component='div'
                     sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '22px', md: 'xx-large'}, width: "100%"}}
                 >
-                    <MeetingRoomOutlinedIcon sx={{ fontSize: {xs: "20px", md: "xx-large"}}}/> Les GameMaster
+                    <InsertEmoticonOutlinedIcon sx={{ fontSize: {xs: "20px", md: "xx-large"}}}/> Les GameMaster
                 </Typography>
                 { users.map((user) => (
                     <Card
@@ -89,7 +88,7 @@ const ShowGm = () => {
                 <Button variant='contained'
                         color='secondary'
                         sx={{ m: 3 }}
-                        endIcon={<BackspaceOutlinedIcon />}
+                        startIcon={<BackspaceOutlinedIcon />}
                         onClick={() => navigate('/gm')}
                 >
                     Retour

@@ -2,19 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
-import {
-    Box,
-    Button,
-    Card,
-    Checkbox,
-    FormControl,
-    FormControlLabel,
-    FormGroup,
-    FormHelperText,
-    FormLabel,
-    TextField,
-    Typography
-} from "@mui/material";
+import {Box, Button, Card, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, TextField, Typography} from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
@@ -34,7 +22,6 @@ const RegisterGm = () => {
         isAdmin: false,
         rooms: [],
     });
-
     const { name, email, password, password2, isAdmin } = formData;
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -47,6 +34,7 @@ const RegisterGm = () => {
         dispatch(getRooms())
     }, [dispatch])
 
+
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -54,12 +42,14 @@ const RegisterGm = () => {
         }))
     };
 
+
     const onCheck = (e) => {
         setFormData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.checked,
         }))
     }
+
 
     const onCheckRoom = (e, value) => {
         e.preventDefault()
@@ -78,11 +68,13 @@ const RegisterGm = () => {
         }
     }
 
+
     useEffect(() => {
         if(!user) {
             navigate('/')
         }
     }, [user, navigate])
+
 
     useEffect(() => {
         if(isError) {
@@ -97,6 +89,7 @@ const RegisterGm = () => {
         dispatch(reset());
 
     }, [user, isError, isSuccess, message, navigate, dispatch])
+
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -119,6 +112,7 @@ const RegisterGm = () => {
         }
         formData.rooms= [];
     }
+
 
     if(isLoading) {
         return <Loading />
@@ -147,7 +141,7 @@ const RegisterGm = () => {
                         </Typography>
                         <TextField id='name'
                                    required
-                                   label='Name'
+                                   label='Nom'
                                    variant='outlined'
                                    sx={{ m: 1, width: '50%'}}
                                    fullWidth
@@ -168,7 +162,7 @@ const RegisterGm = () => {
                         />
                         <TextField id='password'
                                    required
-                                   label='Password'
+                                   label='Mot de passe'
                                    variant='outlined'
                                    sx={{ m: 1, width: '50%'}}
                                    fullWidth
@@ -179,7 +173,7 @@ const RegisterGm = () => {
                         />
                         <TextField id='password2'
                                    required
-                                   label='Check password'
+                                   label='Répétez le mot de passe'
                                    variant='outlined'
                                    sx={{ m: 1, width: '50%'}}
                                    fullWidth
@@ -211,7 +205,7 @@ const RegisterGm = () => {
                             <FormHelperText>Ne pas cocher si le gm n'a pas encore de salle</FormHelperText>
                         </FormControl>
                         <span style={ {width: '100%' }} />
-                        <FormControl color="secondary" sx={{mt: 1, borderBottom: '1px solid #f1f1f1', width: "50%"}}>
+                        <FormControl color="secondary" sx={{mt: 1, mb: 3, borderBottom: '1px solid #f1f1f1', width: "50%"}}>
                             <FormLabel component="legend">Rôle de l'utilisateur</FormLabel>
                             <FormGroup>
                                 <FormControlLabel control={
@@ -229,20 +223,20 @@ const RegisterGm = () => {
                         </FormControl>
                         <span style={ {width: '100%' }} />
                         <Button variant='contained'
+                                color='secondary'
+                                sx={{ m: 1, mb: 3 }}
+                                startIcon={<BackspaceOutlinedIcon />}
+                                onClick={() => navigate('/gm')}
+                        >
+                            Retour
+                        </Button>
+                        <Button variant='contained'
                                 color='success'
-                                sx={{ m: 3 }}
+                                sx={{ m: 1, mb: 3 }}
                                 endIcon={<ExitToAppOutlinedIcon />}
                                 type='submit'
                         >
                             Enregistrer
-                        </Button>
-                        <Button variant='contained'
-                                color='secondary'
-                                sx={{ m: 3 }}
-                                endIcon={<BackspaceOutlinedIcon />}
-                                onClick={() => navigate('/gm')}
-                        >
-                            Retour
                         </Button>
                     </Card>
                 </Box>

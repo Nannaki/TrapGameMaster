@@ -9,11 +9,11 @@ import {toast} from "react-toastify";
 import Loading from "../components/Loading";
 
 const Login = () => {
+
     const [formData, setFormData] = useState({
         email: '',
         password:'',
     });
-
     const { email, password } = formData;
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -52,9 +52,7 @@ const Login = () => {
             email,
             password,
         }
-
         dispatch(login(userData))
-
     }
 
     if(isLoading) {
@@ -67,7 +65,7 @@ const Login = () => {
             variant='h6'
             noWrap
             component='div'
-            sx={{mt: 3, color: 'white', textAlign: 'center', fontSize: {xs: 'medium', md: 'xx-large'}}}
+            sx={{mt: 12, color: 'white', textAlign: 'center', fontSize: {xs: 'x-large', md: 'xx-large'}}}
         >
             TrapGameMaster
         </Typography>
@@ -77,8 +75,8 @@ const Login = () => {
                 noValidate
                 onSubmit={onSubmit}
             >
-                <Paper elevation={5} sx={{ p:2 }}>
-                    <Typography variant='h4' component='div' align='center' sx={{fontSize: {xs: '28px', md: '38px'}}}><VpnKeyOutlinedIcon sx={{ fontSize: {xs: '25px', md: '30px'}}}/> Se connecter</Typography>
+                <Paper elevation={5} sx={{ p:2, width: {xs: "300px", md: "480px"} }}>
+                    <Typography variant='h4' component='div' align='center' sx={{fontSize: {xs: 'large', md: 'x-large'}}}><VpnKeyOutlinedIcon sx={{ fontSize: {xs: 'medium', md: 'x-large'}}}/> Connectez-vous</Typography>
                         <TextField id='email'
                                    required
                                    label='Email'

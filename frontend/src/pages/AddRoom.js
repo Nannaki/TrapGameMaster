@@ -1,7 +1,7 @@
 import Header from '../components/Header';
 import {Box, Button, Card, Checkbox, FormControlLabel, TextField, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,7 +10,6 @@ import {toast} from "react-toastify";
 import Loading from "../components/Loading";
 import {addRoom, reset} from "../features/rooms/roomsSlice";
 
-// TODO Changer les icons
 
 const AddRoom = () => {
 
@@ -19,12 +18,12 @@ const AddRoom = () => {
         description: '',
         isActive: false
     });
-
     const { name, description, isActive } = formData;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { isLoading, isError, message } = useSelector((state) => state.rooms)
     const { user } = useSelector((state) => state.auth)
+
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -56,7 +55,6 @@ const AddRoom = () => {
     }, [isError, message, navigate, dispatch])
 
     const onSubmit = (e) => {
-
         e.preventDefault();
 
         const roomData = {
@@ -93,7 +91,7 @@ const AddRoom = () => {
                         component='div'
                         sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}}}
                     >
-                        <HowToRegOutlinedIcon sx={{ fontSize: {xs: "18px", md: "30px"} }}/> Enregistrer une nouvelle <br/> salle
+                        <MeetingRoomOutlinedIcon sx={{ fontSize: {xs: "18px", md: "30px"} }}/> Enregistrer une nouvelle <br/> salle
                     </Typography>
                     <TextField id='name'
                                required
@@ -128,20 +126,20 @@ const AddRoom = () => {
                           label='Active' />
                     <span style={ {width: '100%' }} />
                     <Button variant='contained'
+                            color='secondary'
+                            sx={{ m: 1 }}
+                            startIcon={<BackspaceOutlinedIcon />}
+                            onClick={() => navigate('/rooms')}
+                    >
+                        Retour
+                    </Button>
+                    <Button variant='contained'
                             color='success'
-                            sx={{ m: 3 }}
+                            sx={{ m: 1 }}
                             endIcon={<ExitToAppOutlinedIcon />}
                             type='submit'
                     >
                         Enregistrer
-                    </Button>
-                    <Button variant='contained'
-                            color='secondary'
-                            sx={{ m: 3 }}
-                            endIcon={<BackspaceOutlinedIcon />}
-                            onClick={() => navigate('/rooms')}
-                    >
-                        Retour
                     </Button>
                 </Card>
             </Box>

@@ -1,16 +1,14 @@
 import {Box, IconButton, List, ListItem, Typography, Paper, Card, Button} from "@mui/material";
 import Header from "../components/Header";
-import NoMeetingRoomOutlinedIcon from "@mui/icons-material/NoMeetingRoomOutlined";
+import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers, deleteUser} from "../features/auth/authSlice"
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import Loading from "../components/Loading";
-
-//TODO Check icons
 
 const DeleteGm = () => {
 
@@ -38,7 +36,7 @@ const DeleteGm = () => {
                     component='div'
                     sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}, width: "100%"}}
                 >
-                    <NoMeetingRoomOutlinedIcon sx={{ fontSize: {xs: "18px", md: "xx-large"}}}/> Supprimer une GM du système
+                    <PersonRemoveOutlinedIcon sx={{ fontSize: {xs: "18px", md: "xx-large"}}}/> Supprimer une GM du système
                 </Typography>
                 <Paper elevation={6} sx={{ width: {xs: "225px", md: "300px"} }}>
                     <List>
@@ -59,7 +57,7 @@ const DeleteGm = () => {
                                         edge="end"
                                         aria-label="delete"
                                     >
-                                        <DeleteIcon />
+                                        <DeleteForeverOutlinedIcon sx={{ fontSize: {xs: "28px", md: "xx-large"}}} />
                                     </IconButton>
                                 }
                                 >
@@ -72,7 +70,7 @@ const DeleteGm = () => {
                         variant='contained'
                         color='secondary'
                         sx={{ mb: 3 }}
-                        endIcon={<BackspaceOutlinedIcon />}
+                        startIcon={<BackspaceOutlinedIcon />}
                         onClick={() => navigate('/gm')}
                     >
                         Retour

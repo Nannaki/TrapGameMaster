@@ -24,13 +24,16 @@ import AvailablityGm from "./pages/AvailablityGm";
 //TODO voir ou mettre les horaires
 //TODO proteger les routes avec contrôle token
 
-const App = ({ children }) => {
+const App = () => {
   return (
       <>
           <Router>
               <div>
                   <Routes>
+                      {/* Login route */}
                       <Route path='/' element={<Login />}/>
+
+                      {/* Admins routes */}
                       <Route path='/dashboardadmin' element={<DashBoardAdmin />}/>
                       <Route path='/showgm' element={<ShowGm />} />
                       <Route path='/modifygm' element={<ModifyGm />} />
@@ -40,16 +43,19 @@ const App = ({ children }) => {
                       <Route path='/deleteroomofgm' element={<DeleteRoomOfGm />} />
                       <Route path='/rooms' element={<Rooms />}/>
                       <Route path='/gm' element={<GM />}/>
-                      <Route path='/showrooms' element = {<ShowRooms />} />
                       <Route path='/deleteRoom' element = {<DeleteRoom />} />
                       <Route path='/addroom' element= {<AddRoom />} />
                       <Route path='/modifyroom' element={<ModifyRoom />} />
+                      <Route path='/showrooms' element = {<ShowRooms />} />
 
+                      {/* Users routes */}
                       <Route path='/dashboardGM:id' element={<DashBoardGM />}/>
                       <Route path='/dispogm:id' element={<AvailablityGm />} />
                   </Routes>
               </div>
           </Router>
+
+          {/* Container for Toastify with css */}
           <ToastContainer theme={"dark"} position={"top-right"} autoClose={2000} transition={Slide}/>
       </>
   );

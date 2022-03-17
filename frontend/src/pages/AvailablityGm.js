@@ -1,17 +1,6 @@
 import Header from "../components/Header";
-import {
-    Box,
-    Card,
-    FormControl,
-    InputLabel,
-    Select,
-    Typography,
-    MenuItem,
-    FormHelperText,
-    Button
-} from "@mui/material";
+import {Box, Card, FormControl, InputLabel, Select, Typography, MenuItem, FormHelperText, Button} from "@mui/material";
 import ScheduleDays from "../components/SheduleDays"
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -20,6 +9,7 @@ import {getActualsMonths, getAllDaysInMonth, registerUserAvailblity, reset} from
 import {getUserById} from "../features/auth/authSlice";
 import Loading from "../components/Loading";
 import {toast} from "react-toastify";
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 
 const AvailablityGm = () => {
@@ -140,7 +130,7 @@ const AvailablityGm = () => {
                         component='div'
                         sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'x-large'}}}
                     >
-                        <HowToRegOutlinedIcon sx={{ fontSize: {xs: "18px", md: "30px"} }}/> Envoyer mes disponibilités
+                        <EventAvailableIcon sx={{ fontSize: {xs: "18px", md: "30px"} }}/> Envoyer mes disponibilités
                     </Typography>
                     <span style={{width: "100%"}} />
                     <FormControl
@@ -200,7 +190,7 @@ const AvailablityGm = () => {
                     <span style={{width: "100%"}} />
                     <Button variant='contained'
                             color='secondary'
-                            sx={{ m: 1 }}
+                            sx={{ my: 3, mr: 1 }}
                             startIcon={<BackspaceOutlinedIcon />}
                             onClick={() => navigate('/dashboardGM:id')}
                     >
@@ -209,7 +199,7 @@ const AvailablityGm = () => {
                     <Button
                         variant='contained'
                         color='success'
-                        sx={{ m: 1 }}
+                        sx={{ my: 3, ml:1 }}
                         type="submit"
                         endIcon={<ExitToAppOutlinedIcon />}
                     >

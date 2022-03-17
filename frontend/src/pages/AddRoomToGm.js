@@ -1,15 +1,4 @@
-import {
-    Box,
-    Button,
-    Card,
-    CardContent, Checkbox,
-    Dialog,
-    DialogContent,
-    DialogTitle, FormControl,
-    FormControlLabel, FormGroup, FormHelperText, FormLabel,
-    ListItem,
-    Typography
-} from "@mui/material"
+import {Box, Button, Card, CardContent, Checkbox, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, ListItem, Typography} from "@mui/material"
 import Header from "../components/Header";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import React, {useEffect, useState} from "react";
@@ -145,20 +134,20 @@ const AddRoomToGm = () => {
                         </CardContent>
                         <span style={{ width: "100%"}}/>
                         <Button variant='contained'
-                                color='secondary'
+                                color='primary'
                                 sx={{ m: 3, p: 1, height: {xs: "28px", md: "35px"} }}
                                 endIcon={<AutoFixHighOutlinedIcon />}
                                 onClick={() => {dispatch(getUserById(user._id)) && dispatch(getUnmasterizedRoomsFromUser(user._id)) && handleOpenModal()}}
                         >
-                            Modifier
+                            Ajouter
                         </Button>
                     </Card>
                 ))}
                 <span style={ {width: '100%' }} />
                 <Button variant='contained'
                         color='secondary'
-                        sx={{ m: 3 }}
-                        endIcon={<BackspaceOutlinedIcon />}
+                        sx={{ mt: 1, mb: 4 }}
+                        startIcon={<BackspaceOutlinedIcon />}
                         onClick={() => navigate('/gm')}
                 >
                     Retour
@@ -216,7 +205,7 @@ const AddRoomToGm = () => {
                         <Button
                             variant='contained'
                             color='secondary'
-                            endIcon={<BackspaceOutlinedIcon />}
+                            startIcon={<BackspaceOutlinedIcon />}
                             onClick={() => handleCloseModal() && dispatch(reset())}
                             sx={{m:1}}
                         >

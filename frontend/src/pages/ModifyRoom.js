@@ -1,18 +1,5 @@
 import Header from "../components/Header";
-import {
-    Box,
-    Typography,
-    Paper,
-    Card,
-    ListItem,
-    IconButton,
-    List,
-    Button,
-    Dialog,
-    DialogTitle,
-    TextField,
-    DialogContent, Checkbox, FormControlLabel
-} from "@mui/material";
+import {Box, Typography, Paper, Card, ListItem, IconButton, List, Button, Dialog, DialogTitle, TextField, DialogContent, Checkbox, FormControlLabel} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -110,7 +97,7 @@ const ModifyRoom = () => {
                                             color="secondary"
                                             edge="end"
                                         >
-                                            <AutoFixHighOutlinedIcon />
+                                            <RoomPreferencesOutlinedIcon />
                                         </IconButton>
                                     }
                                 >
@@ -123,12 +110,16 @@ const ModifyRoom = () => {
                         variant='contained'
                         color='secondary'
                         sx={{ mb: 3 }}
-                        endIcon={<BackspaceOutlinedIcon />}
+                        startIcon={<BackspaceOutlinedIcon />}
                         onClick={() => navigate('/rooms')}
                     >
                         Retour
                     </Button>
                 </Paper>
+            </Box>
+            <Box
+                sx={{ width: "80%", display: "flex", flexWrap: "wrap", justifyContent: "center", textAlign: "center" }}
+            >
                 <Dialog
                     open={open}
                     component="form"
@@ -159,24 +150,21 @@ const ModifyRoom = () => {
                     }}
                     onClose={handleCloseModal}
                     onBackdropClick={handleCloseModal}
-                    sx={{ p:2, display: "flex", justifyContent: "center" }}
                 >
                     <DialogTitle
                         variant='h6'
                         noWrap
                         component='div'
-                        sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}, width: "100%"}}
                     >
                        Modifier {room.name}
                     </DialogTitle>
                     <DialogContent
-                        sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap", textAlign: "center"}}
+                        sx={{  textAlign: "center"}}
                     >
                         <TextField
                             sx={{ mt:2 }}
                             autoFocus
                             variant="outlined"
-                            fullWidth
                             name="name"
                             label="nom"
                             value={name}
@@ -188,41 +176,41 @@ const ModifyRoom = () => {
                             sx={{ my:2 }}
                             variant="outlined"
                             multiline
-                            fullWidth
                             name="description"
                             label="Description"
                             value={description}
                             onChange={onChange}
                         />
                         <p>Description actuelle : {room.description} </p>
-                        <span style={ {width: '100%' }} />
                         <FormControlLabel
                             control={
-                                <Checkbox
-                                    onChange={onCheck}
-                                    id='isActive'
-                                    value={isActive}
-                                    name='isActive'
-                                    checked={isActive}
-                                />
+                                <>
+                                    <Checkbox
+                                        onChange={onCheck}
+                                        id='isActive'
+                                        value={isActive}
+                                        name='isActive'
+                                        checked={isActive}
+                                    />
+                                </>
                             }
                         label='Active' />
-                        <span style={ {width: '100%' }} />
+                        <div style={ {width: '100%' }} />
+                        <Button variant='contained'
+                                color='secondary'
+                                sx={{ m: 1 }}
+                                startIcon={<BackspaceOutlinedIcon />}
+                                onClick={handleCloseModal}
+                        >
+                            Retour
+                        </Button>
                         <Button variant='contained'
                                 color='success'
-                                sx={{ m: 3 }}
+                                sx={{ m: 1 }}
                                 endIcon={<ExitToAppOutlinedIcon />}
                                 type='submit'
                         >
                             Modifier
-                        </Button>
-                        <Button variant='contained'
-                                color='secondary'
-                                sx={{ m: 3 }}
-                                endIcon={<BackspaceOutlinedIcon />}
-                                onClick={handleCloseModal}
-                        >
-                            Retour
                         </Button>
                     </DialogContent>
                 </Dialog>

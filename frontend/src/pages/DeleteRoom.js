@@ -2,18 +2,8 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {getRooms, deleteRoom} from "../features/rooms/roomsSlice";
-import {
-    Box,
-    IconButton,
-    List,
-    ListItem,
-    Typography,
-    Paper,
-    Card,
-    Button,
-} from "@mui/material";
+import {Box, IconButton, List, ListItem, Typography, Paper, Card, Button} from "@mui/material";
 import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
 import React, {useEffect} from "react";
 import Header from "../components/Header";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
@@ -68,7 +58,7 @@ const DeleteRoom = () => {
                                         color="error"
                                         edge="end"
                                         aria-label="delete">
-                                        <DeleteIcon />
+                                        <NoMeetingRoomOutlinedIcon sx={{ fontSize: {xs: "28px", md: "xx-large"}}} color = "error"/>
                                     </IconButton>
                                 }
                                 >
@@ -81,7 +71,7 @@ const DeleteRoom = () => {
                             variant='contained'
                             color='secondary'
                             sx={{ mb: 3 }}
-                            endIcon={<BackspaceOutlinedIcon />}
+                            startIcon={<BackspaceOutlinedIcon />}
                             onClick={() => navigate('/rooms')}
                         >
                             Retour

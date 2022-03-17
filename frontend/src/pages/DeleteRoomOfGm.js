@@ -6,11 +6,9 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteRoomOfUser, getUsers, reset} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
+import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
 import {toast} from "react-toastify";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Loading from "../components/Loading";
-
-//TODO change icons
 
 const AddRoomTomGm = () => {
 
@@ -86,7 +84,7 @@ const AddRoomTomGm = () => {
                                             color="error"
                                             edge="end"
                                         >
-                                            <DeleteIcon />
+                                            <NoMeetingRoomOutlinedIcon sx={{ fontSize: {xs: "18px", md: "28px"}}}/>
                                         </IconButton>
                                     }
                                 >
@@ -100,8 +98,8 @@ const AddRoomTomGm = () => {
                 <span style={ {width: '100%' }} />
                 <Button variant='contained'
                         color='secondary'
-                        sx={{ m: 3 }}
-                        endIcon={<BackspaceOutlinedIcon />}
+                        sx={{  mb: 4}}
+                        startIcon={<BackspaceOutlinedIcon />}
                         onClick={() => navigate('/gm')}
                 >
                     Retour

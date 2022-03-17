@@ -3,14 +3,15 @@ import {useNavigate} from "react-router-dom";
 import Header from "../components/Header";
 import {Typography, Box, Button, Card, CardContent} from "@mui/material";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
+import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutlined';
 import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
 import Loading from "../components/Loading";
 import React from "react";
 
 const Rooms = () => {
+
     const navigate = useNavigate();
     const { user } = useSelector((state) => state.auth);
     const { isLoading } = useSelector((state) => state.rooms)
@@ -51,7 +52,7 @@ const Rooms = () => {
                         <span style={ {width: '100%' }} />
                         <Button
                             onClick={() => navigate('/modifyroom')}
-                            startIcon={<EditOutlinedIcon />}
+                            startIcon={<RoomPreferencesOutlinedIcon />}
                             variant="outlined"
                             color="third"
                             sx={{ p: 2, mt: 3, width: {xs: "180px", md: "350px"}, fontSize: {xs: '11px', md: '14px'}}}
@@ -83,7 +84,7 @@ const Rooms = () => {
                             variant='contained'
                             color='secondary'
                             sx={{ m: 3 }}
-                            endIcon={<BackspaceOutlinedIcon />}
+                            startIcon={<BackspaceOutlinedIcon />}
                             onClick={() => navigate('/dashboardadmin')}
                         >
                             Retour
