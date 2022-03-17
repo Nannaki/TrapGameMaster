@@ -8,6 +8,7 @@ const initialState = {
     isLoading: false,
     message: '',
     months: [],
+    days: [],
 }
 
 export const getActualsMonths = createAsyncThunk('schedule/actualsMonths', async (_, thunkAPI) => {
@@ -20,7 +21,7 @@ export const getActualsMonths = createAsyncThunk('schedule/actualsMonths', async
     }
 })
 
-export const allDaysInMonth = createAsyncThunk('schedule/alldaysinmonth', async (dateData, thunkAPI) => {
+export const getAllDaysInMonth = createAsyncThunk('schedule/alldaysinmonth', async (dateData, thunkAPI) => {
     try {
         return await scheduleService.getAllDaysInMonth(dateData)
     }
@@ -40,6 +41,7 @@ export const scheduleSlice = createSlice({
             state.isSuccess = false
             state.message = ''
             state.months = []
+            state.days = []
         }
     },
     extraReducers: (builder => {
@@ -58,6 +60,21 @@ export const scheduleSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
+
+            //Builder getallDaysInMonth
+            .addCase(getAllDaysInMonth.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getAllDaysInMonth.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.days = action.payload
+            })
+            .addCase(getAllDaysInMonth.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+        })
 
     })
 })

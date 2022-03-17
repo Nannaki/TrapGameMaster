@@ -10,7 +10,7 @@ const getActualsMonths = async () => {
 
 //GetAllDaysInMonth
 const getAllDaysInMonth = async (dateData) => {
-    const response = await axios.get( API_URL + 'alldaysinmonth', dateData);
+    const response = await axios.post( API_URL + 'alldaysinmonth', dateData);
     return response.data;
 }
 

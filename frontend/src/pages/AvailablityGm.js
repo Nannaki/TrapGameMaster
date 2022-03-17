@@ -8,15 +8,17 @@ import {
     Typography,
     MenuItem,
     FormHelperText,
-    Button,
-    FormLabel, FormGroup, FormControlLabel, Checkbox
+    Button
 } from "@mui/material";
+import ScheduleDays from "../components/SheduleDays"
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {getActualsMonths, reset} from "../features/schedule/scheduleSlice";
+import {getActualsMonths, getAllDaysInMonth, reset} from "../features/schedule/scheduleSlice";
+import {getUserById} from "../features/auth/authSlice";
+import Loading from "../components/Loading";
 
 const AvailablityGm = () => {
 
@@ -25,13 +27,21 @@ const AvailablityGm = () => {
         month: today.getMonth(),
         year: today.getFullYear(),
     });
-    const {month, year, yearPlusOne} = formData;
+    const [hidden, setHidden] = useState(true);
+    const {month, year} = formData;
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { months } = useSelector((state) => state.schedule);
+    const { months, days, isLoading } = useSelector((state) => state.schedule);
+    const {userInfo} = useSelector((state) => state.auth);
+    const finalDays = [];
+    const dayAvailable = [];
+    const id = JSON.parse(localStorage.getItem("user"));
+
 
     useEffect(() => {
         dispatch(getActualsMonths())
+        dispatch(getUserById(id._id))
+
     }, [dispatch])
 
     const onChange = (e) => {
@@ -44,19 +54,57 @@ const AvailablityGm = () => {
     const onSubmit = (e) => {
         e.preventDefault()
 
+        const dateData = {
+            month,
+            year,
+        }
+
+        dispatch(getAllDaysInMonth(dateData))
 
         setFormData({
             month: today.getMonth(),
             year: today.getFullYear()
         })
-        console.log(formData)
+
+        setHidden(false)
+    }
+
+    if(days) {
+        days.forEach((item, index) => {
+                finalDays.push(<ScheduleDays
+                    key={index}
+                    date = {item}
+                />
+            )
+        })
+    }
+
+    const handleAvailablityForm = (e) => {
+        e.preventDefault()
+
+        for (let i = 0; i < e.target.length; i++) {
+            dayAvailable.push({
+                date: e.target[i].name.split(" ").slice(0, -1).join(" ").toString(),
+                avail: e.target[i].value,
+                shift: e.target[i].name.split(" ").splice(-1).toString()
+            });
+        }
+
+        const availblity = {
+            name: userInfo.name,
+            choosedMonth: month,
+            chooseYear: year,
+            availblity: dayAvailable
+        }
+
+        console.log(availblity)
     }
 
 
 
-
-
-
+    if(isLoading) {
+        return <Loading />
+    }
 
 
     return (
@@ -149,69 +197,32 @@ const AvailablityGm = () => {
                 </Card>
                 <span style={{width: "100%"}} />
 
+                {hidden ? <Box /> :
                 <Box
                     sx={{ width: {xs: "80%", md: "60%"}, mt: 4, display: "flex", justifyContent:'center', flexWrap: 'wrap', textAlign: 'center' }}
+                    component="form"
+                    onSubmit={handleAvailablityForm}
                 >
-
-                    <Card //TODO boucler ici
-                        elevation={8}
-                        //key={day}
-                        square
-                        sx={{border: '1px solid #f1f1f1', m: 2, width: {xs: "80%", md: "40%"}, display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems: 'center', textAlign: "center" }}
-                    >
-                        <span style={{width: {xs: "80%", md: "40%"}}} />
-                        <FormControl color="secondary" sx={{textAlign: "center", width: {xs: "260px", md: "360px"},  display:"flex", flexWrap: "wrap", justifyContent:"center", alignItems: "center"}}>
-                            <FormLabel
-                                component="legend"
-                                sx={{ my:2 ,textAlign: "center", fontSize: {sx: "16px", md: "20px"}, borderBottom: '1px solid #f1f1f1', width: "70%"}}
+                    {finalDays.map((day) => (
+                            <Card
+                                sx={{ width: {xs: "200px", md: "320px"}, display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems: 'center', m:2 }}
+                                key={day.key}
                             >
-                                JOUR
-                            </FormLabel>
-                            <FormGroup>
-                                <FormControlLabel
-                                    //key={day}
-                                    control={
-                                        <Checkbox
-                                            //checked={roomChecked.indexOf(room.name) > -1}
-                                            name="roomChecked"
-                                            color="secondary"
-                                            //onChange={(e) => {onCheckRoom(e, room.name)}}
-                                            //value={room.name}
-                                        />
-                                    }
-                                    label="8h - 14h" />
-
-                                <FormControlLabel
-                                    //key={room._id}
-                                    control={
-                                        <Checkbox
-                                            //checked={roomChecked.indexOf(room.name) > -1}
-                                            name="roomChecked"
-                                            color="secondary"
-                                            //onChange={(e) => {onCheckRoom(e, room.name)}}
-                                            //value={room.name}
-                                        />
-                                    }
-                                    label="14h-19h" />
-
-                                <FormControlLabel
-                                    //key={room._id}
-                                    control={
-                                        <Checkbox
-                                            //checked={roomChecked.indexOf(room.name) > -1}
-                                            name="roomChecked"
-                                            color="secondary"
-                                            //onChange={(e) => {onCheckRoom(e, room.name)}}
-                                            //value={room.name}
-                                        />
-                                    }
-                                    label="19h - 00h" />
-                            </FormGroup>
-                        </FormControl>
-                        <span style={{width: "100%"}} />
-                        <FormHelperText>Cochez si vous êtes disponibles</FormHelperText>
-                    </Card>
-                </Box>
+                                {day}
+                                <FormHelperText>9h-14h | 14h-19h |19h-00h</FormHelperText>
+                            </Card>
+                    ))}
+                    <span style={{width: "100%"}} />
+                    <Button
+                        variant='contained'
+                        color='success'
+                        sx={{ my: 2 }}
+                        type="submit"
+                        endIcon={<ExitToAppOutlinedIcon />}
+                    >
+                        Envoyer mes dispos
+                    </Button>
+                </Box> }
             </Box>
         </>
     );

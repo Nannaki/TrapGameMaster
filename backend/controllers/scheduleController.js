@@ -1,4 +1,6 @@
 const asyncHandler = require('express-async-handler');
+const AvailblitySchedule = require('../models/availablityScheduleModel');
+
 
 // @desc    Get actual months
 // @route   GET /api/schedule/getActualsMonths
@@ -39,11 +41,12 @@ const getActualsMonths = asyncHandler( async (req,res) => {
     res.status(201).json(finalMonth)
 })
 
-// @desc    Get all days in month
-// @route   GET /api/schedule/getAllDaysInMonth
+// @desc    Post all days in month
+// @route   Post /api/schedule/getAllDaysInMonth
 // @access  Private
 const getAllDaysInMonth = asyncHandler( async (req, res) => {
 
+    console.log(req.body)
     const month = parseInt(req.body.month);
     const year = parseInt(req.body.year);
     let daysInYear = [];
@@ -77,8 +80,32 @@ const getAllDaysInMonth = asyncHandler( async (req, res) => {
     res.status(201).json(allDaysInMount)
 })
 
+// @desc    RegisterUserAvailblity
+// @route   POST /api/schedule/registerUserAvailblity
+// @access  Private
+
+const registerUserAvailblity = asyncHandler(async (req, res) => {
+    const { name, month, year, availblity} = req.body
+
+    const availblityUser = await AvailblitySchedule.create({
+        name,
+        month,
+        year,
+        availblity,
+    })
+
+    if(availblityUser) {
+        req.status(201)
+    }
+    else {
+        res.status(400);
+        throw new Error('Données invalides');
+    }
+} )
+
 
 module.exports = {
     getActualsMonths,
     getAllDaysInMonth,
+    registerUserAvailblity,
 }
