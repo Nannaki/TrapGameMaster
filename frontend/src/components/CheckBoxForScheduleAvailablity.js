@@ -38,7 +38,7 @@ const CheckBoxForScheduleAvailablity = (props) => {
                 icon={<EventAvailableIcon />}
                 checkedIcon={<EventBusyIcon />}
                 sx={{
-                    color: green[800],
+                    color: green[700],
                     '&.Mui-checked': {
                         color: amber[700],
                     },

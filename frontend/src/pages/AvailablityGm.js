@@ -114,14 +114,13 @@ const AvailablityGm = () => {
             <Header />
             <Box
                 sx={{ mt: 12, display: "flex", justifyContent:'center', flexWrap: 'wrap', textAlign: 'center' }}
-
             >
                 <Card
                     component="form"
                     elevation={8}
                     square
                     onSubmit={(e)=>onSubmit(e)}
-                    sx={{ width: "60%", display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems: 'center' }}
+                    sx={{ width: {xs: "310px", md: "500px"}, display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems: 'center' }}
                 >
                     <Typography
                         variant='h6'
@@ -148,9 +147,16 @@ const AvailablityGm = () => {
                             value={month}
                             label="Mois"
                             onChange={onChange}
+                            sx={{fontSize: {xs: '14px', md: '16px'}}}
                         >
                             {months.map((month) => (
-                                <MenuItem key={month.month} value={month.monthNumeric}>{month.month}</MenuItem>
+                                <MenuItem
+                                    key={month.month}
+                                    value={month.monthNumeric}
+                                    sx={{fontSize: {xs: '14px', md: '16px'}}}
+                                >
+                                    {month.month}
+                                </MenuItem>
                             ))}
                         </Select>
                         <FormHelperText
@@ -215,11 +221,16 @@ const AvailablityGm = () => {
                 >
                     {finalDays.map((day) => (
                             <Card
-                                sx={{ width: {xs: "200px", md: "320px"}, display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems: 'center', m:2 }}
+                                sx={{ width: "200px", display: "flex", flexWrap: "wrap", justifyContent:'center', alignItems: 'center', m:2 }}
                                 key={day.key}
+                                elevation={8}
                             >
                                 {day}
-                                <FormHelperText>9h-14h | 14h-19h |19h-00h</FormHelperText>
+                                <FormHelperText
+                                    sx={{mb: 2}}
+                                >
+                                    9h-14h | 14h-19h |19h-00h
+                                </FormHelperText>
                             </Card>
                     ))}
                     <span style={{width: "100%"}} />

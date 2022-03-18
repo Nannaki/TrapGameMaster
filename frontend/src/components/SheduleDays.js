@@ -12,7 +12,7 @@ const SheduleDays = (props) => {
         <>
             <Typography
                 component="div"
-                sx={{width: "100%", mt: 2, fontSize: {xs: '18px', md: 'large'}, cursor: "pointer" }}
+                sx={{width: "100%", mt: 2, mb: 2, fontSize: {xs: '18px', md: 'large'}, cursor: "pointer" }}
                 onClick={()=>setAllDay(!allDay)}
             >{props.date}</Typography>
 
