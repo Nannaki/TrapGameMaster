@@ -20,6 +20,7 @@ const AvailablityGm = () => {
         year: today.getFullYear(),
     });
     const [hidden, setHidden] = useState(true);
+    const [allDay, setAllDay] = useState(false);
     const {month, year} = formData;
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -72,16 +73,6 @@ const AvailablityGm = () => {
         setHidden(false)
     }
 
-    if(days) {
-        days.forEach((item, index) => {
-                finalDays.push(<ScheduleDays
-                    key={index}
-                    date = {item}
-                />
-            )
-        })
-    }
-
     const handleAvailablityForm = (e) => {
         e.preventDefault()
 
@@ -103,12 +94,20 @@ const AvailablityGm = () => {
         dispatch(registerUserAvailblity(availblity));
     }
 
-
+    if(days) {
+        days.forEach((item, index) => {
+            finalDays.push(<ScheduleDays
+                    key={index}
+                    date = {item}
+                    allDay = {allDay}
+                />
+            )
+        })
+    }
 
     if(isLoading) {
         return <Loading />
     }
-
 
     return (
         <>

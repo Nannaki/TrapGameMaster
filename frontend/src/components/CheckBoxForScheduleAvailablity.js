@@ -6,25 +6,30 @@ import {green, amber} from "@mui/material/colors";
 
 const CheckBoxForScheduleAvailablity = (props) => {
 
-    const [dispo, setDispo] = useState("available");
+    const [dispo, setDispo] = useState(true);
+    const [dispoAllDay, setDispoAllDay] = useState(false)
+    const [checkedAllDay, setCheckedAllDay] = useState(true)
     const [icon, setIcon] = useState(<EventAvailableIcon/>);
     const [checked, setChecked] = useState(false);
 
+
     const handleDispo = (e) => {
-        if(e.target.value === "available") {
-            setDispo("nonAvailable");
+        if(e.target.value === false) {
+            setDispo(true);
             setIcon(<EventBusyIcon/>);
             setChecked(!checked)
         }
         else{
-            setDispo("available")
+            setDispo(false)
             setIcon(<EventAvailableIcon/>)
             setChecked(!checked)
         }
     }
 
+
     return (
         <>
+            {!props.alldayCheck ? (
             <Checkbox
                 name={props.name}
                 value={dispo}
@@ -40,7 +45,22 @@ const CheckBoxForScheduleAvailablity = (props) => {
                     '& .MuiSvgIcon-root': { fontSize: {xs: "28px", md:"32px"} },
 
                 }}
-            />
+            />): (
+                <Checkbox
+                    name={props.name}
+                    icon={<EventAvailableIcon/>}
+                    checkedIcon={<EventBusyIcon />}
+                    value={dispoAllDay}
+                    checked={checkedAllDay}
+                    disabled
+                    sx={{
+                        '&.Mui-checked': {
+                            color: amber[700]},
+                        '& .MuiSvgIcon-root': { fontSize: {xs: "28px", md:"32px"} },
+
+                    }}
+                />
+            )}
         </>
     );
 };

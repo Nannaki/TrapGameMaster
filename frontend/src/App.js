@@ -19,7 +19,6 @@ import DeleteRoomOfGm from "./pages/DeleteRoomOfGm"
 import AddRoomToGm from "./pages/AddRoomToGm";
 import AvailablityGm from "./pages/AvailablityGm";
 //TODO mettre user isAdmin ? dans routes
-//TODO contrôler les icons
 //TODO Changer le bouton logout
 //TODO voir ou mettre les horaires
 //TODO proteger les routes avec contrôle token
@@ -51,6 +50,7 @@ const App = () => {
                       {/* Users routes */}
                       <Route path='/dashboardGM:id' element={<DashBoardGM />}/>
                       <Route path='/dispogm:id' element={<AvailablityGm />} />
+
                   </Routes>
               </div>
           </Router>
