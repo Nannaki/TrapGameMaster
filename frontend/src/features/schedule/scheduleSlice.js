@@ -9,6 +9,7 @@ const initialState = {
     message: '',
     months: [],
     days: [],
+    usersAvailblity: [],
 }
 
 export const getActualsMonths = createAsyncThunk('schedule/actualsMonths', async (_, thunkAPI) => {
@@ -24,6 +25,16 @@ export const getActualsMonths = createAsyncThunk('schedule/actualsMonths', async
 export const getAllDaysInMonth = createAsyncThunk('schedule/alldaysinmonth', async (dateData, thunkAPI) => {
     try {
         return await scheduleService.getAllDaysInMonth(dateData)
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+export const getUsersAvailblity = createAsyncThunk('schedule/getUserAvailblity', async (dateData, thunkAPI) => {
+    try {
+        return await scheduleService.getUsersAvailblity(dateData);
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -52,6 +63,7 @@ export const scheduleSlice = createSlice({
             state.message = ''
             state.months = []
             state.days = []
+            state.usersAvailblity = []
         }
     },
     extraReducers: (builder => {
@@ -83,6 +95,23 @@ export const scheduleSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
+
+            //getUsersAvailblity
+            .addCase(getUsersAvailblity.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getUsersAvailblity.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.usersAvailblity = action.payload
+            })
+            .addCase(getUsersAvailblity.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+            //Builder redisterUserAvailblity
             .addCase(registerUserAvailblity.pending, (state) => {
                 state.isLoading = true
             })

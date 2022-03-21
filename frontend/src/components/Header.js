@@ -39,6 +39,9 @@ const Header = () => {
 
             navigate('/dispogm' +user.name)
         }
+        if(e.target.value === 'Planning' && user.isAdmin) {
+            navigate('/editschedule')
+        }
     }
 
     const onLogout = () => {

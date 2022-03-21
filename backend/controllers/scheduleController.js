@@ -79,8 +79,25 @@ const getAllDaysInMonth = asyncHandler( async (req, res) => {
     res.status(201).json(allDaysInMount)
 })
 
+// @desc    Get availblity of month from user
+// @route   Get /api/schedule/getUserAvailblity
+// @access  Private
+
+const getUsersAvailblity = asyncHandler( async (req, res) => {
+
+    console.log(req.body)
+    const availblitys = await AvailblitySchedule.find({month:req.body.month.toString(), year:req.body.year.toString()});
+
+    if(availblitys.length === 0) {
+        res.status(400)
+        throw new Error('Aucune disponibilités pour ce mois')
+    }
+
+    res.status(201).json(availblitys)
+})
+
 // @desc    RegisterUserAvailblity
-// @route   POST /api/schedule/registerUserAvailblity
+// @route   Post /api/schedule/registerUserAvailblity
 // @access  Private
 
 const registerUserAvailblity = asyncHandler(async (req, res) => {
@@ -113,5 +130,6 @@ const registerUserAvailblity = asyncHandler(async (req, res) => {
 module.exports = {
     getActualsMonths,
     getAllDaysInMonth,
+    getUsersAvailblity,
     registerUserAvailblity,
 }
