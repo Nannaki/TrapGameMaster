@@ -77,33 +77,48 @@ const AvailablityGm = () => {
         e.preventDefault()
 
         for (let i = 0; i < e.target.length; i++) {
-            dayAvailable.push({
-                date: e.target[i].name.split(" ").slice(0, -1).join(" ").toString(),
-                avail: e.target[i].value,
-                shift: e.target[i].name.split(" ").splice(-1).toString()
-            });
+
+           if(e.target[i].value === "false"){
+               dayAvailable.push({
+                   date: e.target[i].name.toString(),
+                   shift: e.target[i].name.split(" ").splice(-1).toString(),
+                   id: userInfo._id
+               });
+           }
+
         }
 
         const availblity = {
-            name: userInfo.name+month.toString()+year.toString(),
+            name: userInfo._id.toString(),
             choosedMonth: month.toString(),
             chooseYear: year.toString(),
             availblity: dayAvailable
         }
 
-        dispatch(registerUserAvailblity(availblity));
+
+       dispatch(registerUserAvailblity(availblity));
+
     }
 
-    if(days) {
-        days.forEach((item, index) => {
+    if(days.local) {
+        let unchangedData = [];
+        days.unchanged.forEach((day, index) => {
+            unchangedData.push({
+                date: day.split("T00:00:00.000Z")[0]
+            })
+        })
+
+        days.local.forEach((item, index) => {
             finalDays.push(<ScheduleDays
                     key={index}
                     date = {item}
                     allDay = {allDay}
+                    unchanged={unchangedData[index].date}
                 />
             )
         })
     }
+
 
     if(isLoading) {
         return <Loading />

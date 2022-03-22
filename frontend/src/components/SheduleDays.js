@@ -5,8 +5,9 @@ import {useEffect, useState} from "react";
 
 const SheduleDays = (props) => {
 
-    let shifts = [1,2,3];
+    let shifts = ["T09:00:00", "T14:00:00", "T19:00:00"];
     const [allDay, setAllDay] = useState(false)
+
 
     return (
         <>
@@ -20,9 +21,9 @@ const SheduleDays = (props) => {
             <Container
                 sx={{maxWidth:"80%", display: "flex", justifyContent: "center", flexWrap: "nowrap"}}
             >
-                <CheckBoxForScheduleAvailablity name={props.date +" "+shifts[0]} alldayCheck={allDay} />
-                <CheckBoxForScheduleAvailablity name={props.date +" "+shifts[1]} alldayCheck={allDay} />
-                <CheckBoxForScheduleAvailablity name={props.date +" "+shifts[2]} alldayCheck={allDay} />
+                <CheckBoxForScheduleAvailablity name={props.unchanged +shifts[0]} alldayCheck={allDay} />
+                <CheckBoxForScheduleAvailablity name={props.unchanged +shifts[1]} alldayCheck={allDay} />
+                <CheckBoxForScheduleAvailablity name={props.unchanged +shifts[2]} alldayCheck={allDay} />
             </Container>
             ) : (
                 <CheckBoxForScheduleAvailablity name={props.date + "allDay"} alldayCheck={allDay} />

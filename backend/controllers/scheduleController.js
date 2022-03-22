@@ -50,6 +50,7 @@ const getAllDaysInMonth = asyncHandler( async (req, res) => {
     const year = parseInt(req.body.year);
     let daysInYear = [];
     let allDaysInMount = [];
+    let daysUnchanged = [];
 
     function getDaysInMonthUTC(month, year) {
         let date = new Date(Date.UTC(year, month, 1));
@@ -69,23 +70,30 @@ const getAllDaysInMonth = asyncHandler( async (req, res) => {
 
         tmp.push(daysInYear[0][i]);
         allDaysInMount.push(tmp[0].toLocaleDateString('fr-ch', {weekday: 'long'}) + " " + tmp[0].getDate() + " " + tmp[0].toLocaleDateString('fr-ch', {month: 'long'}) + " " + tmp[0].getFullYear());
+        daysUnchanged.push(tmp[0]);
+
     }
 
     if(allDaysInMount.length === 0) {
         res.status(400);
         throw new Error('Données invalides')
     }
+    res.status(201).json(
+        {
+            local: allDaysInMount,
+            unchanged: daysUnchanged
+        }
+    )
 
-    res.status(201).json(allDaysInMount)
 })
 
-// @desc    Get availblity of month from user
-// @route   Get /api/schedule/getUserAvailblity
+
+// @desc    Post availblity of month from user
+// @route   Post /api/schedule/getUserAvailblity
 // @access  Private
 
 const getUsersAvailblity = asyncHandler( async (req, res) => {
 
-    console.log(req.body)
     const availblitys = await AvailblitySchedule.find({month:req.body.month.toString(), year:req.body.year.toString()});
 
     if(availblitys.length === 0) {
@@ -101,7 +109,7 @@ const getUsersAvailblity = asyncHandler( async (req, res) => {
 // @access  Private
 
 const registerUserAvailblity = asyncHandler(async (req, res) => {
-    const { name, availblity} = req.body
+    const {name, availblity} = req.body
 
     const exists = await AvailblitySchedule.findOne({name})
 

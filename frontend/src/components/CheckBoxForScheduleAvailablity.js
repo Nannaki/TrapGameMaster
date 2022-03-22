@@ -12,7 +12,6 @@ const CheckBoxForScheduleAvailablity = (props) => {
     const [icon, setIcon] = useState(<EventAvailableIcon/>);
     const [checked, setChecked] = useState(false);
 
-
     const handleDispo = (e) => {
         if(e.target.value === false) {
             setDispo(true);
