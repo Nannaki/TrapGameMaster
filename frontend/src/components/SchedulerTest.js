@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {DayPilot, DayPilotScheduler} from "daypilot-pro-react";
-import {SchedulerRow} from "./SchedulerRow";
+import SchedulerDraggableItem from "./SchedulerDraggableItem";
 import axios from "axios";
+import {Card, Box, Typography} from "@mui/material";
+
 
 
 class SchedulerTest extends Component {
@@ -21,11 +23,12 @@ class SchedulerTest extends Component {
             headerHeight: 30,
             treeEnabled: true,
             rowHeaderColumns: [
-                {name: "GameMaster"},
-                {name: "Langues", display: "langues", width: 50}
+                {name: "GameMaster", display: "gameMaster"},
+                {name: "Langues", display: "langues"},
             ],
 
         };
+
     }
 
     componentDidMount() {
@@ -33,10 +36,10 @@ class SchedulerTest extends Component {
         this.loadAvail();
     }
 
+
     async loadUsers() {
         const users = await axios.get("http://localhost:5000/api/users/show");
         const resources = [];
-
 
         users.data.map((user) => {
             let rooms;
@@ -46,13 +49,13 @@ class SchedulerTest extends Component {
                 resources.push({
                     fontColor: "#2e7d32",
                     id: user._id,
-                    name: user.name,
+                    gameMaster: user.name,
                     langues: "Fr / Ang",
                     expanded: true,
                     children: [
                         {
-                            name: rooms,
-
+                            gameMaster: rooms,
+                            id: user.createdAt
                         }
                     ]
 
@@ -92,8 +95,8 @@ class SchedulerTest extends Component {
 
     createTimeline() {
 
-        const days = DayPilot.Date.today().daysInMonth();
-        const start = DayPilot.Date.today().firstDayOfMonth();
+        let days = DayPilot.Date.today().daysInMonth();
+        let start = DayPilot.Date.today().firstDayOfMonth();
 
         const result = [];
         for (let i = 0; i < days; i++) {
@@ -116,16 +119,31 @@ class SchedulerTest extends Component {
 
 
     render() {
-        var {...config} = this.state;
+        const {...config} = this.state;
         return (
-            <div>
-                <DayPilotScheduler
-                    {...config}
-                    ref={component => {
-                        this.scheduler = component && component.control
-                    }}
-                />
-            </div>
+            <>
+                <Box
+                    sx={{display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center"}}
+                >
+                    <Card
+                        elevation={8}
+                    >
+                        <Typography>
+                            Déplacer les salles ou les priorités dans le shift correspondant
+                        </Typography>
+                        <SchedulerDraggableItem id={101} text="Room1" color={"primary"}/>
+                    </Card>
+                    <span style={{width: "100%"}}/>
+                    <DayPilotScheduler
+                        width={"90%"}
+                        {...config}
+                        ref={component => {
+                            this.scheduler = component && component.control
+                        }}
+                        heightSpec="Max"
+                    />
+                </Box>
+            </>
         )
     }
 }
