@@ -41,7 +41,7 @@ class SchedulerTest extends Component {
         const users = await axios.get("http://localhost:5000/api/users/show");
         const resources = [];
 
-        users.data.map((user) => {
+        users.data.map((user) =>  {
             let rooms;
             rooms = user.rooms.join(" | ")
 
@@ -64,7 +64,7 @@ class SchedulerTest extends Component {
 
         })
 
-        this.setState({resources:resources})
+        return this.setState({resources:resources})
     }
 
     async loadAvail() {
@@ -90,7 +90,7 @@ class SchedulerTest extends Component {
 
         })
 
-        this.setState({events: finalAvail})
+        return this.setState({events: finalAvail})
     }
 
     createTimeline() {
