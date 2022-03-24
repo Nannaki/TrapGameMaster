@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import {DayPilot, DayPilotScheduler} from "daypilot-pro-react";
 import SchedulerDraggableItem from "./SchedulerDraggableItem";
 import axios from "axios";
-import {Card, Box, Typography} from "@mui/material";
-
-
+import {Box, Card, FormHelperText} from "@mui/material";
 
 class SchedulerTest extends Component {
     constructor(props) {
@@ -15,18 +13,33 @@ class SchedulerTest extends Component {
             startDate: DayPilot.Date.today().firstDayOfMonth(),
             days: DayPilot.Date.today().daysInMonth(),
             scale: "Manual",
-            timeHeaders: [{groupBy: "Month"},{groupBy: "Day", format: "dddd d/M"},{groupBy: "Cell"}],
+            timeHeaders: [{groupBy: "Month"},{groupBy: "Day", format: "d/M"},{groupBy: "Cell"}],
             timeline: this.createTimeline(),
             businessEndsHour: 24,
-            cellWidth: 80,
-            eventHeight: 40,
+            cellWidth: 30,
+            eventHeight: 50,
             headerHeight: 30,
+            rowHeaderWidth: 100,
             treeEnabled: true,
             rowHeaderColumns: [
                 {name: "GameMaster", display: "gameMaster"},
                 {name: "Langues", display: "langues"},
             ],
+            rooms: [],
+            resourceBubble: new DayPilot.Bubble( {
+                position: "Mouse",
+                animation: "Fast",
+                onLoad: async function (args) {
+                    args.async = true;
+                    const user = await axios.get("http://localhost:5000/api/users/getOne"+args.source.id);
+                    if(user) {
+                        let rooms = user.data.rooms.join(" | ")
+                        args.html = rooms
+                        args.loaded()
+                    }
+                },
 
+            })
         };
 
     }
@@ -34,6 +47,23 @@ class SchedulerTest extends Component {
     componentDidMount() {
         this.loadUsers();
         this.loadAvail();
+        this.getRoomsAvail();
+    }
+
+    async getRoomsAvail() {
+        const rooms = await axios.get("http://localhost:5000/api/rooms/show");
+        const availRooms = [];
+
+        rooms.data.map((room) => {
+            availRooms.push({
+                id: room._id,
+                name: room.name,
+                color: room.color,
+                createdAt: room.createdAt
+            })
+        })
+
+        return this.setState({rooms: availRooms})
     }
 
 
@@ -51,25 +81,17 @@ class SchedulerTest extends Component {
                     id: user._id,
                     gameMaster: user.name,
                     langues: "Fr / Ang",
-                    expanded: true,
-                    children: [
-                        {
-                            gameMaster: rooms,
-                            id: user.createdAt
-                        }
-                    ]
-
                 })
             }
 
         })
-
         return this.setState({resources:resources})
     }
 
     async loadAvail() {
         const response = await axios.post("http://localhost:5000/api/schedule/getUserAvailblity", {month: 2, year:2022});
         const finalAvail = [];
+
 
         response.data.map((shifts) => {
             shifts.availblity.map((shift) => {
@@ -119,29 +141,37 @@ class SchedulerTest extends Component {
 
 
     render() {
+
+        const rooms = this.state.rooms;
         const {...config} = this.state;
+
         return (
             <>
                 <Box
                     sx={{display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center"}}
                 >
-                    <Card
-                        elevation={8}
-                    >
-                        <Typography>
-                            Déplacer les salles ou les priorités dans le shift correspondant
-                        </Typography>
-                        <SchedulerDraggableItem id={101} text="Room1" color={"primary"}/>
-                    </Card>
                     <span style={{width: "100%"}}/>
                     <DayPilotScheduler
-                        width={"90%"}
+                        width="90%"
                         {...config}
                         ref={component => {
                             this.scheduler = component && component.control
                         }}
                         heightSpec="Max"
                     />
+                    <Card
+                        elevation={18}
+                        sx={{mt: 4, display: "flex",flexWrap: "wrap", justifyContent: "center", width: "20%"}}
+                    >
+                        {rooms.map((el) => (
+                            <SchedulerDraggableItem key={el.id}  text={el.name} color={el.color} backColor={el.color}/>
+                        ))}
+                        <FormHelperText
+                            sx={{m: "0 auto", mt: 3, width: "100%", textAlign: "center"}}
+                        >
+                            Glissez la salle sur le planning pour l'attribuer
+                        </FormHelperText>
+                    </Card>
                 </Box>
             </>
         )

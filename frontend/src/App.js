@@ -23,6 +23,7 @@ import EditSchedule from "./pages/EditSchedule";
 //TODO Changer le bouton logout
 //TODO voir ou mettre les horaires
 //TODO proteger les routes avec contrôle token
+//TODO gerer couleur event rooms
 
 const App = () => {
   return (

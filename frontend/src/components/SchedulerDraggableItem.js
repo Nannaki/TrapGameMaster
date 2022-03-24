@@ -7,8 +7,8 @@ const SchedulerDraggableItem = (props) => {
     return (
         <>
             <Chip
+                sx={{ m:1, backgroundColor: props.color}}
                 label={props.text}
-                color={props.color}
                 ref={element => {
                     if(!element) {
                         return;
@@ -16,8 +16,10 @@ const SchedulerDraggableItem = (props) => {
                     DayPilot.Scheduler.makeDraggable({
                         element: element,
                         id: props.day,
-                        text: props.text,
+                        text: props.text.substring(0,3),
                         keepElement: true,
+                        barHidden: true,
+                        backColor: props.color,
                     })
                 }}
             >
