@@ -2,12 +2,12 @@ import React from 'react';
 import {DayPilot} from "daypilot-pro-react";
 import {Chip} from "@mui/material";
 
-const SchedulerDraggableItem = (props) => {
+const SchedulerDraggableItemPriorities = (props) => {
 
     return (
         <>
             <Chip
-                sx={{ m:1, backgroundColor: props.color}}
+                sx={{ m: "0 auto", mt: 1, textAlign: "center", backgroundColor: props.color,}}
                 label={props.text}
                 ref={element => {
                     if(!element) {
@@ -20,6 +20,7 @@ const SchedulerDraggableItem = (props) => {
                         keepElement: true,
                         barHidden: true,
                         backColor: props.color,
+                        fontColor: "white",
                     })
                 }}
             >
@@ -28,4 +29,4 @@ const SchedulerDraggableItem = (props) => {
     );
 };
 
-export default SchedulerDraggableItem;
+export default SchedulerDraggableItemPriorities;

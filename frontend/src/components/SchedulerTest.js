@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import {DayPilot, DayPilotScheduler} from "daypilot-pro-react";
-import SchedulerDraggableItem from "./SchedulerDraggableItem";
+import SchedulerDraggableItemRooms from "./SchedulerDraggableItemRooms";
 import axios from "axios";
-import {Box, Card, FormHelperText} from "@mui/material";
+import {Box, Button, Card, FormHelperText, Paper} from "@mui/material";
+import SchedulerDraggableItemPriorities from "./SchedulerDraggableItemPriorities";
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
 
 class SchedulerTest extends Component {
     constructor(props) {
@@ -14,32 +17,38 @@ class SchedulerTest extends Component {
             days: DayPilot.Date.today().daysInMonth(),
             scale: "Manual",
             timeHeaders: [{groupBy: "Month"},{groupBy: "Day", format: "d/M"},{groupBy: "Cell"}],
+            contextMenu: new DayPilot.Menu({
+                    items: [
+                        {text: "Effacer", onClick: args => this.delete(args)}
+                    ]
+                }),
             timeline: this.createTimeline(),
             businessEndsHour: 24,
             cellWidth: 30,
-            eventHeight: 50,
+            eventHeight: 30,
             headerHeight: 30,
             rowHeaderWidth: 100,
+            rowMarginBottom: 15,
             treeEnabled: true,
             rowHeaderColumns: [
                 {name: "GameMaster", display: "gameMaster"},
                 {name: "Langues", display: "langues"},
             ],
             rooms: [],
+            users: [],
             resourceBubble: new DayPilot.Bubble( {
                 position: "Mouse",
-                animation: "Fast",
                 onLoad: async function (args) {
                     args.async = true;
                     const user = await axios.get("http://localhost:5000/api/users/getOne"+args.source.id);
                     if(user) {
-                        let rooms = user.data.rooms.join(" | ")
-                        args.html = rooms
+                        args.html = user.data.rooms.join(" | ")
                         args.loaded()
                     }
                 },
 
-            })
+            }),
+
         };
 
     }
@@ -48,6 +57,11 @@ class SchedulerTest extends Component {
         this.loadUsers();
         this.loadAvail();
         this.getRoomsAvail();
+    }
+
+    async delete(args) {
+        let e = this.scheduler.events.find(args.source.data.resources);
+        this.scheduler.events.remove(e)
     }
 
     async getRoomsAvail() {
@@ -72,19 +86,15 @@ class SchedulerTest extends Component {
         const resources = [];
 
         users.data.map((user) =>  {
-            let rooms;
-            rooms = user.rooms.join(" | ")
 
-            if(!user.isAdmin) {
-                resources.push({
-                    fontColor: "#2e7d32",
-                    id: user._id,
-                    gameMaster: user.name,
-                    langues: "Fr / Ang",
-                })
-            }
-
+            resources.push({
+                fontColor: "#2e7d32",
+                id: user._id,
+                gameMaster: user.name,
+                langues: "Fr / Ang",
+            })
         })
+        this.setState({users: users.data})
         return this.setState({resources:resources})
     }
 
@@ -143,6 +153,7 @@ class SchedulerTest extends Component {
     render() {
 
         const rooms = this.state.rooms;
+        const users = this.state.users;
         const {...config} = this.state;
 
         return (
@@ -150,6 +161,23 @@ class SchedulerTest extends Component {
                 <Box
                     sx={{display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center"}}
                 >
+                    <Paper
+                        variant="outlined"
+                        sx={{border: "1px solid #ce93d8", display: "flex", width: "30%",justifyContent:"center", alignItems: "center"}}
+                    >
+                        <Button
+                            color="third"
+                            startIcon={<SkipPreviousIcon />}
+                        >
+                            Mois précédent
+                        </Button>
+                        <Button
+                            color="third"
+                            endIcon={<SkipNextIcon />}
+                        >
+                            Mois Suivant
+                        </Button>
+                    </Paper>
                     <span style={{width: "100%"}}/>
                     <DayPilotScheduler
                         width="90%"
@@ -159,19 +187,40 @@ class SchedulerTest extends Component {
                         }}
                         heightSpec="Max"
                     />
-                    <Card
-                        elevation={18}
-                        sx={{mt: 4, display: "flex",flexWrap: "wrap", justifyContent: "center", width: "20%"}}
+                    <Box
+                        sx={{display: "flex",flexWrap: "wrap", justifyContent: "center"}}
                     >
-                        {rooms.map((el) => (
-                            <SchedulerDraggableItem key={el.id}  text={el.name} color={el.color} backColor={el.color}/>
-                        ))}
-                        <FormHelperText
-                            sx={{m: "0 auto", mt: 3, width: "100%", textAlign: "center"}}
+                        <Card
+                            elevation={18}
+                            sx={{width: "40%", m:2, display: "flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center"}}
                         >
-                            Glissez la salle sur le planning pour l'attribuer
-                        </FormHelperText>
-                    </Card>
+                            {users.map((user, index) => (
+                                <SchedulerDraggableItemPriorities key={user._id} text={("P")+(index+1).toString()} color="#388e3c" />
+                            ))}
+                            <span style={{width: "100%"}}/>
+                            <FormHelperText
+                                sx={{m: "0 auto", mt: 1, width: "100%", textAlign: "center"}}
+                            >
+                                Glissez la priorité sur le planning pour l'attribuer
+                            </FormHelperText>
+                        </Card>
+                        <Card
+                            elevation={18}
+                            sx={{width: "40%", m:2, display: "flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center"}}
+                        >
+                            {rooms.map((el) => (
+                                <SchedulerDraggableItemRooms key={el.id} text={el.name} color={el.color}/>
+                            ))}
+                            <SchedulerDraggableItemRooms key="formation" text="formation" color="#ec407a" />
+                            <span style={{width: "100%"}}/>
+                            <FormHelperText
+                                sx={{m: "0 auto", mt: 1, width: "100%", textAlign: "center"}}
+                            >
+                                Glissez la salle sur le planning pour l'attribuer
+                            </FormHelperText>
+                        </Card>
+                    </Box>
+
                 </Box>
             </>
         )
