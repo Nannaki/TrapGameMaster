@@ -129,20 +129,21 @@ const ModifyGm = () => {
                         sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap", textAlign: "center"}}
                     >
                         <TextField
-                            sx={{ mt: 1 }}
+                            sx={{ my: 2 }}
                             autoFocus
                             variant="outlined"
                             fullWidth
                             name="name"
+                            placeholder={userInfo.name}
                             label="nom"
                             value={name}
                             onChange={onChange}
                         />
-                        <p> Donnée actuelle : {userInfo.name}</p>
                         <span style={ {width: '100%' }} />
                         <TextField
                             sx={{ my:2 }}
                             type="email"
+                            placeholder={userInfo.email}
                             variant="outlined"
                             multiline
                             fullWidth
@@ -151,7 +152,6 @@ const ModifyGm = () => {
                             value={email}
                             onChange={onChange}
                         />
-                        <p> Donnée actuelle : {userInfo.email}</p>
                         <span style={ {width: '100%' }} />
                         <Button variant='contained'
                                 color='secondary'

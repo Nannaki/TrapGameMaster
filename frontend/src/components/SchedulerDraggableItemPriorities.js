@@ -15,7 +15,6 @@ const SchedulerDraggableItemPriorities = (props) => {
                     }
                     DayPilot.Scheduler.makeDraggable({
                         element: element,
-                        id: props.day,
                         text: props.text.substring(0,3),
                         keepElement: true,
                         barHidden: true,

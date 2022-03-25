@@ -8,7 +8,6 @@ const Room = require('../models/roomsModel');
 const getRooms = asyncHandler( async (req, res) => {
     const rooms = await Room.find();
 
-    console.log(rooms)
     res.status(200).json(rooms);
 });
 

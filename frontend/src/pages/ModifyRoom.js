@@ -125,7 +125,6 @@ const ModifyRoom = () => {
                     component="form"
                     onSubmit={ (e) => {
                         e.preventDefault()
-
                         const roomData = {
                             name,
                             description,
@@ -155,11 +154,12 @@ const ModifyRoom = () => {
                         variant='h6'
                         noWrap
                         component='div'
+                        sx={{textAlign: "center"}}
                     >
                        Modifier {room.name}
                     </DialogTitle>
                     <DialogContent
-                        sx={{  textAlign: "center"}}
+                        sx={{  textAlign: "center", display: "flex", flexWrap: "wrap", justifyContent: "center"}}
                     >
                         <TextField
                             sx={{ mt:2 }}
@@ -167,10 +167,10 @@ const ModifyRoom = () => {
                             variant="outlined"
                             name="name"
                             label="nom"
+                            placeholder={room.name}
                             value={name}
                             onChange={onChange}
                         />
-                        <p> Donnée actuelle : {room.name}</p>
                         <span style={ {width: '100%' }} />
                         <TextField
                             sx={{ my:2 }}
@@ -178,10 +178,11 @@ const ModifyRoom = () => {
                             multiline
                             name="description"
                             label="Description"
+                            placeholder={room.description}
                             value={description}
                             onChange={onChange}
                         />
-                        <p>Description actuelle : {room.description} </p>
+                        <span style={ {width: '100%' }} />
                         <FormControlLabel
                             control={
                                 <>

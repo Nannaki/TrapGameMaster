@@ -6,6 +6,8 @@ import {Box, Button, Card, FormHelperText, Paper} from "@mui/material";
 import SchedulerDraggableItemPriorities from "./SchedulerDraggableItemPriorities";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import TodayIcon from '@mui/icons-material/Today';
+
 
 class SchedulerTest extends Component {
     constructor(props) {
@@ -14,7 +16,7 @@ class SchedulerTest extends Component {
         this.state = {
             locale: "fr-ch",
             startDate: DayPilot.Date.today().firstDayOfMonth(),
-            days: DayPilot.Date.today().daysInMonth(),
+            days: DayPilot.Date.today().daysInYear(),
             scale: "Manual",
             timeHeaders: [{groupBy: "Month"},{groupBy: "Day", format: "d/M"},{groupBy: "Cell"}],
             contextMenu: new DayPilot.Menu({
@@ -149,6 +151,53 @@ class SchedulerTest extends Component {
         return result;
     }
 
+    createTimelineNext(next) {
+
+        let days = next.daysInYear();
+        let start = next
+
+        const result = [];
+        for (let i = 0; i < days; i++) {
+            const day = start.addDays(i);
+            result.push({
+                start: day.addHours(9),
+                end: day.addHours(14),
+            });
+            result.push({
+                start: day.addHours(14),
+                end: day.addHours(19)
+            });
+            result.push({
+                start: day.addHours(19),
+                end: day.addHours(24)
+            });
+        }
+        return result;
+    }
+
+    createTimelinePrevious(previous) {
+
+        let days = previous.daysInYear();
+        let start = previous
+
+        const result = [];
+        for (let i = 0; i < days; i++) {
+            const day = start.addDays(i);
+            result.push({
+                start: day.addHours(9),
+                end: day.addHours(14),
+            });
+            result.push({
+                start: day.addHours(14),
+                end: day.addHours(19)
+            });
+            result.push({
+                start: day.addHours(19),
+                end: day.addHours(24)
+            });
+        }
+        return result;
+    }
 
     render() {
 
@@ -158,24 +207,49 @@ class SchedulerTest extends Component {
 
         return (
             <>
+
                 <Box
                     sx={{display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center"}}
                 >
                     <Paper
-                        variant="outlined"
-                        sx={{border: "1px solid #ce93d8", display: "flex", width: "30%",justifyContent:"center", alignItems: "center"}}
+                        elevation={18}
+                        sx={{mb: "1px"}}
                     >
                         <Button
                             color="third"
                             startIcon={<SkipPreviousIcon />}
+                            onClick={(e) => {
+                                const previous = this.state.startDate.addMonths(-1);
+                                this.setState({
+                                    startDate: previous,
+                                    days: previous.daysInYear(),
+                                    timeline: this.createTimelinePrevious(previous)
+                                })
+                            }}
                         >
-                            Mois précédent
+                        </Button>
+                        <Button
+                            color="third"
+                            onClick={() => {
+                                const today = DayPilot.Date.today()
+                                this.scheduler.update({scrollTo: today})
+                            }}
+                        >
+                            <TodayIcon />
                         </Button>
                         <Button
                             color="third"
                             endIcon={<SkipNextIcon />}
+                            onClick={() => {
+                                const next = this.state.startDate.addMonths(1);
+                                this.setState({
+                                    startDate: next,
+                                    days: next.daysInYear(),
+                                    timeline: this.createTimelineNext(next)
+                                })
+                                console.log(this.state.startDate)
+                            }}
                         >
-                            Mois Suivant
                         </Button>
                     </Paper>
                     <span style={{width: "100%"}}/>
@@ -194,8 +268,8 @@ class SchedulerTest extends Component {
                             elevation={18}
                             sx={{width: "40%", m:2, display: "flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center"}}
                         >
-                            {users.map((user, index) => (
-                                <SchedulerDraggableItemPriorities key={user._id} text={("P")+(index+1).toString()} color="#388e3c" />
+                            {rooms.map((room, index) => (
+                                <SchedulerDraggableItemPriorities key={room.id} text={("P")+(index+1).toString()} color="#388e3c" />
                             ))}
                             <span style={{width: "100%"}}/>
                             <FormHelperText
