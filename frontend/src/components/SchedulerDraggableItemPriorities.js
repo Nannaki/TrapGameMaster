@@ -3,7 +3,6 @@ import {DayPilot} from "daypilot-pro-react";
 import {Chip} from "@mui/material";
 
 const SchedulerDraggableItemPriorities = (props) => {
-
     return (
         <>
             <Chip
@@ -18,6 +17,7 @@ const SchedulerDraggableItemPriorities = (props) => {
                         text: props.text.substring(0,3),
                         keepElement: true,
                         barHidden: true,
+                        id:0,
                         backColor: props.color,
                         fontColor: "white",
                     })

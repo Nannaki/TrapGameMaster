@@ -15,7 +15,7 @@ const SchedulerDraggableItemRooms = (props) => {
                     }
                     DayPilot.Scheduler.makeDraggable({
                         element: element,
-                        id: props.day,
+                        id: 0,
                         text: props.text.substring(0,3),
                         keepElement: true,
                         barHidden: true,

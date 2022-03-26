@@ -6,7 +6,6 @@ import {Box, Button, Card, FormHelperText, Paper} from "@mui/material";
 import SchedulerDraggableItemPriorities from "./SchedulerDraggableItemPriorities";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
-import TodayIcon from '@mui/icons-material/Today';
 
 
 class SchedulerTest extends Component {
@@ -21,7 +20,7 @@ class SchedulerTest extends Component {
             timeHeaders: [{groupBy: "Month"},{groupBy: "Day", format: "d/M"},{groupBy: "Cell"}],
             contextMenu: new DayPilot.Menu({
                     items: [
-                        {text: "Effacer", onClick: args => this.delete(args)}
+                        {text: "Effacer", onClick: args => this.deleteEvent(args)}
                     ]
                 }),
             timeline: this.createTimeline(),
@@ -37,7 +36,7 @@ class SchedulerTest extends Component {
                 {name: "Langues", display: "langues"},
             ],
             rooms: [],
-            users: [],
+            currentEvents: null,
             resourceBubble: new DayPilot.Bubble( {
                 position: "Mouse",
                 onLoad: async function (args) {
@@ -50,21 +49,31 @@ class SchedulerTest extends Component {
                 },
 
             }),
+            onEventMoved: function (args) {
+                args.e.data.id = DayPilot.guid()
+                const eventData = {
+                    id: args.e.data.id,
+                    start: args.e.data.start,
+                    end: args.e.data.end,
+                    text: args.e.data.text,
+                    resource: args.e.data.resource,
+                    backColor: args.e.data.backColor,
+                }
 
+                async function addNewEventInBdd(){
+                    await axios.post("http://localhost:5000/api/schedule/addNewEventSchedule", eventData)
+                }
+                addNewEventInBdd()
+            },
         };
-
     }
 
     componentDidMount() {
         this.loadUsers();
-        this.loadAvail();
+        this.loadEvents();
         this.getRoomsAvail();
     }
 
-    async delete(args) {
-        let e = this.scheduler.events.find(args.source.data.resources);
-        this.scheduler.events.remove(e)
-    }
 
     async getRoomsAvail() {
         const rooms = await axios.get("http://localhost:5000/api/rooms/show");
@@ -100,14 +109,65 @@ class SchedulerTest extends Component {
         return this.setState({resources:resources})
     }
 
-    async loadAvail() {
-        const response = await axios.post("http://localhost:5000/api/schedule/getUserAvailblity", {month: 2, year:2022});
-        const finalAvail = [];
+    async loadEvents() {
+        const events = await axios.get("http://localhost:5000/api/schedule/getEvents")
+        const previousMonth = await axios.post("http://localhost:5000/api/schedule/getUserAvailblity", {month: DayPilot.Date.today().addMonths(-1).getMonth(), year: DayPilot.Date.today().getYear()});
+        const currentMonth = await axios.post("http://localhost:5000/api/schedule/getUserAvailblity", {month: DayPilot.Date.today().getMonth(), year: DayPilot.Date.today().getYear()});
+        const nextMonth = await axios.post("http://localhost:5000/api/schedule/getUserAvailblity", {month: DayPilot.Date.today().addMonths(1).getMonth(), year: DayPilot.Date.today().getYear()});
+        const finalEvents = [];
 
+        events.data.map((event) => {
+            finalEvents.push({
+                id: event.id,
+                start: event.start,
+                end: event.end,
+                resource: event.resource,
+                text: event.text,
+                barHidden: true,
+                backColor: event.backColor,
+                fontColor: "white",
+            })
+        })
 
-        response.data.map((shifts) => {
+        previousMonth.data.map((shifts) => {
             shifts.availblity.map((shift) => {
-                finalAvail.push({
+                finalEvents.push({
+                    id: Math.random()+parseInt(shift.id),
+                    start: shift.shift,
+                    end: shift.date,
+                    resource: shift.id,
+                    barHidden: true,
+                    backColor: "#ffb300",
+                    borderColor: "darker",
+                    nonBlocking: true,
+                    line: 0,
+                    height: 30,
+                    moveDisabled: true
+                })
+            })
+        })
+
+        currentMonth.data.map((shifts) => {
+            shifts.availblity.map((shift) => {
+                finalEvents.push({
+                    id: Math.random() + parseInt(shift.id),
+                    start: shift.shift,
+                    end: shift.date,
+                    resource: shift.id,
+                    barHidden: true,
+                    backColor: "#ffb300",
+                    borderColor: "darker",
+                    nonBlocking: true,
+                    line: 0,
+                    height: 30,
+                    moveDisabled: true
+                })
+            })
+        })
+
+        nextMonth.data.map((shifts) => {
+            shifts.availblity.map((shift) => {
+                finalEvents.push({
                     id: Math.random()+parseInt(shift.id),
                     start: shift.shift,
                     end: shift.date,
@@ -124,7 +184,14 @@ class SchedulerTest extends Component {
 
         })
 
-        return this.setState({events: finalAvail})
+        return this.setState({events: finalEvents})
+    }
+
+    async deleteEvent(args) {
+        this.scheduler.events.remove(args.source)
+        await axios.delete("http://localhost:5000/api/schedule/deleteEvent"+args.source.data.id)
+
+
     }
 
     createTimeline() {
@@ -202,7 +269,6 @@ class SchedulerTest extends Component {
     render() {
 
         const rooms = this.state.rooms;
-        const users = this.state.users;
         const {...config} = this.state;
 
         return (
@@ -230,15 +296,6 @@ class SchedulerTest extends Component {
                         </Button>
                         <Button
                             color="third"
-                            onClick={() => {
-                                const today = DayPilot.Date.today()
-                                this.scheduler.update({scrollTo: today})
-                            }}
-                        >
-                            <TodayIcon />
-                        </Button>
-                        <Button
-                            color="third"
                             endIcon={<SkipNextIcon />}
                             onClick={() => {
                                 const next = this.state.startDate.addMonths(1);
@@ -247,7 +304,6 @@ class SchedulerTest extends Component {
                                     days: next.daysInYear(),
                                     timeline: this.createTimelineNext(next)
                                 })
-                                console.log(this.state.startDate)
                             }}
                         >
                         </Button>

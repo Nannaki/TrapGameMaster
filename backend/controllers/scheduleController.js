@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const AvailblitySchedule = require('../models/availablityScheduleModel');
+const DataScheduler = require('../models/dataSchedulerModel');
 
 
 // @desc    Get actual months
@@ -91,27 +92,35 @@ const getAllDaysInMonth = asyncHandler( async (req, res) => {
 // @desc    Post availblity of month from user
 // @route   Post /api/schedule/getUserAvailblity
 // @access  Private
-
 const getUsersAvailblity = asyncHandler( async (req, res) => {
 
     const availblitys = await AvailblitySchedule.find({month:req.body.month.toString(), year:req.body.year.toString()});
-
-    if(availblitys.length === 0) {
-        res.status(400)
-        throw new Error('Aucune disponibilités pour ce mois')
-    }
-
     res.status(201).json(availblitys)
 })
+
+// @desc    Get events from dataBase
+// @route   Post /api/schedule/getEventsSchedule
+// @access  Private
+const getEventsFromSchedule = asyncHandler( async (req, res) => {
+    const events = await DataScheduler.find()
+    if(!events) {
+        res.status(400)
+        throw new Error("Aucun évènements trouvés")
+    }
+    else {
+        res.status(201).json(events)
+    }
+})
+
 
 // @desc    RegisterUserAvailblity
 // @route   Post /api/schedule/registerUserAvailblity
 // @access  Private
-
 const registerUserAvailblity = asyncHandler(async (req, res) => {
     const {name, availblity} = req.body
+    const month = req.body.choosedMonth
 
-    const exists = await AvailblitySchedule.findOne({name})
+    const exists = await AvailblitySchedule.findOne({month})
 
     if(exists) {
         res.status(400)
@@ -126,7 +135,7 @@ const registerUserAvailblity = asyncHandler(async (req, res) => {
     })
 
     if(availblityUser) {
-        req.status(201).json(availblityUser)
+        res.status(201).json(availblityUser)
     }
     else {
         res.status(400);
@@ -134,10 +143,52 @@ const registerUserAvailblity = asyncHandler(async (req, res) => {
     }
 } )
 
+// @desc    Register events from scheduler
+// @route   Post /api/schedule/addNewEventSchedule
+// @access  Private
+const addNewEventSchedule = asyncHandler( async (req, res) => {
+
+    try {
+        const newEvent = await DataScheduler.create({
+            id: req.body.id,
+            start: req.body.start,
+            end: req.body.end,
+            text: req.body.text,
+            resource: req.body.resource,
+            backColor: req.body.backColor,
+        })
+
+        res.status(201).json(newEvent)
+    }
+    catch (err) {
+        res.status(400)
+        throw new Error("Impossible de créer l'évènement")
+    }
+
+})
+
+// @desc    Delete event in scheduler
+// @route   Delete /api/schedule/deleteEvent
+// @access  Private
+const deleteEvent = asyncHandler( async (req, res) => {
+    const eventId = req.params
+    try {
+        await DataScheduler.findOneAndDelete(eventId)
+        res.status(201)
+    }
+    catch (err) {
+        res.status(400)
+        throw new Error("Evènement introuvable")
+    }
+
+})
 
 module.exports = {
     getActualsMonths,
     getAllDaysInMonth,
     getUsersAvailblity,
     registerUserAvailblity,
+    addNewEventSchedule,
+    getEventsFromSchedule,
+    deleteEvent,
 }
