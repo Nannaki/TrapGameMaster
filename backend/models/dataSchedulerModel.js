@@ -18,7 +18,7 @@ const dataSchedulerSchema = mongoose.Schema({
     },
     backColor: {
         type: String,
-    }
+    },
 })
 
 module.exports = mongoose.model('dataScheduler', dataSchedulerSchema);

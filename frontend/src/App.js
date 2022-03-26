@@ -19,6 +19,7 @@ import DeleteRoomOfGm from "./pages/DeleteRoomOfGm"
 import AddRoomToGm from "./pages/AddRoomToGm";
 import AvailablityGm from "./pages/AvailablityGm";
 import EditSchedule from "./pages/EditSchedule";
+import ShowScheduleGm from "./components/ShowScheduleGm";
 //TODO mettre user isAdmin ? dans routes
 //TODO Changer le bouton logout
 //TODO voir ou mettre les horaires
@@ -49,6 +50,7 @@ const App = () => {
                       <Route path='/modifyroom' element={<ModifyRoom />} />
                       <Route path='/showrooms' element = {<ShowRooms />} />
                       <Route path='/editschedule' element={<EditSchedule />}/>
+                      <Route path='/schedulegm' element={<ShowScheduleGm />}/>
 
                       {/* Users routes */}
                       <Route path='/dashboardGM:id' element={<DashBoardGM />}/>

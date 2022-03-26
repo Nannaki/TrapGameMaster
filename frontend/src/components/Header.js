@@ -10,7 +10,7 @@ const Header = () => {
     const [anchorNav, setAnchorNav] = useState(null);
     const {user} = useSelector((state) => state.auth);
     const optionsAdmin = ['Planning', 'Salles', 'GM']
-    const optionsGm = ['Disponibilités', 'Planning', 'Profil', 'Salles']
+    const optionsGm = ['Disponibilités', 'Plans', 'Profil', 'Salles']
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -41,6 +41,9 @@ const Header = () => {
         }
         if(e.target.value === 'Planning' && user.isAdmin) {
             navigate('/editschedule')
+        }
+        if(e.target.value === 'Plans') {
+            navigate('/schedulegm')
         }
     }
 

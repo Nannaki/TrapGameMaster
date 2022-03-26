@@ -148,22 +148,17 @@ const registerUserAvailblity = asyncHandler(async (req, res) => {
 // @access  Private
 const addNewEventSchedule = asyncHandler( async (req, res) => {
 
-    try {
-        const newEvent = await DataScheduler.create({
-            id: req.body.id,
-            start: req.body.start,
-            end: req.body.end,
-            text: req.body.text,
-            resource: req.body.resource,
-            backColor: req.body.backColor,
-        })
+    const newEvent = await DataScheduler.create({
+        id: req.body.id,
+        start: req.body.start,
+        end: req.body.end,
+        text: req.body.text,
+        resource: req.body.resource,
+        backColor: req.body.backColor,
+    })
 
-        res.status(201).json(newEvent)
-    }
-    catch (err) {
-        res.status(400)
-        throw new Error("Impossible de créer l'évènement")
-    }
+    res.status(201).json(newEvent)
+
 
 })
 
@@ -172,15 +167,15 @@ const addNewEventSchedule = asyncHandler( async (req, res) => {
 // @access  Private
 const deleteEvent = asyncHandler( async (req, res) => {
     const eventId = req.params
-    try {
-        await DataScheduler.findOneAndDelete(eventId)
-        res.status(201)
-    }
-    catch (err) {
+    const check = DataScheduler.findOne({eventId});
+    if(!check) {
         res.status(400)
         throw new Error("Evènement introuvable")
     }
-
+    else {
+        await DataScheduler.findOneAndDelete(eventId)
+        res.status(201)
+    }
 })
 
 module.exports = {
