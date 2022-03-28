@@ -1,7 +1,7 @@
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const authMiddleware = require('./middleware/authMiddleware')
+const {authMiddleware} = require('./middleware/authMiddleware')
 const colors = require('colors');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
