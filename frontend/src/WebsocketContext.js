@@ -13,6 +13,11 @@ export const WebSocketProvider = props => {
     const [ws, setWs] = useState(null)
     const [isConnected, setIsConnected] = useState(false);
     const [error, setError] = useState(null);
+    const rooms = {
+        admin: "Admin",
+        adminGm: "Admin-GM",
+        gm: "GM"
+    }
 
     useEffect(() => {
         const socket = io(props.url, {
@@ -24,9 +29,17 @@ export const WebSocketProvider = props => {
         });
 
         socket.on('connect', () => {
-            console.log(socket.id);
             setIsConnected(true);
             dispatch(toggleLoading(false));
+
+            //Contrôle du rôle de l'utilisateur et attribution des rooms
+            if(user.isAdmin) {
+                socket.emit("join_room", rooms.admin);
+            }
+            else {
+                socket.emit("join_room", rooms.gm);
+            }
+
         });
 
         socket.on('disconnect', () => {

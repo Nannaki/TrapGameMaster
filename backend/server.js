@@ -45,17 +45,18 @@ io.use(wrap(authMiddleware));
 
 //Event de connection
 io.on('connection', socket => {
-    console.log("User connected ", socket.id)
 
 
-    if(socket.handshake.auth.admin) {
-        socket.join("Admin");
-        socket.join("Admin-Gm");
-        io.to("Admin").to("Admin-Gm").emit(socket.handshake.auth.username + "viens de rejoindre la room");
-    }
+    socket.on("join_room", (data) => {
+        socket.join(data);
+        console.log(`User with ID: ${socket.id} joined room: ${data}`)
+    })
 
-    console.log(socket.rooms)
+    socket.on("send_message", (data) => {
+        socket.to(data.room).emit("receive_message", data);
+        console.log(data)
 
+    })
 
     socket.on("disconnect", () => {
         console.log("User disconnected", socket.id)
