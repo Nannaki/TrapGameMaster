@@ -70,20 +70,8 @@ const RegisterGm = () => {
 
 
     useEffect(() => {
-        if(!user) {
-            navigate('/')
-        }
-    }, [user, navigate])
-
-
-    useEffect(() => {
         if(isError) {
             toast.error(message)
-        }
-
-        if(isSuccess) {
-            navigate('/gm')
-            toast.success('Le nouveau GameMaster a bien été enregistré');
         }
 
         dispatch(reset());
@@ -110,6 +98,10 @@ const RegisterGm = () => {
             }
             dispatch(register(userData));
         }
+
+        navigate('/gm')
+        toast.success('Le nouveau GameMaster a bien été enregistré');
+
         formData.rooms= [];
     }
 

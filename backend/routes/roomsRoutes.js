@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { registerRoom, getRooms, getRoomById, updateRoom, deleteRoom } = require('../controllers/roomsController');
+const {authMiddleware} = require("../middleware/authMiddleware");
 
-router.get('/show', getRooms );
-router.get('/getOne:id', getRoomById)
-router.post('/addroom', registerRoom);
-router.put('/updateroom:id', updateRoom);
-router.delete('/delete:id', deleteRoom)
+router.get('/show', authMiddleware, getRooms );
+router.get('/getOne:id',authMiddleware, getRoomById)
+router.post('/addroom',authMiddleware, registerRoom);
+router.put('/updateroom:id',authMiddleware, updateRoom);
+router.delete('/delete:id',authMiddleware, deleteRoom)
 
 module.exports = router;
 

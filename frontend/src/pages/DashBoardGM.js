@@ -4,9 +4,6 @@ import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import io from "socket.io-client";
-
-//TODO dans le menu planning, ajouter la possibilité d'enlever ou mettre une salle dans le planning
 
 const DashBoardGm = () => {
     const navigate = useNavigate();

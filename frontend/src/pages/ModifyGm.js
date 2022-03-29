@@ -91,12 +91,11 @@ const ModifyGm = () => {
                     open={open}
                     component="form"
                     onSubmit={(e) => {
-
+                        e.preventDefault()
                         const userData = {
                             name,
                             email
                         };
-                        console.log(userInfo)
 
                         dispatch(updateUser({
                             data: userData,

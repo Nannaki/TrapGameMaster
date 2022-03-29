@@ -1,10 +1,15 @@
 import React from 'react';
 import Header from "./Header";
-import {Box, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import HistoryToggleOffOutlinedIcon from "@mui/icons-material/HistoryToggleOffOutlined";
 import {SchedulerGm} from "./SchedulerGm";
+import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
+import {useNavigate} from "react-router-dom";
 
 const ShowScheduleGm = () => {
+
+    const navigate = useNavigate()
+
     return (
         <div>
             <>
@@ -21,7 +26,20 @@ const ShowScheduleGm = () => {
                     </Typography>
                     <SchedulerGm />
                 </Box>
-            </>
+                <Box
+                    sx={{display: "flex", justifyContent: "center", alignItems: "center"}}
+                >
+                    <Button
+                        variant='contained'
+                        color='secondary'
+                        sx={{ my: 3 }}
+                        startIcon={<BackspaceOutlinedIcon />}
+                        onClick={() => navigate('/')}
+                    >
+                        Retour
+                    </Button>
+                </Box>
+        </>
         </div>
     );
 };

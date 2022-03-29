@@ -42,7 +42,7 @@ const AvailablityGm = () => {
     useEffect(() => {
         if(isSuccess) {
             dispatch(reset())
-            navigate('/dashboardGM:id')
+            navigate('/')
             toast.success('Vos disponibilités ont bien été enregistrées')
         }
 
@@ -212,7 +212,7 @@ const AvailablityGm = () => {
                             color='secondary'
                             sx={{ my: 3, mr: 1 }}
                             startIcon={<BackspaceOutlinedIcon />}
-                            onClick={() => navigate('/dashboardGM:id')}
+                            onClick={() => navigate('/')}
                     >
                         Retour
                     </Button>
@@ -253,7 +253,7 @@ const AvailablityGm = () => {
                             color='secondary'
                             sx={{ m: 1 }}
                             startIcon={<BackspaceOutlinedIcon />}
-                            onClick={() => navigate('/dashboardGM:id')}
+                            onClick={() => navigate('/')}
                     >
                         Retour
                     </Button>

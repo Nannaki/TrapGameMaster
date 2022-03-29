@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, Paper, TextField, Typography} from "@mui/material";
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
-import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
+import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import { login, reset } from "../features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import Loading from "../components/Loading";
@@ -15,7 +14,6 @@ const Login = () => {
         password:'',
     });
     const { email, password } = formData;
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth);
 
@@ -24,19 +22,9 @@ const Login = () => {
             toast.error(message)
         }
 
-        if(isSuccess || user) {
-            if(user.isAdmin === true) {
-                navigate('/dashboardadmin')
-            }
-            else {
-                navigate('/dashboardgm' +user._id)
-            }
-
-        }
-
         dispatch(reset())
 
-    }, [user, isError, isSuccess, message, navigate, dispatch])
+    }, [user, isError, isSuccess, message, dispatch])
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -101,10 +89,10 @@ const Login = () => {
                         <Button variant='contained'
                                 color='primary'
                                 sx={{ m: 3 }}
-                                endIcon={<ExitToAppOutlinedIcon />}
+                                endIcon={<LoginOutlinedIcon/>}
                                 type='submit'
                         >
-                            Go
+                            Se connecter
                         </Button>
                 </Paper>
         </Box>

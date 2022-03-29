@@ -8,6 +8,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const jwt = require("jsonwebtoken");
 const User = require("./models/usersModel");
+const axios = require("axios");
 const port = process.env.PORT || 5000;
 const app = express();
 
@@ -45,6 +46,16 @@ io.use(wrap(authMiddleware));
 //Event de connection
 io.on('connection', socket => {
     console.log("User connected ", socket.id)
+
+
+    if(socket.handshake.auth.admin) {
+        socket.join("Admin");
+        socket.join("Admin-Gm");
+        io.to("Admin").to("Admin-Gm").emit(socket.handshake.auth.username + "viens de rejoindre la room");
+    }
+
+    console.log(socket.rooms)
+
 
     socket.on("disconnect", () => {
         console.log("User disconnected", socket.id)

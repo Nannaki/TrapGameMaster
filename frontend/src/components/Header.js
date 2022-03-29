@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { useNavigate} from "react-router-dom";
 import {logout, reset} from "../features/auth/authSlice";
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 
 const Header = () => {
@@ -63,7 +64,7 @@ const Header = () => {
 
                             component='div'
                             sx={{mr: 2, ml: 5, display: {xs: 'none', md: 'flex'}, cursor: "pointer"}}
-                            onClick={user.isAdmin ? () => navigate('/dashboardadmin'): () => navigate('/dashboardGm'+user._id)}
+                            onClick={() => navigate('/')}
                         >
                             TrapGameMaster
                         </Typography>
@@ -134,7 +135,7 @@ const Header = () => {
                             noWrap
                             component='div'
                             sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}, cursor: "pointer", fontSize: "16px"}}
-                            onClick={user.isAdmin ? () => navigate('/dashboardadmin'): () => navigate('/dashboardGm'+user._id)}
+                            onClick={user.isAdmin ? () => navigate('/'): () => navigate('/dashboardGm'+user._id)}
 
                         >
                             TrapGameMaster
@@ -167,9 +168,10 @@ const Header = () => {
                             ))}
                         </Box>
                         <Button
-                            variant='contained'
-                            color='error'
+                            variant='outlined'
+                            color='lightHover'
                             sx={{ ml:1, fontSize: {xs: "12px", md:"14px"}}}
+                            startIcon={<LogoutOutlinedIcon />}
                             onClick={onLogout}
                         >
                             Logout

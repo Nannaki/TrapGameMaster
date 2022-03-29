@@ -1,3 +1,5 @@
+
+//Imports
 import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import {ToastContainer, Slide} from "react-toastify";
@@ -20,49 +22,51 @@ import AddRoomToGm from "./pages/AddRoomToGm";
 import AvailablityGm from "./pages/AvailablityGm";
 import EditSchedule from "./pages/EditSchedule";
 import ShowScheduleGm from "./components/ShowScheduleGm";
-//TODO mettre user isAdmin ? dans routes
-//TODO Changer le bouton logout
-//TODO voir ou mettre les horaires
-//TODO proteger les routes avec contrôle token
-//TODO gerer couleur event rooms
+import {useSelector} from "react-redux";
+import { WebSocketProvider } from './WebsocketContext';
+import Loading from "./components/Loading";
+
 
 const App = () => {
 
+    //Recupère les states de redux
+    const {user} = useSelector(state=>state.auth)
+    const {loading} = useSelector(state => state.socketSlice)
+
   return (
       <>
-          <Router>
-              <div>
-                  <Routes>
-                      {/* Login route */}
-                      <Route path='/' element={<Login />}/>
-
-                      {/* Admins routes */}
-                      <Route path='/dashboardadmin' element={<DashBoardAdmin />}/>
-                      <Route path='/showgm' element={<ShowGm />} />
-                      <Route path='/modifygm' element={<ModifyGm />} />
-                      <Route path='/registergm' element={<RegisterGm />}/>
-                      <Route path='/deletegm' element={<DeleteGm />} />
-                      <Route path='addroomtogm' element={<AddRoomToGm />} />
-                      <Route path='/deleteroomofgm' element={<DeleteRoomOfGm />} />
-                      <Route path='/rooms' element={<Rooms />}/>
-                      <Route path='/gm' element={<GM />}/>
-                      <Route path='/deleteRoom' element = {<DeleteRoom />} />
-                      <Route path='/addroom' element= {<AddRoom />} />
-                      <Route path='/modifyroom' element={<ModifyRoom />} />
-                      <Route path='/showrooms' element = {<ShowRooms />} />
-                      <Route path='/editschedule' element={<EditSchedule />}/>
-                      <Route path='/schedulegm' element={<ShowScheduleGm />}/>
-
-                      {/* Users routes */}
-                      <Route path='/dashboardGM:id' element={<DashBoardGM />}/>
-                      <Route path='/dispogm:id' element={<AvailablityGm />} />
-
-                  </Routes>
-              </div>
-          </Router>
+          {/* Check si user est connecté, sinon redirige sur le login */}
+          {!user ? (<Login/>) : (
+              <Router>
+                  <div>
+                      {/* Initialisation de la connection websocket */}
+                      <WebSocketProvider url="ws://localhost:5000">
+                          <Routes>
+                              {/* Routes avec contrôle du rôle de l'utilisaeur */}
+                              <Route path='/' element={ user.isAdmin ? <DashBoardAdmin /> : <DashBoardGM />} />
+                              <Route path='/showgm' element={<ShowGm/>}/>
+                              <Route path='/modifygm' element={<ModifyGm/>}/>
+                              <Route path='/registergm' element={<RegisterGm/>}/>
+                              <Route path='/deletegm' element={<DeleteGm/>}/>
+                              <Route path='addroomtogm' element={<AddRoomToGm/>}/>
+                              <Route path='/deleteroomofgm' element={<DeleteRoomOfGm/>}/>
+                              <Route path='/deleteRoom' element={<DeleteRoom/>}/>
+                              <Route path='/addroom' element={<AddRoom/>}/>
+                              <Route path='/modifyroom' element={<ModifyRoom/>}/>
+                              <Route path='/rooms' element={<Rooms/>}/>
+                              <Route path='/editschedule' element={<EditSchedule/>}/>
+                              <Route path='/gm' element={<GM/>}/>
+                              <Route path='/showrooms' element={<ShowRooms/>}/>
+                              <Route path='/schedulegm' element={<ShowScheduleGm/>}/>
+                              <Route path='/dispogm:id' element={<AvailablityGm/>}/>
+                          </Routes>
+                      </WebSocketProvider>
+                  </div>
+              </Router>)}
 
           {/* Container for Toastify with css */}
-          <ToastContainer theme={"dark"} position={"top-right"} autoClose={2000} transition={Slide}/>
+              <ToastContainer theme={"dark"} position={"top-right"} autoClose={2000} transition={Slide}/>
+          {loading ? <Loading  />: null}
       </>
   );
 };

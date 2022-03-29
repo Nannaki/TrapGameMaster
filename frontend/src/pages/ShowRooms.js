@@ -150,7 +150,7 @@ const ShowRooms = () => {
                         color='secondary'
                         sx={{ m: 3 }}
                         startIcon={<BackspaceOutlinedIcon />}
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate('/')}
                 >
                     Retour
                 </Button>

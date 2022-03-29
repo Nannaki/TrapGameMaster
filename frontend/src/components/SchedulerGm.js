@@ -5,6 +5,12 @@ import {Box, Button, Paper} from "@mui/material";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 
+if(localStorage.getItem("user")) {
+    axios.defaults.headers.common = {
+        Authorization: JSON.parse(localStorage.getItem("user")).token
+    };
+}
+
 export class SchedulerGm extends Component {
     constructor(props) {
         super(props);

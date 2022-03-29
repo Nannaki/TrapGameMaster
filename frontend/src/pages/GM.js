@@ -108,7 +108,7 @@ const Gm = () => {
                             color='secondary'
                             sx={{ m: 3 }}
                             startIcon={<BackspaceOutlinedIcon />}
-                            onClick={() => navigate('/dashboardadmin')}
+                            onClick={() => navigate('/')}
                         >
                             Retour
                         </Button>
