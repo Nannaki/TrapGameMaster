@@ -1,12 +1,15 @@
+//Appel des requis
 const User = require('../models/usersModel');
 
+//Middelware permettant de sauvegarder les conversation dans le chat (socket.io)
 const saveMessagesMiddleware = async (userId,data) => {
 
-
+    //Recherche de l'utilisateur en BDD
     const users = await User.find();
-
     users.map( async (user) => {
 
+        //Pour tous les utilisateurs, Check du rôle, récupère les anciens messages, ajoute le nouveau aux anciens
+        //limite le nombre max de message sauvés
         let currentUser = await User.findById(user._id);
         let dbMessages = currentUser.messages;
 
@@ -50,6 +53,7 @@ const saveMessagesMiddleware = async (userId,data) => {
     })
 }
 
+//Export du middleware
 module.exports = {
     saveMessagesMiddleware
 }
