@@ -1,8 +1,10 @@
+//Import
 import axios from 'axios';
 
+//Adresse des rooms dans l'api
 const API_URL = 'http://localhost:5000/api/rooms/';
 
-//Get rooms
+//Fonction qui retourne le salles, appel en BDD
 const getRooms = async () => {
     const response = await axios.get(API_URL + 'show', {
         headers: {
@@ -12,7 +14,7 @@ const getRooms = async () => {
     return response.data;
 };
 
-//Get roomById
+//Fonction qui retourne une salle selon son ID, appel en BDD
 const getRoomById = async (roomId) => {
     const response = await axios.get( API_URL + 'getOne' +roomId, {
         headers: {
@@ -22,7 +24,7 @@ const getRoomById = async (roomId) => {
     return response.data
 }
 
-//Add room
+//Fonction qui enregistre une salle, appel en BDD
 const addRoom = async (roomData) => {
     const response = await axios.post(API_URL + 'addroom', roomData,{
         headers: {
@@ -32,7 +34,7 @@ const addRoom = async (roomData) => {
     return response.data;
 };
 
-//Update Room
+//Fonction qui modifie une salle, appel en BDD
 const updateRoom = async (roomData) => {
     const response = await axios.put( API_URL + 'updateroom' +roomData.id, roomData, {
         headers: {
@@ -42,7 +44,7 @@ const updateRoom = async (roomData) => {
     return response.data;
 }
 
-//Delete room
+//Fonction qui supprime une salle, appel en BDD
 const deleteRoom = async (roomId) => {
     const response = await axios.delete(API_URL + "delete" +roomId, {
         headers: {
@@ -52,6 +54,7 @@ const deleteRoom = async (roomId) => {
     return response.data;
 }
 
+//Déclaration des fonctions du service
 const roomsService = {
     getRooms,
     getRoomById,

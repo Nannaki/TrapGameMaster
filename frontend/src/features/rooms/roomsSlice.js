@@ -1,7 +1,8 @@
+//Imports
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import roomsService from './roomsService'
 
-
+//Déclarations des states initiaux
 const initialState = {
     rooms: [],
     room: [],
@@ -11,7 +12,7 @@ const initialState = {
     message: ''
 }
 
-//Get Rooms
+//Appel fonction pour charger les salles dans le service "room"
 export const getRooms = createAsyncThunk('rooms/show', async () => {
     try {
         return await roomsService.getRooms();
@@ -21,7 +22,7 @@ export const getRooms = createAsyncThunk('rooms/show', async () => {
     }
 });
 
-//Get RoomById
+//Appel fonction pour charger une salle avec un ID dans le service "room"
 export const getRoomById = createAsyncThunk('rooms/getOne', async (roomId, thunkAPI) => {
     try {
         return await roomsService.getRoomById(roomId);
@@ -33,7 +34,7 @@ export const getRoomById = createAsyncThunk('rooms/getOne', async (roomId, thunk
     }
 })
 
-//Add Room
+//Appel fonction pour enregistrer une salle dans le service "room"
 export const addRoom = createAsyncThunk('rooms/addroom', async (room, thunkAPI) => {
     try {
         return await roomsService.addRoom(room);
@@ -44,7 +45,7 @@ export const addRoom = createAsyncThunk('rooms/addroom', async (room, thunkAPI) 
     }
 })
 
-//Update room
+//Appel fonction pour modifier une salle dans le service "room"
 export const updateRoom = createAsyncThunk('rooms/updateroom', async ( roomData, thunkAPI) =>{
 
     try {
@@ -57,7 +58,7 @@ export const updateRoom = createAsyncThunk('rooms/updateroom', async ( roomData,
     }
 })
 
-//Delete Room
+//Appel fonction pour effacer une salle dans le service "room"
 export const deleteRoom = createAsyncThunk('rooms/delete', async (roomId,thunkAPI) => {
     try {
         return await roomsService.deleteRoom(roomId)
@@ -69,6 +70,7 @@ export const deleteRoom = createAsyncThunk('rooms/delete', async (roomId,thunkAP
     }
 })
 
+//Creation du Slice
 export const roomsSlice = createSlice({
     name: 'rooms',
     initialState,
@@ -156,5 +158,6 @@ export const roomsSlice = createSlice({
     })
 })
 
+//Exports
 export const {reset} = roomsSlice.actions;
 export default roomsSlice.reducer;

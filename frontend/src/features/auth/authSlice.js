@@ -1,9 +1,11 @@
+//Imports
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from './authService';
 
-//Get user from localStorage
+//Récupère l'utilisateur depuis le localstorage
 const user = JSON.parse(localStorage.getItem('user'));
 
+//Déclarations des states initiaux
 const initialState = {
     users: [],
     rooms: [],
@@ -18,7 +20,7 @@ const initialState = {
 
 }
 
-//Get users
+//Appel fonction pour charger les utilisateurs dans le service "auth"
 export const getUsers = createAsyncThunk('auth/show', async () => {
     try {
         return await authService.getUsers();
@@ -28,7 +30,7 @@ export const getUsers = createAsyncThunk('auth/show', async () => {
     }
 })
 
-//Get user by Id
+//Appel fonction pour charger un utilisateur depuis son ID dans le service "auth"
 export const getUserById = createAsyncThunk('auth/getOne', async (userId, thunkAPI) =>{
     try {
         return await authService.getUserById(userId);
@@ -39,7 +41,7 @@ export const getUserById = createAsyncThunk('auth/getOne', async (userId, thunkA
     }
 })
 
-//getUnmasterized rooms from user
+//Appel fonction pour charger les salles non masterisées d'un utilisateur dans le service "auth"
 export const getUnmasterizedRoomsFromUser = createAsyncThunk('auth//getunmasterizedroomsfromuser', async (userId, thunkAPI) => {
     try {
         return await authService.getUnmasterizedRoomFromUser(userId);
@@ -50,7 +52,7 @@ export const getUnmasterizedRoomsFromUser = createAsyncThunk('auth//getunmasteri
     }
 })
 
-//Update user
+//Appel fonction pour modifier un utilisateur dans le service "auth"
 export const updateUser = createAsyncThunk('auth/updateuser', async (userData, thunkAPI) => {
     try {
         return await authService.updateUser(userData);
@@ -61,7 +63,7 @@ export const updateUser = createAsyncThunk('auth/updateuser', async (userData, t
     }
 })
 
-//Add room to user
+//Appel fonction pour ajouter une salle à un utilisateur dans le service "auth"
 export const addRoomToUser = createAsyncThunk('auth/addroomtouser', async (userData, thunkAPI) => {
     try {
         return await authService.addRoomToUser(userData);
@@ -72,7 +74,7 @@ export const addRoomToUser = createAsyncThunk('auth/addroomtouser', async (userD
     }
 })
 
-//Delete room of user
+//Appel fonction pour supprimer une salle d'un utilisateur dans le service "auth"
 export const deleteRoomOfUser = createAsyncThunk('auth/deleteuserroom', async (userData, thunkAPI) => {
     try {
         return await authService.deleteRoomOfUser(userData);
@@ -83,7 +85,7 @@ export const deleteRoomOfUser = createAsyncThunk('auth/deleteuserroom', async (u
     }
 })
 
-//Delete user
+//Appel fonction pour supprimer un utilisateur dans le service "auth"
 export const deleteUser = createAsyncThunk('auth/delete', async (userId, thunkAPI) => {
     try {
         return await authService.deleteUser(userId);
@@ -94,7 +96,7 @@ export const deleteUser = createAsyncThunk('auth/delete', async (userId, thunkAP
     }
 })
 
-//GetMessages
+//Appel fonction pour charger les messages (Socket.io) d'un utilisateur dans le service "auth"
 export const getMessages = createAsyncThunk('auth/messages', async (userId, thunkAPI) =>{
     try {
         return await authService.getMessages(userId);
@@ -105,7 +107,7 @@ export const getMessages = createAsyncThunk('auth/messages', async (userId, thun
     }
 })
 
-//Login user
+//Appel fonction pour connecter un utilisateur dans le service "auth"
 export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     try {
         return await authService.login(user)
@@ -115,7 +117,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     }
 });
 
-//Register user
+//Appel fonction pour enregistrer un utilisateur dans le service "auth"
 export const register = createAsyncThunk('auth/register', async (user, thunkAPI) => {
     try {
         return await authService.register(user)
@@ -125,10 +127,12 @@ export const register = createAsyncThunk('auth/register', async (user, thunkAPI)
     }
 });
 
+//Appel fonction pour déconnecter un utilisateur dans le service "auth"
 export const logout = createAsyncThunk('auth/logout', async () => {
     await authService.logout();
 });
 
+//Creation du Slice
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -289,5 +293,6 @@ export const authSlice = createSlice({
     },
 })
 
+//Exports
 export const {reset} = authSlice.actions;
 export default authSlice.reducer;

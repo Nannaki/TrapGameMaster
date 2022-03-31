@@ -2,7 +2,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from 'socket.io-client';
-import { toggleLoading } from "./features/socket/socketSlice";
 
 //Initialise le contexte
 const WebsocketContext = createContext();
@@ -36,7 +35,6 @@ export const WebSocketProvider = props => {
         //Connection des utilisateurs Socket.io
         socket.on('connect', () => {
             setIsConnected(true);
-            dispatch(toggleLoading(false));
 
             //Contrôle du rôle de l'utilisateur et attribution des rooms
             if(user.isAdmin) {

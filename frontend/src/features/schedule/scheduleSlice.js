@@ -1,7 +1,8 @@
+//Imports
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import scheduleService from "./scheduleService";
 
-
+//State initaux
 const initialState = {
     isError: false,
     isSuccess: false,
@@ -12,6 +13,7 @@ const initialState = {
     usersAvailblity: [],
 }
 
+//Appel fonction pour obtenir le mois actuel dans le service "Schedule"
 export const getActualsMonths = createAsyncThunk('schedule/actualsMonths', async (_, thunkAPI) => {
     try {
         return await scheduleService.getActualsMonths()
@@ -22,6 +24,7 @@ export const getActualsMonths = createAsyncThunk('schedule/actualsMonths', async
     }
 })
 
+//Appel fonction pour obtenir les jours du mois le service "Schedule"
 export const getAllDaysInMonth = createAsyncThunk('schedule/alldaysinmonth', async (dateData, thunkAPI) => {
     try {
         return await scheduleService.getAllDaysInMonth(dateData)
@@ -32,6 +35,7 @@ export const getAllDaysInMonth = createAsyncThunk('schedule/alldaysinmonth', asy
     }
 })
 
+//Appel fonction pour obtenir les disponibilités des utilisateurs le service "Schedule"
 export const getUsersAvailblity = createAsyncThunk('schedule/getUserAvailblity', async (dateData, thunkAPI) => {
     try {
         return await scheduleService.getUsersAvailblity(dateData);
@@ -42,6 +46,7 @@ export const getUsersAvailblity = createAsyncThunk('schedule/getUserAvailblity',
     }
 })
 
+//Appel fonction pour enregistrer les disponibilités des utilisateurs le service "Schedule"
 export const registerUserAvailblity = createAsyncThunk('schedule/registerUserAvailblity', async (availblityData, thunkAPI) =>{
     try {
         return await scheduleService.registerUserAvailblity(availblityData)
@@ -52,6 +57,7 @@ export const registerUserAvailblity = createAsyncThunk('schedule/registerUserAva
     }
 })
 
+//Creation du Slice
 export const scheduleSlice = createSlice({
     name: 'schedule',
     initialState,
@@ -128,5 +134,6 @@ export const scheduleSlice = createSlice({
     })
 })
 
+//Exports
 export const {reset} = scheduleSlice.actions;
 export default scheduleSlice.reducer;
