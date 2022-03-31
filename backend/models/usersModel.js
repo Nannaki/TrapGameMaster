@@ -1,5 +1,7 @@
+//Appel de mongoose
 const mongoose = require('mongoose');
 
+//Creation du Schema pour les utilisateurs
 const userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -28,4 +30,5 @@ const userSchema = mongoose.Schema({
     timestamps: true
 })
 
+//Export du Schema
 module.exports = mongoose.model('User', userSchema);

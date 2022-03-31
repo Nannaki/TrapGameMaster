@@ -1,5 +1,7 @@
+//Appel de mongoose
 const mongoose = require('mongoose');
 
+//Creation du Schema pour les salles
 const roomSchema = mongoose.Schema({
     name: {
         type: String,
@@ -17,4 +19,5 @@ const roomSchema = mongoose.Schema({
     timestamps: true
 });
 
+//Export du Schema
 module.exports = mongoose.model('Room', roomSchema);

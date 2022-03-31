@@ -1,5 +1,7 @@
+//Appel de mongoose
 const mongoose = require('mongoose');
 
+//Creation du Schema de disponibilités
 const availablityScheduleSchema = mongoose.Schema({
     name: {
         type: String,
@@ -17,4 +19,5 @@ const availablityScheduleSchema = mongoose.Schema({
     timeStamp: true
 });
 
+//Export du Schema
 module.exports = mongoose.model('availablitySchedule', availablityScheduleSchema);
