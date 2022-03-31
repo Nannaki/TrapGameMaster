@@ -1,13 +1,12 @@
+//Déclaration constantes et requis
 const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/usersModel');
 const Rooms = require('../models/roomsModel');
 
-
-// @desc    Register new user
+// @desc    Enregistrer un utilisateur
 // @route   POST /api/users/registerGm
-// @access  Public
 const registerUser = asyncHandler( async (req, res) => {
     const { name, email, password, isAdmin, rooms} = req.body;
 
@@ -15,8 +14,6 @@ const registerUser = asyncHandler( async (req, res) => {
         res.status(400)
         throw new Error('Merci de remplir tous les champs')
     }
-
-    //Check if user exists
     const userExists = await User.findOne({email});
 
     if(userExists) {
@@ -24,11 +21,9 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new Error('L\'utilisateur existe déjà')
     }
 
-    //Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    //Create user
     const user = await User.create({
         name,
         email,
@@ -46,18 +41,17 @@ const registerUser = asyncHandler( async (req, res) => {
             rooms: user.rooms,
             token: generateToken(user._id),
         })
+
     }else {
         res.status(400);
         throw new Error('Données d\'utilisateur invalides');
     }
 })
 
-// @desc    Authenticate a user
+// @desc    Authentifier un utilisateur
 // @route   POST /api/users/login
-// @access  Public
 const loginUser = asyncHandler( async (req, res) => {
     const { email, password } = req.body
-    //Check for user email
     const user = await User.findOne({email});
 
     if(user && (await bcrypt.compare(password, user.password))) {
@@ -70,24 +64,22 @@ const loginUser = asyncHandler( async (req, res) => {
             token,
             messages: user.messages
         })
+
     }else {
         res.status(400);
         throw new Error('Données incorrectes');
     }
 })
 
-// @desc    Get users
+// @desc    Charger les utilisateurs
 // @route   GET /api/users/show
-// @access  Private
 const getUsers = asyncHandler( async (req, res) => {
     const users = await User.find().select('-password');
-
     res.status(200).json(users);
 })
 
-// @desc    Get user by ID
+// @desc    Charger un utilisateur depuis son ID
 // @route   GET /api/users/getOne
-// @access  Private
 const getUserById = asyncHandler( async (req, res) => {
     const user = await User.findById(req.params.id)
 
@@ -95,13 +87,11 @@ const getUserById = asyncHandler( async (req, res) => {
         res.status(400);
         throw new Error('L\'utilisateur n\'a pas été trouvé');
     }
-
     res.status(200).json(user);
 })
 
-// @desc    Get unmasterized rooms of user
+// @desc    Charger les salles non masterisées d'un utilisateur
 // @route   GET /api/users/getUnmasterizedRoomOfUser
-// @access  Private
 const getUnmasterizedRoomOfUser = asyncHandler( async (req, res) => {
     const user = await User.findById(req.params.id);
     const userRooms = user.rooms;
@@ -131,12 +121,10 @@ const getUnmasterizedRoomOfUser = asyncHandler( async (req, res) => {
         res.status(400)
         throw new Error('Aucune salle disponibles pour ce GameMaster');
     }
-
 })
 
-// @desc    Update user data
+// @desc    Modifier un utilisateur
 // @route   PUT /api/users/modifyuser
-// @access  Private
 const updateUser = asyncHandler( async (req, res) => {
     const user = await User.findById(req.body.id)
 
@@ -152,14 +140,11 @@ const updateUser = asyncHandler( async (req, res) => {
         name: req.body.data.name,
         email: req.body.data.email,
     })
-
     res.status(200).json(updatedUser)
-
 })
 
-// @desc    Delete user data
+// @desc    Supprimer un utilisateur
 // @route   Delete /api/users/delete
-// @access  Private
 const deleteUser = asyncHandler( async (req, res) => {
     const user = await User.findById(req.params.id);
 
@@ -167,15 +152,12 @@ const deleteUser = asyncHandler( async (req, res) => {
         res.status(400);
         throw new Error('L\'utilisateur recherché n\'existe pas');
     }
-
     await user.remove();
-
     res.status(200).json({id: req.params.id});
 } )
 
-// @desc    Add room to a user
+// @desc    Ajouter une salle à un utilisateur
 // @route   Put /api/users/AddRoomFromUSer
-// @access  Private
 const addRoomToUser = asyncHandler( async (req, res) => {
     const user = await User.findById(req.body.id);
     const actualRooms = user.rooms;
@@ -187,24 +169,19 @@ const addRoomToUser = asyncHandler( async (req, res) => {
     }
 
     for (let i = 0; i < addedRoom.length; i++) {
-
         if (!actualRooms.includes(addedRoom[i])) {
-
             actualRooms.push(addedRoom[i]);
-
         }
     }
 
     await User.findByIdAndUpdate(req.params.id, {
         rooms: actualRooms
     })
-
     res.status(200).json(actualRooms);
 })
 
-// @desc    Delete room of a user
+// @desc    Supprimer une salle dun utilisateur
 // @route   Put /api/users/deleteRoomFromUser
-// @access  Private
 const deleteRoomFromUser = asyncHandler ( async (req, res) => {
     const user = await User.findById(req.body.id);
     const toRemove = user.rooms.indexOf(req.body.data)
@@ -213,31 +190,25 @@ const deleteRoomFromUser = asyncHandler ( async (req, res) => {
     const updatedUser =  await User.findByIdAndUpdate(req.body.id, {
         rooms:  user.rooms
     })
-
     res.status(200).json(updatedUser)
-
-
 })
 
-// @desc    Get messages of a user
+// @desc    Charger la conversation d'un utilisateur
 // @route   POST /api/users/getMessages
-// @access  Private
 const getMessages = asyncHandler( async (req,res) => {
-
     const user = await User.findById(req.body.id)
     const messages = user.messages
-
     res.status(201).json(messages)
 })
 
-//Generate JWT
+//Générer le token avec JWT
 const generateToken = (id) => {
-
     return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '30d',
+        expiresIn: '10d',
     })
 }
 
+//Exports des fonctions
 module.exports = {
     registerUser,
     loginUser,

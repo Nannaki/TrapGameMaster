@@ -1,13 +1,12 @@
+//Déclaration constantes et requis
 const asyncHandler = require('express-async-handler');
 const AvailblitySchedule = require('../models/availablityScheduleModel');
 const DataScheduler = require('../models/dataSchedulerModel');
 
 
-// @desc    Get actual months
+// @desc    Charger le mois actuel
 // @route   GET /api/schedule/getActualsMonths
-// @access  Private
 const getActualsMonths = asyncHandler( async (req,res) => {
-
     function getMounthInYearUTC(){
         let actualDay = new Date(Date.now())
         let months = []
@@ -16,17 +15,13 @@ const getActualsMonths = asyncHandler( async (req,res) => {
             months.push(new Date(actualDay))
             actualDay.setUTCMonth(actualDay.getUTCMonth() + 1);
         }
-
         months.push(new Date(actualDay.setUTCMonth(actualDay.getUTCMonth())))
-
         return months
     }
 
     let getTmpMonth = []
     let finalMonth = []
-
     getTmpMonth.push(getMounthInYearUTC())
-
     for (let i = 0; i < getTmpMonth[0].length; i++ ) {
         let tmp = []
 
@@ -37,16 +32,12 @@ const getActualsMonths = asyncHandler( async (req,res) => {
             }
         )
     }
-
-
     res.status(201).json(finalMonth)
 })
 
-// @desc    Post all days in month
+// @desc    Charger tous les jours d'un mois
 // @route   Post /api/schedule/getAllDaysInMonth
-// @access  Private
 const getAllDaysInMonth = asyncHandler( async (req, res) => {
-
     const month = parseInt(req.body.month);
     const year = parseInt(req.body.year);
     let daysInYear = [];
@@ -61,9 +52,7 @@ const getAllDaysInMonth = asyncHandler( async (req, res) => {
             date.setUTCDate(date.getUTCDate() + 1);
         }
         return days;
-
     }
-
     daysInYear.push(getDaysInMonthUTC(month, year));
 
     for (let i = 0; i < daysInYear[0].length; i++) {
@@ -72,7 +61,6 @@ const getAllDaysInMonth = asyncHandler( async (req, res) => {
         tmp.push(daysInYear[0][i]);
         allDaysInMount.push(tmp[0].toLocaleDateString('fr-ch', {weekday: 'long'}) + " " + tmp[0].getDate() + " " + tmp[0].toLocaleDateString('fr-ch', {month: 'long'}) + " " + tmp[0].getFullYear());
         daysUnchanged.push(tmp[0]);
-
     }
 
     if(allDaysInMount.length === 0) {
@@ -85,24 +73,20 @@ const getAllDaysInMonth = asyncHandler( async (req, res) => {
             unchanged: daysUnchanged
         }
     )
-
 })
 
-
-// @desc    Post availblity of month from user
+// @desc    Charger les disponibilités d'un utilisateur
 // @route   Post /api/schedule/getUserAvailblity
-// @access  Private
 const getUsersAvailblity = asyncHandler( async (req, res) => {
-
     const availblitys = await AvailblitySchedule.find({month:req.body.month.toString(), year:req.body.year.toString()});
     res.status(201).json(availblitys)
 })
 
-// @desc    Get events from dataBase
+// @desc    Charger les évènements pour le Scheduler
 // @route   Post /api/schedule/getEventsSchedule
-// @access  Private
 const getEventsFromSchedule = asyncHandler( async (req, res) => {
     const events = await DataScheduler.find()
+
     if(!events) {
         res.status(400)
         throw new Error("Aucun évènements trouvés")
@@ -112,21 +96,17 @@ const getEventsFromSchedule = asyncHandler( async (req, res) => {
     }
 })
 
-
-// @desc    RegisterUserAvailblity
+// @desc    Enregistrer les disponibilités d'un utilisateur
 // @route   Post /api/schedule/registerUserAvailblity
-// @access  Private
 const registerUserAvailblity = asyncHandler(async (req, res) => {
     const {name, availblity} = req.body
     const month = req.body.choosedMonth
-
     const exists = await AvailblitySchedule.findOne({month})
 
     if(exists) {
         res.status(400)
         throw new Error('Vous avez déjà envoyé vos disponibilités pour ce mois')
     }
-
     const availblityUser = await AvailblitySchedule.create({
         name,
         month: req.body.choosedMonth,
@@ -143,11 +123,9 @@ const registerUserAvailblity = asyncHandler(async (req, res) => {
     }
 } )
 
-// @desc    Register events from scheduler
+// @desc    Enregistrer les évènements depuis le scheduler
 // @route   Post /api/schedule/addNewEventSchedule
-// @access  Private
 const addNewEventSchedule = asyncHandler( async (req, res) => {
-
     const newEvent = await DataScheduler.create({
         id: req.body.id,
         start: req.body.start,
@@ -156,18 +134,15 @@ const addNewEventSchedule = asyncHandler( async (req, res) => {
         resource: req.body.resource,
         backColor: req.body.backColor,
     })
-
     res.status(201).json(newEvent)
-
-
 })
 
-// @desc    Delete event in scheduler
+// @desc    Supprimer les évènements dans le scheduler
 // @route   Delete /api/schedule/deleteEvent
-// @access  Private
 const deleteEvent = asyncHandler( async (req, res) => {
     const eventId = req.params
     const check = DataScheduler.findOne({eventId});
+
     if(!check) {
         res.status(400)
         throw new Error("Evènement introuvable")
@@ -178,6 +153,7 @@ const deleteEvent = asyncHandler( async (req, res) => {
     }
 })
 
+//Exports des fonctions
 module.exports = {
     getActualsMonths,
     getAllDaysInMonth,
