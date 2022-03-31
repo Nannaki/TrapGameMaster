@@ -1,9 +1,9 @@
+//Déclaration constantes et requis
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const {authMiddleware} = require('./middleware/authMiddleware');
 const {saveMessagesMiddleware} = require('./middleware/saveMessagesMiddleware');
-const colors = require('colors');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
 const connectDB = require('./config/db');
@@ -47,18 +47,23 @@ io.use(wrap(authMiddleware));
 //Event de connection
 io.on('connection', socket => {
 
+    //joind é'utilsateur a une room
     socket.on("join_room", (data) => {
         socket.join(data);
     })
 
+    //Ecoute les messages envoyés
     socket.on("send_message", (data) => {
 
+        //MiddleWare d'enregistrement de message en BDD
         saveMessagesMiddleware(socket.handshake.auth.token, data);
 
+        //Ecoute les messages recus
         socket.to(data.room).emit("receive_message", data);
 
     })
 
+    //Ecoute la déconnection
     socket.on("disconnect", () => {
         console.log("User disconnected", socket.id)
     })

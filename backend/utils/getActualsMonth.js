@@ -1,6 +1,7 @@
-
+//Fonction qui permet de connaître les mois actuels
 function getActualsMonth() {
 
+    //Permet d'obtenir tous les mois de l'annés
     function getMounthInYearUTC(){
         let actualDay = new Date(Date.now())
         let months = []
