@@ -1,3 +1,4 @@
+//Imports
 import Header from "../components/Header";
 import {Box, Button, Typography} from "@mui/material";
 import SchedulerAdmin from "../components/SchedulerAdmin";
@@ -6,11 +7,13 @@ import React from "react";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {useNavigate} from "react-router-dom";
 
-
+//Instanciation du composent
 const EditSchedule = () => {
 
+    //Déclaration de constante
     const navigate = useNavigate();
 
+    //JSX
     return (
         <>
             <Header />

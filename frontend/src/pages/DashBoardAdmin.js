@@ -1,3 +1,4 @@
+//Imports
 import React, {useEffect} from 'react';
 import {Box} from "@mui/material";
 import {useNavigate} from "react-router-dom";
@@ -6,21 +7,18 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import Footer from "../components/Footer";
 
-
+//Instanciation du composent
 const DashBoardAdmin = () => {
-    const navigate = useNavigate();
+
+    //Déclaration states
     const {user, isLoading } = useSelector((state) => state.auth);
 
-    useEffect(() => {
-        if(!user) {
-            navigate('/');
-        }
-    }, [user, navigate])
-
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
+    //JSX
     return (
         <>
             <Header/>

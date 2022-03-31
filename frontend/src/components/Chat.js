@@ -58,7 +58,7 @@ const Chat = () => {
     return (
         <>
             <Box
-                sx={{p:2, position: "absolute", bottom: 75, right: 20, display:"flex", justifyContent: "center", flexWrap: "wrap", backgroundColor: "#171717", border: "1px solid #ce93d8", width: {xs:"280px", md: "400px"}}}
+                sx={{p:2, position: "fixed", bottom: 75, right: 20, display:"flex", justifyContent: "center", flexWrap: "wrap", backgroundColor: "#171717", border: "1px solid #ce93d8", width: {xs:"280px", md: "400px"}}}
             >
                 <Typography
                     variant='h6'

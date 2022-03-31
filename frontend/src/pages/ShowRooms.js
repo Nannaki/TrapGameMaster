@@ -1,3 +1,4 @@
+//Imports
 import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,39 +11,36 @@ import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {getUserById} from "../features/auth/authSlice";
 import Footer from "../components/Footer";
 
+//Initialisation du composent
 const ShowRooms = () => {
 
+    //Initialisation des constantes et des states
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { rooms, isLoading } = useSelector((state) => state.rooms);
     const { user, userInfo} = useSelector((state) => state.auth)
     const id = JSON.parse(localStorage.getItem("user"))
 
-
+    //Obtention des "rooms"
+    //@ Dépendance: dispatch
     useEffect(() => {
         dispatch(getRooms());
     }, [dispatch])
 
-
+    //Obtention d'un utilisateur avec son ID
+    //@Dépendance: dispatch et ID
     useEffect(() => {
         dispatch(getUserById(id._id))
     }, [dispatch, id._id])
 
 
-    useEffect(() => {
-
-        if(!user) {
-            navigate('/')
-        }
-
-    }, [user, navigate])
-
-
+    //Composent de loadin
     if(isLoading) {
         return <Loading />
     }
 
 //TODO Voir pour enregistrer image dans BDD, et voir pour bouton sous cartes
+    //JSX
     return (
         <>
             <Header />

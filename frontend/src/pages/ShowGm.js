@@ -1,3 +1,4 @@
+//Imports
 import {Box, Button, Card, CardContent, Typography} from "@mui/material"
 import Header from "../components/Header";
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
@@ -8,19 +9,22 @@ import {getUsers} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import Footer from "../components/Footer";
 
-
+//Instanciation du composent
 const ShowGm = () => {
 
+    //Déclaration constantes et states
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {users} = useSelector((state) => state.auth)
 
 
+    //Charge tous les utilisaeurs depuis la BDD dans redux
+    //Dépendance: Dispatch
     useEffect(() => {
         dispatch(getUsers())
     }, [dispatch])
 
-
+    //JSX
     return (
         <>
             <Header />

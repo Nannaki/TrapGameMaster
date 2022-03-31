@@ -1,3 +1,4 @@
+//Imports
 import {Box, Button, Card, CardContent, IconButton, ListItem, Typography} from "@mui/material"
 import Header from "../components/Header";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
@@ -11,17 +12,23 @@ import {toast} from "react-toastify";
 import Loading from "../components/Loading";
 import Footer from "../components/Footer";
 
+//Instanciation du composent
 const AddRoomTomGm = () => {
 
+    //Déclaration de constantes et states
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {users, isLoading, isSuccess} = useSelector((state) => state.auth)
 
 
+    //Charge les utilisateurs depuis la BDD dans redux
+    //@Dépendance: Dispatch
     useEffect(() => {
         dispatch(getUsers())
     }, [dispatch])
 
+    //Gère le succès de la requête en BDD
+    //Dépendance: isSuccess, dispatch
     useEffect(() => {
         if(isSuccess) {
             dispatch(getUsers())
@@ -30,10 +37,12 @@ const AddRoomTomGm = () => {
         dispatch(reset())
     },[isSuccess, dispatch])
 
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
+    //JSX
     return (
         <>
             <Header />

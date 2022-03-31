@@ -1,3 +1,4 @@
+//Imports
 import Header from "../components/Header";
 import {Box, Typography, Paper, Card, ListItem, IconButton, List, Button, Dialog, DialogTitle, TextField, DialogContent, Checkbox, FormControlLabel} from "@mui/material";
 import React, {useEffect, useState} from "react";
@@ -6,17 +7,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {updateRoom, getRoomById, getRooms} from "../features/rooms/roomsSlice";
 import Loading from "../components/Loading";
 import {toast} from "react-toastify";
-import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutlined';
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import Footer from "../components/Footer";
 
-//TODO changer les icons
-
-
+//Instanciation du composent
 const ModifyRoom = () => {
 
+    //Déclaration des constantes et des states
     const { rooms, room, isLoading, isSuccess, isError, message } = useSelector((state) => state.rooms);
     const [formData, setFormData] = useState({
         name: '',
@@ -27,24 +26,18 @@ const ModifyRoom = () => {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const { name, description, isActive } = formData;
-    const { user } = useSelector((state)=> state.auth);
+
+    //Gestion du clique pour la modal
     const handleCloseModal = () => {setOpen(false)};
     const handleOpenModal = () => {setOpen(true)}
 
-
+    //Charge les rooms depuis la BDD dans redux
+    //@Dépendance: dispatch
     useEffect(() => {
         dispatch(getRooms());
     }, [dispatch]);
 
-    useEffect(() => {
-
-        if(!user) {
-            navigate('/')
-        }
-
-    }, [user, navigate, dispatch])
-
-
+    //Capture les inputs pour la modification dans le formulaire
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -52,6 +45,7 @@ const ModifyRoom = () => {
         }))
     };
 
+    //Capture la checkbox pour activer une salle
     const onCheck = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -59,12 +53,12 @@ const ModifyRoom = () => {
         }))
     };
 
-
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
-
+    //JSX
     return (
         <>
             <Header />

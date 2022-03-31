@@ -1,3 +1,4 @@
+//Imports
 import {Box, Button, Card, CardContent, Checkbox, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, ListItem, Typography} from "@mui/material"
 import Header from "../components/Header";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
@@ -12,10 +13,10 @@ import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import Footer from "../components/Footer";
 
-//TODO change icons
-
+//Instanciation du composent
 const AddRoomToGm = () => {
 
+    //Déclaration des variables et states
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
@@ -23,19 +24,23 @@ const AddRoomToGm = () => {
     const [roomChecked, setRoomChecked] = useState([]);
     let roomsToSend = [];
 
+    //Gestion des cliques sur la modal
     const handleOpenModal = () => {setOpen(true)};
     const handleCloseModal = () => {setOpen(false)};
 
+    //Charge les utilisateurs depuis la BDD pour redux
+    //@Dépendance: dispatch
     useEffect(() => {
         dispatch(getUsers())
 
     }, [dispatch])
 
+    //Gère le succes ou l'echec de la requête en BDD
+    //@Dépendance: isSucces, dispatch, isError, message
     useEffect(() => {
         if(isSuccess) {
             dispatch(getUsers())
             dispatch(reset())
-
         }
 
         if(isError) {
@@ -43,11 +48,11 @@ const AddRoomToGm = () => {
             toast.error(message)
             dispatch(getUsers())
             dispatch(reset())
-
         }
 
     },[isSuccess, isError, dispatch, message])
 
+    //Gère les checkbox des room dans le formulaires
     const onCheckRoom = (e, value) => {
         e.preventDefault()
 
@@ -65,6 +70,7 @@ const AddRoomToGm = () => {
         }
     }
 
+    //Gère l'envoie du formulaire en BDD
     const OnSubmit = (e, id) => {
         e.preventDefault();
 
@@ -82,10 +88,12 @@ const AddRoomToGm = () => {
         setRoomChecked([])
     }
 
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
+    //JSX
     return (
         <>
             <Header />

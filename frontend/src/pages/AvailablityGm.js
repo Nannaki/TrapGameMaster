@@ -1,3 +1,4 @@
+//Imports
 import Header from "../components/Header";
 import {Box, Card, FormControl, InputLabel, Select, Typography, MenuItem, FormHelperText, Button} from "@mui/material";
 import ScheduleDays from "../components/SheduleDays"
@@ -13,8 +14,10 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import Footer from "../components/Footer";
 
+//Instaciation du composent
 const AvailablityGm = () => {
 
+    //Déclaration de constantes et states
     let today = new Date();
     const [formData, setFormData] = useState( {
         month: today.getMonth(),
@@ -31,7 +34,8 @@ const AvailablityGm = () => {
     const dayAvailable = [];
     const id = JSON.parse(localStorage.getItem("user"));
 
-
+    //Charge les jours du mois et l'utilisateur depuis la BDD pour redux
+    //@Dépendance: dispatch, id
     useEffect(() => {
 
         dispatch(getActualsMonths())
@@ -39,7 +43,8 @@ const AvailablityGm = () => {
 
     }, [dispatch, id._id])
 
-
+    //Gère le succès ou l'echec de la requête en BDD
+    //@Dépendance: isSuccess, dispatch, navigate, isError, message, id
     useEffect(() => {
         if(isSuccess) {
             dispatch(reset())
@@ -56,6 +61,7 @@ const AvailablityGm = () => {
         }
     }, [isSuccess, isError, dispatch, message, navigate, id._id])
 
+    //Gère les inputs pour le formulaire d'horaire
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -63,6 +69,7 @@ const AvailablityGm = () => {
         }))
     };
 
+    //Gère l'envoie de la vue avec les jours dans le mois
     const onSubmit = (e) => {
         e.preventDefault()
         const dateData = {
@@ -74,6 +81,7 @@ const AvailablityGm = () => {
         setHidden(false)
     }
 
+    //Gère l'envoie des disponniblitiés
     const handleAvailablityForm = (e) => {
         e.preventDefault()
 
@@ -95,12 +103,10 @@ const AvailablityGm = () => {
             chooseYear: year.toString(),
             availblity: dayAvailable
         }
-
-
        dispatch(registerUserAvailblity(availblity));
-
     }
 
+    //Fonction de traitement des tableaux de jour, et du format du jour
     if(days.local) {
         let unchangedData = [];
         days.unchanged.forEach((day, index) => {
@@ -120,11 +126,12 @@ const AvailablityGm = () => {
         })
     }
 
-
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
+    //JSX
     return (
         <>
             <Header />

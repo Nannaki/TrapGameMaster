@@ -1,3 +1,4 @@
+//Imports
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
@@ -12,9 +13,10 @@ import Loading from "../components/Loading";
 import {getRooms} from "../features/rooms/roomsSlice";
 import Footer from "../components/Footer";
 
-
+//Instanciation du composent
 const RegisterGm = () => {
 
+    //Déclarations constantes et states
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -31,11 +33,13 @@ const RegisterGm = () => {
     const [roomChecked, setRoomChecked] = useState([]);
 
 
+    //Charge les rooms depuis BDD dans redux
+    //Dépendance: Dispatch
     useEffect(() => {
         dispatch(getRooms())
     }, [dispatch])
 
-
+    //Capture les inputs du formulaire d'enregistrement
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -43,7 +47,7 @@ const RegisterGm = () => {
         }))
     };
 
-
+    //Capture le checkbox admin du formulaire d'enregistrement
     const onCheck = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -51,7 +55,7 @@ const RegisterGm = () => {
         }))
     }
 
-
+    //Capture les checkbox de salles du formulaire d'enregistrement
     const onCheckRoom = (e, value) => {
         e.preventDefault()
 
@@ -69,7 +73,8 @@ const RegisterGm = () => {
         }
     }
 
-
+    //Affichage des erreurs et reset de states redux
+    //@Dépendance: isError, message, dispatch
     useEffect(() => {
         if(isError) {
             toast.error(message)
@@ -77,9 +82,11 @@ const RegisterGm = () => {
 
         dispatch(reset());
 
-    }, [user, isError, isSuccess, message, navigate, dispatch])
+    }, [isError,message,dispatch])
 
 
+    //Gestion du formulaire pour envoie en BDD
+    //Affichage du succès
     const onSubmit = (e) => {
         e.preventDefault();
 
@@ -107,10 +114,12 @@ const RegisterGm = () => {
     }
 
 
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
+    //JSX
     return (
         <>
             <Header/>

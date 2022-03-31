@@ -1,3 +1,4 @@
+//Imports
 import {Box, Typography, Paper, Card, ListItem, IconButton, List, Button, Dialog, DialogTitle, DialogContent, TextField} from "@mui/material";
 import Header from "../components/Header";
 import React, {useEffect, useState} from "react";
@@ -11,9 +12,10 @@ import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import {toast} from "react-toastify";
 import Footer from "../components/Footer";
 
-
+//Instanciation du composant
 const ModifyGm = () => {
 
+    //Déclaration des constantes et des states
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -23,13 +25,18 @@ const ModifyGm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {users, userInfo, message, isSuccess, isError} = useSelector((state) => state.auth)
+
+    //Gestion des clique sur la modal
     const handleOpenModal = () => {setOpen(true)}
     const handleCloseModal = () => {setOpen(false)}
 
+    //Charge les utilisateurs depuis la BDD dans redux
+    //@Dépendance: Dispatch
     useEffect(() => {
         dispatch(getUsers());
     }, [dispatch])
 
+    //Capture les changements dans les inputs pour la modification
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -37,6 +44,7 @@ const ModifyGm = () => {
         }))
     }
 
+    //JSX
     return (
         <>
             <Header />

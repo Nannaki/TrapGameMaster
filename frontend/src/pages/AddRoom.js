@@ -1,3 +1,4 @@
+//Imports
 import Header from '../components/Header';
 import {Box, Button, Card, Checkbox, FormControlLabel, TextField, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
@@ -11,9 +12,10 @@ import Loading from "../components/Loading";
 import {addRoom, reset} from "../features/rooms/roomsSlice";
 import Footer from "../components/Footer";
 
-
+//Instanciation du composent
 const AddRoom = () => {
 
+    //Déclarations des variables et states
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -25,7 +27,7 @@ const AddRoom = () => {
     const { isLoading, isError, message } = useSelector((state) => state.rooms)
     const { user } = useSelector((state) => state.auth)
 
-
+    //Capture les inputs dans le formulaire d'ajout de salle
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -33,6 +35,7 @@ const AddRoom = () => {
         }))
     };
 
+    //Capture la checkbox dans le formulaire d'ajout de salle
     const onCheck = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -40,21 +43,17 @@ const AddRoom = () => {
         }))
     };
 
-    useEffect(() => {
-        if(!user) {
-            navigate('/')
-        }
-    }, [user, navigate])
-
+    //Gère les erreurs de requête BDD
+    //@Dépendance: isError, message, dispatch
     useEffect(() => {
         if(isError) {
             toast.error(message)
         }
-
         dispatch(reset());
 
-    }, [isError, message, navigate, dispatch])
+    }, [isError, message, dispatch])
 
+    //Gère l'envoie du formulaire d'ajout de salle en BDD
     const onSubmit = (e) => {
         e.preventDefault();
 
@@ -63,16 +62,17 @@ const AddRoom = () => {
             description,
             isActive
         }
-
             dispatch(addRoom(roomData));
             navigate('/rooms')
             toast.success('La nouvelle salle a bien été enregistrée');
         }
 
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
+    //JSX
     return (
         <>
             <Header />

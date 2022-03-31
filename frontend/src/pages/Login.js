@@ -1,3 +1,4 @@
+//Imports
 import React, {useEffect, useState} from 'react';
 import {Box, Button, Paper, TextField, Typography} from "@mui/material";
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
@@ -7,8 +8,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import Loading from "../components/Loading";
 
+//Instanciation du composent
 const Login = () => {
 
+    //Déclaration des constantes et des states
     const [formData, setFormData] = useState({
         email: '',
         password:'',
@@ -17,6 +20,8 @@ const Login = () => {
     const dispatch = useDispatch();
     const { user, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth);
 
+    //Affiche les erreurs
+    //@Dépendance: Dispatch, isError, message
     useEffect(() => {
         if(isError) {
             toast.error(message)
@@ -24,8 +29,9 @@ const Login = () => {
 
         dispatch(reset())
 
-    }, [user, isError, isSuccess, message, dispatch])
+    }, [isError, message, dispatch])
 
+    //Capture les changements dans les inputs de login
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -33,6 +39,7 @@ const Login = () => {
         }))
     };
 
+    //Gestion de l'envoie du formulaire pour traitement en BDD
     const onSubmit = (e) => {
         e.preventDefault();
 
@@ -43,10 +50,12 @@ const Login = () => {
         dispatch(login(userData))
     }
 
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
+    //JSX
     return (
     <>
         <Typography

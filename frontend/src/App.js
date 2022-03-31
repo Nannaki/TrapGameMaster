@@ -1,4 +1,3 @@
-
 //Imports
 import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
@@ -30,7 +29,6 @@ const App = () => {
 
     //Recupère les states de redux
     const {user} = useSelector(state=>state.auth)
-    const {loading} = useSelector(state => state.socketSlice)
 
   return (
       <>
@@ -69,4 +67,5 @@ const App = () => {
   );
 };
 
+//Exports
 export default App;

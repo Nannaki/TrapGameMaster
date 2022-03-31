@@ -1,3 +1,4 @@
+//Imports
 import {Box, IconButton, List, ListItem, Typography, Paper, Card, Button} from "@mui/material";
 import Header from "../components/Header";
 import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
@@ -11,20 +12,26 @@ import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import Loading from "../components/Loading";
 import Footer from "../components/Footer";
 
+//Instanciation du composent
 const DeleteGm = () => {
 
+    //Déclaration de constantes et states
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const { users, isLoading } = useSelector((state) => state.auth);
 
+    //Charge les utilisateurs depuis la BDD pour redux
+    //@Dépendance: dispatch
     useEffect(() => {
         dispatch(getUsers());
     }, [dispatch])
 
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
+    //JSX
     return (
         <>
             <Header />

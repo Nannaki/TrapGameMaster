@@ -1,3 +1,4 @@
+//Imports
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Header from "../components/Header";
@@ -11,17 +12,19 @@ import Loading from "../components/Loading";
 import React from "react";
 import Footer from "../components/Footer";
 
+//Instanciation du composent
 const Rooms = () => {
 
+    //Déclarations constantes et states
     const navigate = useNavigate();
-    const { user } = useSelector((state) => state.auth);
     const { isLoading } = useSelector((state) => state.rooms)
 
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
-
+    //JSX
     return (
         <>
             <Header />
@@ -96,7 +99,5 @@ const Rooms = () => {
         </>
     );
 }
-
-
 
 export default Rooms;

@@ -1,3 +1,4 @@
+//Imports
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
@@ -10,23 +11,27 @@ import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import Loading from "../components/Loading";
 import Footer from "../components/Footer";
 
-
+//Instanciation du composent
 const DeleteRoom = () => {
 
+    //Déclaration de constante et states
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { rooms, isLoading } = useSelector((state) => state.rooms);
     const { user } = useSelector((state)=> state.auth);
 
+    //Charge les rooms depuis la BDD pour redux
+    //Dépendance: dispatch
     useEffect(() => {
         dispatch(getRooms());
     }, [dispatch])
 
-
+    //Composent de chargement
     if(isLoading) {
         return <Loading />
     }
 
+    //JSX
     return (
         <>
             <Header />
