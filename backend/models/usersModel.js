@@ -21,6 +21,9 @@ const userSchema = mongoose.Schema({
     rooms: {
         type: Array,
     },
+    messages: {
+        type: Array,
+    }
 }, {
     timestamps: true
 })

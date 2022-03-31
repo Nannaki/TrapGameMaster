@@ -83,6 +83,15 @@ const deleteUser = async (userId) => {
     return response.data
 }
 
+//Get messages
+const getMessages = async (userId) => {
+    const response = await axios.post( API_URL + "messages" , userId, {
+        headers: {
+            Authorization: JSON.parse(localStorage.getItem("user")).token
+        },
+    });
+    return response.data
+}
 
 //Login user
 const login = async (userData) => {
@@ -104,6 +113,7 @@ const authService = {
     getUsers,
     getUserById,
     getUnmasterizedRoomFromUser,
+    getMessages,
     updateUser,
     deleteUser,
     addRoomToUser,

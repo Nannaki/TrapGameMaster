@@ -1,7 +1,8 @@
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const {authMiddleware} = require('./middleware/authMiddleware')
+const {authMiddleware} = require('./middleware/authMiddleware');
+const {saveMessagesMiddleware} = require('./middleware/saveMessagesMiddleware');
 const colors = require('colors');
 const dotenv = require('dotenv').config();
 const cors = require('cors');
@@ -46,15 +47,15 @@ io.use(wrap(authMiddleware));
 //Event de connection
 io.on('connection', socket => {
 
-
     socket.on("join_room", (data) => {
         socket.join(data);
-        console.log(`User with ID: ${socket.id} joined room: ${data}`)
     })
 
     socket.on("send_message", (data) => {
+
+        saveMessagesMiddleware(socket.handshake.auth.token, data);
+
         socket.to(data.room).emit("receive_message", data);
-        console.log(data)
 
     })
 

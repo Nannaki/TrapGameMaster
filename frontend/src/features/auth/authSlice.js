@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from './authService';
 
-
 //Get user from localStorage
 const user = JSON.parse(localStorage.getItem('user'));
 
@@ -10,6 +9,7 @@ const initialState = {
     rooms: [],
     userInfo: [],
     unmasterized: [],
+    chatMessages: [],
     user: user ? user : null,
     isError: false,
     isSuccess: false,
@@ -87,6 +87,17 @@ export const deleteRoomOfUser = createAsyncThunk('auth/deleteuserroom', async (u
 export const deleteUser = createAsyncThunk('auth/delete', async (userId, thunkAPI) => {
     try {
         return await authService.deleteUser(userId);
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+//GetMessages
+export const getMessages = createAsyncThunk('auth/messages', async (userId, thunkAPI) =>{
+    try {
+        return await authService.getMessages(userId);
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -248,6 +259,11 @@ export const authSlice = createSlice({
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
+            })
+
+            //Builder getMessage
+            .addCase(getMessages.fulfilled, (state, action) => {
+                state.chatMessages = action.payload
             })
 
             //Builder Login

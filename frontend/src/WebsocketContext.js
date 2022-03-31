@@ -24,7 +24,6 @@ export const WebSocketProvider = props => {
             auth: {
                 token: user.token,
                 admin: user.isAdmin,
-                userName: user.userName,
             }
         });
 

@@ -1,18 +1,27 @@
 import {Chip, Stack, Typography, Box, Paper, Container, FormHelperText, TextField, Button} from "@mui/material";
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
-import {useSelector} from "react-redux";
+import ScrollToBottom from "react-scroll-to-bottom";
+import {useDispatch, useSelector} from "react-redux";
 import {useWebSocket} from "../WebsocketContext";
 import {useEffect, useState} from "react";
+import {getMessages} from "../features/auth/authSlice";
 
 
 const Chat = () => {
 
-    const {user} = useSelector(state => state.auth);
+    const {user, chatMessages} = useSelector(state => state.auth);
     const {ws} = useWebSocket();
+    const dispatch = useDispatch();
     const [currentMessage, setCurrentMessage] = useState("");
-    const [room, setRoom] = useState("")
+    const [room, setRoom] = useState("");
+    const [messageList, setMessageList] = useState([]);
 
     useEffect(() => {
+        dispatch(getMessages({id:user._id}))
+    }, [])
+
+    useEffect(() => {
+
         if(user.isAdmin === true) {
             setRoom("Admin")
         }
@@ -20,10 +29,11 @@ const Chat = () => {
             setRoom("GM")
         }
 
-        console.log(room)
     }, [user, room])
 
-    const sendMessage = async () => {
+
+    const sendMessage = async (e) => {
+        e.preventDefault();
 
         if(currentMessage !== "") {
             const messageData = {
@@ -33,13 +43,14 @@ const Chat = () => {
                 time: new Date(Date.now()).getHours() + ":" +new Date(Date.now()).getMinutes(),
             };
             await ws.emit("send_message", messageData);
+            setMessageList((list) => [...list, messageData]);
             setCurrentMessage("")
         }
     }
 
     useEffect(() => {
         ws.on("receive_message", (data) => {
-            console.log(data) //TODO T'EN ES ICI 39.47 sur vidéo
+            setMessageList((list) => [...list, data]);
         })
     }, [ws])
 
@@ -47,18 +58,18 @@ const Chat = () => {
     return (
         <>
             <Box
-                sx={{p:2, position: "absolute", bottom: 75, right: 20, display:"flex", justifyContent: "center", flexWrap: "wrap", border: "1px solid #ce93d8", borderRadius: "20px", width: {xs:"280px", md: "350px"},}}
+                sx={{p:2, position: "absolute", bottom: 75, right: 20, display:"flex", justifyContent: "center", flexWrap: "wrap", backgroundColor: "#171717", border: "1px solid #ce93d8", width: {xs:"280px", md: "400px"}}}
             >
                 <Typography
                     variant='h6'
                     noWrap
                     component='div'
-                    sx={{mb: 2, borderBottom: "0.5px solid white", color: 'white', textAlign: 'center', fontSize: {xs: '16px', md: '20px'}, width: "80%", cursor:"default"}}
+                    sx={{ borderBottom: "0.5px solid white", color: 'white', textAlign: 'center', fontSize: {xs: '16px', md: '20px'}, width: "80%", cursor:"default"}}
                 >
                     ChatMaster
                 </Typography>
                 <Box
-                    sx={{display:"flex", justifyContent: "center", flexWrap: "wrap", width: "100%"}}
+                    sx={{display:"flex", justifyContent: "center", flexWrap: "wrap", width: "100%", borderBottom: "1px solid white"}}
                 >
                     {user.isAdmin ? (
                     <Stack
@@ -67,13 +78,8 @@ const Chat = () => {
                         sx={{my: 2}}
                     >
                         <Chip
-                            label={"Admin"}
+                            label="Admin"
                             color="info"
-                            variant="contained"
-                        />
-                        <Chip
-                            label="Admin - GM"
-                            color="primary"
                             variant="contained"
                         />
 
@@ -89,73 +95,135 @@ const Chat = () => {
                             color="error"
                             variant="contained"
                         />
-                        <Chip
-                            label="GM - Admin"
-                            color="primary"
-                            variant="contained"
-                        />
                     </Stack>
                 )}
                 </Box>
-                <Container
-                    variant="outlined"
-                    sx={{my: 2, border: "1px solid white", display: "flex", flexWrap: "wrap", justifyContent: "center"}}
-                >
-                    <Paper
-                        variant="outlined"
-                        sx={{my: 2,mr: 6, p:1 ,border: "0.5px solid #43a047", borderRadius: "10px", display: "flex",  flexWrap: "wrap", width: "80%"}}
+                <ScrollToBottom className="message-container">
+                    <Container
+                        sx={{maxHeight: "30vh", my: 2, display: "flex", flexWrap: "wrap", justifyContent: "center"}}
                     >
-                        <Typography
-                            variant="body2"
-                            sx={{textAlign: "left"}}
-                        >
-                            Coucou
-                        </Typography>
-                        <span style={{width: "100%"}}/>
-                        <FormHelperText
-                            sx={{fontSize: "10px", textAlign: "left"}}
-                        >
-                            Jul | 24.03: 12:00
-                        </FormHelperText>
-                    </Paper>
+                        {chatMessages.map((message, index) => (
+                            <>
+                                {message.author === user.name ? (
+                                    <Paper
+                                        key={user._id}
+                                        variant="outlined"
+                                        sx={{my: 4, ml:4, p:1, border: "0.5px solid #ffd54f", borderRadius: "10px" , display: "flex",  flexWrap: "wrap", justifyContent:"right", width: "80%"}}
+                                    >
+                                        <Typography
+                                            key={user.name}
+                                            variant="body2"
+                                            sx={{textAlign: "right"}}
+                                            className="message-container"
+                                        >
+                                            {message.message}
+                                        </Typography>
+                                        <span key={index} style={{width: "100%"}}/>
+                                        <FormHelperText
+                                            key={user.email}
+                                            sx={{fontSize: "10px", textAlign: "right"}}
+                                        >
+                                            {"Vous à " + message.time }
+                                        </FormHelperText>
+                                    </Paper>
+                                ):(
+                                    <Paper
+                                        key={user._id}
+                                        variant="outlined"
+                                        sx={{my: 2, mr:4, p:1, border: "0.5px solid #43a047",  borderRadius: "10px", display: "flex",  flexWrap: "wrap", justifyContent:"left", width: "80%"}}
+                                    >
+                                        <Typography
+                                            key={user.name}
+                                            variant="body2"
+                                            sx={{textAlign:"left"}}
+                                            className="message-container"
+                                        >
+                                            {message.message}
+                                        </Typography>
+                                        <span key={index} style={{width: "100%"}}/>
+                                        <FormHelperText
+                                            key={user.email}
+                                            sx={{fontSize: "10px", textAlign: "left"}}
+                                        >
+                                            {message.author + " à " + message.time }
+                                        </FormHelperText>
+                                    </Paper>
+                                )}
+
+                            </>
+                        ))}
+
+                        {messageList.map((messageContent, index) => (
+                            <>
+                            {messageContent.author === user.name ? (
+                                <Paper
+                                    key={user._id}
+                                    variant="outlined"
+                                    sx={{my: 4, ml:4, p:1, border: "0.5px solid #ffd54f", borderRadius: "10px" , display: "flex",  flexWrap: "wrap", justifyContent:"right", width: "80%"}}
+                                >
+                                    <Typography
+                                        variant="body2"
+                                        sx={{textAlign: "right"}}
+                                        className="message-container"
+                                    >
+                                        {messageContent.message}
+                                    </Typography>
+                                    <span key={index} style={{width: "100%"}}/>
+                                    <FormHelperText
+                                        sx={{fontSize: "10px", textAlign: "right"}}
+                                    >
+                                        {"Vous à " + messageContent.time }
+                                    </FormHelperText>
+                                </Paper>
+                                ):(
+                                <Paper
+                                    key={user._id}
+                                    variant="outlined"
+                                    sx={{my: 2, mr:4, p:1, border: "0.5px solid #43a047",  borderRadius: "10px", display: "flex",  flexWrap: "wrap", justifyContent:"left", width: "80%"}}
+                                >
+                                    <Typography
+                                    variant="body2"
+                                    sx={{textAlign:"left"}}
+                                    className="message-container"
+                                    >
+                                        {messageContent.message}
+                                    </Typography>
+                                    <span key={index} style={{width: "100%"}}/>
+                                    <FormHelperText
+                                    sx={{fontSize: "10px", textAlign: "left"}}
+                                    >
+                                        {messageContent.author + " à " + messageContent.time }
+                                    </FormHelperText>
+                                </Paper>
+                            )}
+                            </>
+                            ))}
                     <span style={{width: "100%"}}/>
-                    <Paper
-                        variant="outlined"
-                        sx={{my: 2, ml:6, p:1 ,border: "0.5px solid #fafafa", borderRadius: "10px", display: "flex", justifyContent: "right", flexWrap: "wrap", width: "80%"}}
-                    >
-                        <Typography
-                            variant="body2"
-                            sx={{textAlign: "right"}}
-                        >
-                            Coucou
-                        </Typography>
-                        <span style={{width: "100%"}}/>
-                        <FormHelperText
-                            sx={{fontSize: "10px", textAlign: "right"}}
-                        >
-                            Jul | 24.03: 12:10
-                        </FormHelperText>
-                    </Paper>
-                </Container>
+                    </Container>
+                </ScrollToBottom>
                 <Box
                     sx={{display: "flex", flexWrap: "noWrap", justifyContent: "center"}}
+                    component="form"
                 >
                     <TextField
                         label="Message"
                         variant="outlined"
                         color="secondary"
                         name="sendMessage"
+                        value={currentMessage}
                         multiline
                         sx={{my:2}}
                         onChange={(e) => {
                             setCurrentMessage(e.target.value)
                         }}
+                        onKeyPress={(e) => {e.key=== "Enter" &&sendMessage(e)}}
 
                     />
                     <Button
                         sx={{fontSize: {xs: "34px", md: "38px"}, my:2}}
                         color="secondary"
-                        onClick={sendMessage}
+                        onClick={(e) => sendMessage(e)}
+                        type="submit"
                     >
                         <ArrowCircleRightOutlinedIcon fontSize={"inherit"}/>
                     </Button>

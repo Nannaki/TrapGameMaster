@@ -6,16 +6,15 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import Footer from "../components/Footer";
 
+
 const DashBoardAdmin = () => {
     const navigate = useNavigate();
     const {user, isLoading } = useSelector((state) => state.auth);
-
 
     useEffect(() => {
         if(!user) {
             navigate('/');
         }
-
     }, [user, navigate])
 
     if(isLoading) {

@@ -68,6 +68,7 @@ const loginUser = asyncHandler( async (req, res) => {
             email: user.email,
             isAdmin: user.isAdmin,
             token,
+            messages: user.messages
         })
     }else {
         res.status(400);
@@ -218,11 +219,15 @@ const deleteRoomFromUser = asyncHandler ( async (req, res) => {
 
 })
 
-// @desc    Get user data
-// @route   GET /api/users/me
+// @desc    Get messages of a user
+// @route   POST /api/users/getMessages
 // @access  Private
-const getMe = asyncHandler( async (req, res) => {
-    res.status(200).json(req.user);
+const getMessages = asyncHandler( async (req,res) => {
+
+    const user = await User.findById(req.body.id)
+    const messages = user.messages
+
+    res.status(201).json(messages)
 })
 
 //Generate JWT
@@ -236,10 +241,10 @@ const generateToken = (id) => {
 module.exports = {
     registerUser,
     loginUser,
-    getMe,
     getUsers,
     getUnmasterizedRoomOfUser,
     getUserById,
+    getMessages,
     updateUser,
     addRoomToUser,
     deleteRoomFromUser,
