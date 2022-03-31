@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import Loading from "../components/Loading";
 import {addRoom, reset} from "../features/rooms/roomsSlice";
+import Footer from "../components/Footer";
 
 
 const AddRoom = () => {
@@ -143,6 +144,7 @@ const AddRoom = () => {
                     </Button>
                 </Card>
             </Box>
+            <Footer />
         </>
     );
 };

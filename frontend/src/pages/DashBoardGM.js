@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
+import Footer from "../components/Footer";
 
 const DashBoardGm = () => {
     const navigate = useNavigate();
@@ -29,6 +30,7 @@ const DashBoardGm = () => {
             >
                 <h1>Bonjour {user ? user.name : null}</h1>
             </Box>
+            <Footer />
         </>
     );
 };

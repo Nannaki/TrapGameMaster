@@ -8,6 +8,7 @@ import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 import Loading from "../components/Loading";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {getUserById} from "../features/auth/authSlice";
+import Footer from "../components/Footer";
 
 const ShowRooms = () => {
 
@@ -155,6 +156,7 @@ const ShowRooms = () => {
                     Retour
                 </Button>
             </Box>
+            <Footer />
         </>
     );
 };

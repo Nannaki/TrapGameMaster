@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {getUserById, getUsers, updateUser} from "../features/auth/authSlice";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import {toast} from "react-toastify";
+import Footer from "../components/Footer";
 
 
 const ModifyGm = () => {
@@ -171,6 +172,7 @@ const ModifyGm = () => {
                     </DialogContent>
                 </Dialog>
             </Box>
+            <Footer />
         </>
     );
 };

@@ -11,6 +11,7 @@ import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
 import Loading from "../components/Loading";
 import React from "react";
+import Footer from "../components/Footer";
 
 
 const Gm = () => {
@@ -114,6 +115,7 @@ const Gm = () => {
                         </Button>
                     </Card>
                 </Box>
+                <Footer />
             </>
         );
     }

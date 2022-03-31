@@ -6,6 +6,7 @@ import {Box, Button, Card, FormHelperText, Paper} from "@mui/material";
 import SchedulerDraggableItemPriorities from "./SchedulerDraggableItemPriorities";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import Footer from "./Footer";
 
 
 if(localStorage.getItem("user")) {
@@ -367,6 +368,7 @@ class SchedulerAdmin extends Component {
                     </Box>
 
                 </Box>
+                <Footer />
             </>
         )
     }

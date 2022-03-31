@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import Loading from "../components/Loading";
+import Footer from "../components/Footer";
 
 const DeleteGm = () => {
 
@@ -77,6 +78,7 @@ const DeleteGm = () => {
                     </Button>
                 </Paper>
             </Box>
+            <Footer />
         </>
     );
 };

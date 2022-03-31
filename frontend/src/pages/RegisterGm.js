@@ -10,6 +10,7 @@ import {register, reset} from "../features/auth/authSlice";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import {getRooms} from "../features/rooms/roomsSlice";
+import Footer from "../components/Footer";
 
 
 const RegisterGm = () => {
@@ -232,6 +233,7 @@ const RegisterGm = () => {
                         </Button>
                     </Card>
                 </Box>
+            <Footer />
         </>
     );
 };

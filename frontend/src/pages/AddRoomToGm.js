@@ -10,6 +10,7 @@ import {toast} from "react-toastify";
 import Loading from "../components/Loading";
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import Footer from "../components/Footer";
 
 //TODO change icons
 
@@ -223,6 +224,7 @@ const AddRoomToGm = () => {
 
                 </Dialog>
             </Box>
+            <Footer />
         </>
     );
 };

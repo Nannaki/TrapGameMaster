@@ -8,6 +8,7 @@ import React, {useEffect} from "react";
 import Header from "../components/Header";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import Loading from "../components/Loading";
+import Footer from "../components/Footer";
 
 
 const DeleteRoom = () => {
@@ -78,7 +79,7 @@ const DeleteRoom = () => {
                         </Button>
                 </Paper>
             </Box>
-
+            <Footer />
         </>
     );
 };

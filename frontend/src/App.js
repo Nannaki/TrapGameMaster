@@ -24,7 +24,6 @@ import EditSchedule from "./pages/EditSchedule";
 import ShowScheduleGm from "./components/ShowScheduleGm";
 import {useSelector} from "react-redux";
 import { WebSocketProvider } from './WebsocketContext';
-import Loading from "./components/Loading";
 
 
 const App = () => {
@@ -66,7 +65,6 @@ const App = () => {
 
           {/* Container for Toastify with css */}
               <ToastContainer theme={"dark"} position={"top-right"} autoClose={2000} transition={Slide}/>
-          {loading ? <Loading  />: null}
       </>
   );
 };

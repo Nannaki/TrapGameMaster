@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const socketSlice = createSlice({
     name: "socketSlice",
     initialState: {
-        loading: true,
+        loading: null,
     },
     reducers: {
         toggleLoading: (state, action) => {

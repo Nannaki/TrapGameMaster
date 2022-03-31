@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "../features/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
+import Footer from "../components/Footer";
 
 
 const ShowGm = () => {
@@ -94,7 +95,9 @@ const ShowGm = () => {
                     Retour
                 </Button>
             </Box>
+            <Footer />
         </>
+
     );
 };
 

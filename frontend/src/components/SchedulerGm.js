@@ -4,6 +4,7 @@ import axios from "axios";
 import {Box, Button, Paper} from "@mui/material";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import Footer from "./Footer";
 
 if(localStorage.getItem("user")) {
     axios.defaults.headers.common = {
@@ -292,10 +293,8 @@ export class SchedulerGm extends Component {
                         }}
                         heightSpec="Max"
                     />
-
-
                 </Box>
-
+                <Footer />
             </>
         )
     }

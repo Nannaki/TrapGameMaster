@@ -11,6 +11,7 @@ import Loading from "../components/Loading";
 import {toast} from "react-toastify";
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
+import Footer from "../components/Footer";
 
 const AvailablityGm = () => {
 
@@ -268,6 +269,7 @@ const AvailablityGm = () => {
                     </Button>
                 </Box> }
             </Box>
+            <Footer />
         </>
     );
 };

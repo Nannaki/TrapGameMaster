@@ -9,6 +9,7 @@ import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutl
 import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
 import Loading from "../components/Loading";
 import React from "react";
+import Footer from "../components/Footer";
 
 const Rooms = () => {
 
@@ -91,6 +92,7 @@ const Rooms = () => {
                     </Button>
                 </Card>
             </Box>
+            <Footer />
         </>
     );
 }

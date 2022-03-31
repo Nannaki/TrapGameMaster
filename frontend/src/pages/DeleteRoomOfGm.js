@@ -9,6 +9,7 @@ import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
 import {toast} from "react-toastify";
 import Loading from "../components/Loading";
+import Footer from "../components/Footer";
 
 const AddRoomTomGm = () => {
 
@@ -105,6 +106,7 @@ const AddRoomTomGm = () => {
                     Retour
                 </Button>
             </Box>
+            <Footer />
         </>
     );
 };

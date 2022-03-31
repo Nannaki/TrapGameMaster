@@ -10,6 +10,7 @@ import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutlined';
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
+import Footer from "../components/Footer";
 
 //TODO changer les icons
 
@@ -216,6 +217,7 @@ const ModifyRoom = () => {
                     </DialogContent>
                 </Dialog>
             </Box>
+            <Footer />
         </>
     );
 };
