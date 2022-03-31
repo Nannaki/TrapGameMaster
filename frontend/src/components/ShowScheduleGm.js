@@ -1,3 +1,4 @@
+//Imports
 import React from 'react';
 import Header from "./Header";
 import {Box, Button, Typography} from "@mui/material";
@@ -6,10 +7,13 @@ import {SchedulerGm} from "./SchedulerGm";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {useNavigate} from "react-router-dom";
 
-const ShowScheduleGm = () => {
+    //Instanciation du composent
+    const ShowScheduleGm = () => {
 
+    //Déclaration de constante
     const navigate = useNavigate()
 
+    //JSX
     return (
         <div>
             <>
@@ -39,7 +43,7 @@ const ShowScheduleGm = () => {
                         Retour
                     </Button>
                 </Box>
-        </>
+            </>
         </div>
     );
 };

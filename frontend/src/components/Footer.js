@@ -1,14 +1,17 @@
+//Import
 import {BottomNavigation, BottomNavigationAction, Box} from "@mui/material";
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import {useState} from "react";
 import Chat from "./Chat";
 
-
+//Instanciation du composent
 const Footer = () => {
 
+    //Déclaration de constantes et states
     const [hidden, setHidden] = useState(true);
     const [value, setValue] = useState('Chat');
 
+    //Affiche ou cache le Chat
     const handleChange = (event, newValue) => {
         if(value === 'Chat') {
             setValue('')
@@ -18,6 +21,7 @@ const Footer = () => {
         }
     };
 
+    //JSX
     return (
         <>
             <Box

@@ -1,3 +1,4 @@
+//Imports
 import React, {Component} from 'react';
 import {DayPilot, DayPilotScheduler} from "daypilot-pro-react";
 import axios from "axios";
@@ -6,16 +7,19 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Footer from "./Footer";
 
+//Ajout de l'utilisateur dans le Header pour l'autorisation d'accès aux pages
 if(localStorage.getItem("user")) {
     axios.defaults.headers.common = {
         Authorization: JSON.parse(localStorage.getItem("user")).token
     };
 }
 
+//Instanciation de la classe étendu de "Component" (props de component)
 export class SchedulerGm extends Component {
     constructor(props) {
         super(props);
 
+        //Déclaration de states du constructeur
         this.state = {
             locale: "fr-ch",
             startDate: DayPilot.Date.today().firstDayOfMonth(),
@@ -41,6 +45,7 @@ export class SchedulerGm extends Component {
             currentEvents: null,
             resourceBubble: new DayPilot.Bubble( {
                 position: "Mouse",
+                //Fonction au chargement, charge un utilisateur pour obtenir des rooms (hover sur le nom du GM dans le shedule)
                 onLoad: async function (args) {
                     args.async = true;
                     const user = await axios.get("http://localhost:5000/api/users/getOne"+args.source.id);
@@ -49,19 +54,18 @@ export class SchedulerGm extends Component {
                         args.loaded()
                     }
                 },
-
             }),
-
         }
-
     }
 
+    //Charge les données utilisateur, évènements et salles au montage du composent
     componentDidMount() {
         this.loadUsers();
         this.loadEvents();
         this.getRoomsAvail();
     }
 
+    //Fonction pour charger les salles depuis la BDD
     async getRoomsAvail() {
         const rooms = await axios.get("http://localhost:5000/api/rooms/show");
         const availRooms = [];
@@ -78,6 +82,7 @@ export class SchedulerGm extends Component {
         return this.setState({rooms: availRooms})
     }
 
+    //Fonction pour charger les utilisateurs depuis la BDD
     async loadUsers() {
         const users = await axios.get("http://localhost:5000/api/users/show");
         const resources = [];
@@ -95,6 +100,8 @@ export class SchedulerGm extends Component {
         return this.setState({resources:resources})
     }
 
+    //Fonction pour charger les évènement depuis la BDD
+    //Permet la navigation sur le Scheduler via les flèches
     async loadEvents() {
         const events = await axios.get("http://localhost:5000/api/schedule/getEvents")
         const previousMonth = await axios.post("http://localhost:5000/api/schedule/getUserAvailblity", {month: DayPilot.Date.today().addMonths(-1).getMonth(), year: DayPilot.Date.today().getYear()});
@@ -173,6 +180,7 @@ export class SchedulerGm extends Component {
         return this.setState({events: finalEvents})
     }
 
+    //Crée les Shifts (9h, 14h, 19h) sur la timeline du Scheduler, selon le mois
     createTimeline() {
 
         let days = DayPilot.Date.today().daysInMonth();
@@ -245,8 +253,10 @@ export class SchedulerGm extends Component {
         return result;
     }
 
+    //JSX
     render() {
 
+        //Charge les configurations du Sheduler
         const {...config} = this.state;
         return (
             <>

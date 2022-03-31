@@ -1,14 +1,16 @@
+//Imports
 import CheckBoxForScheduleAvailablity from "./CheckBoxForScheduleAvailablity";
 import {Container, Typography} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
-
+//Instanciation du composent avec props (parent: Availablity.js)
 const SheduleDays = (props) => {
 
+    //Déclarations de variable et constante
     let shifts = ["T09:00:00", "T14:00:00", "T19:00:00"];
     const [allDay, setAllDay] = useState(false)
 
-
+    //JSX
     return (
         <>
             <Typography

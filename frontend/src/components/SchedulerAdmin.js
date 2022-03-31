@@ -1,3 +1,4 @@
+//Imports
 import React, {Component} from 'react';
 import {DayPilot, DayPilotScheduler} from "daypilot-pro-react";
 import SchedulerDraggableItemRooms from "./SchedulerDraggableItemRooms";
@@ -8,24 +9,26 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Footer from "./Footer";
 
-
+//Ajout de l'utilisateur dans le Header pour l'autorisation d'accès aux pages
 if(localStorage.getItem("user")) {
     axios.defaults.headers.common = {
         Authorization: JSON.parse(localStorage.getItem("user")).token
     };
 }
 
-
+//Instanciation de la classe étendu de "Component" (props de component)
 class SchedulerAdmin extends Component {
     constructor(props) {
         super(props);
 
+        //Déclaration de states du constructeur
         this.state = {
             locale: "fr-ch",
             startDate: DayPilot.Date.today().firstDayOfMonth(),
             days: DayPilot.Date.today().daysInYear(),
             scale: "Manual",
             timeHeaders: [{groupBy: "Month"},{groupBy: "Day", format: "d/M"},{groupBy: "Cell"}],
+            //Permets d'appeler la fonction de suppression d'évènement avec clique droit
             contextMenu: new DayPilot.Menu({
                     items: [
                         {text: "Effacer", onClick: args => this.deleteEvent(args)}
@@ -48,6 +51,7 @@ class SchedulerAdmin extends Component {
             currentEvents: null,
             resourceBubble: new DayPilot.Bubble( {
                 position: "Mouse",
+                //Fonction au chargement, charge un utilisateur pour obtenir des rooms (hover sur le nom du GM dans le shedule)
                 onLoad: async function (args) {
                     args.async = true;
                     const user = await axios.get("http://localhost:5000/api/users/getOne"+args.source.id);
@@ -58,11 +62,13 @@ class SchedulerAdmin extends Component {
                 },
 
             }),
+            //Permet de supprimer un évènement avec un clique droit
             onEventMove: async function (args) {
                 console.log(args)
                 this.events.remove(args.e.data)
                 await axios.delete("http://localhost:5000/api/schedule/deleteEvent"+args.e.data.id)
             },
+            //Permet d'enregister un évènement avec le drag and drop
             onEventMoved: function (args) {
                 args.e.data.id = DayPilot.guid()
                 const eventData = {
@@ -74,23 +80,24 @@ class SchedulerAdmin extends Component {
                     backColor: args.e.data.backColor,
                 }
 
+                //Enregistre les évènements dans la BDD
                 async function addNewEventInBdd(){
                     await axios.post("http://localhost:5000/api/schedule/addNewEventSchedule", eventData)
 
                 }
                addNewEventInBdd()
-
             },
         };
     }
 
+    //Charge les données utilisateur, évènements et salles au montage du composent
     componentDidMount() {
         this.loadUsers();
         this.loadEvents();
         this.getRoomsAvail();
     }
 
-
+    //Fonction pour charger les salles depuis la BDD
     async getRoomsAvail() {
         const rooms = await axios.get("http://localhost:5000/api/rooms/show");
         const availRooms = [];
@@ -107,7 +114,7 @@ class SchedulerAdmin extends Component {
         return this.setState({rooms: availRooms})
     }
 
-
+    //Fonction pour charger les utilisateurs depuis la BDD
     async loadUsers() {
         const users = await axios.get("http://localhost:5000/api/users/show");
         const resources = [];
@@ -125,6 +132,8 @@ class SchedulerAdmin extends Component {
         return this.setState({resources:resources})
     }
 
+    //Fonction pour charger les évènement depuis la BDD
+    //Permet la navigation sur le Scheduler via les flèches
     async loadEvents() {
         const events = await axios.get("http://localhost:5000/api/schedule/getEvents")
         const previousMonth = await axios.post("http://localhost:5000/api/schedule/getUserAvailblity", {month: DayPilot.Date.today().addMonths(-1).getMonth(), year: DayPilot.Date.today().getYear()});
@@ -203,6 +212,7 @@ class SchedulerAdmin extends Component {
         return this.setState({events: finalEvents})
     }
 
+    //Retire l'évènement du Scheduler
     async deleteEvent(args) {
         this.scheduler.events.remove(args.source)
         await axios.delete("http://localhost:5000/api/schedule/deleteEvent"+args.source.data.id)
@@ -210,6 +220,7 @@ class SchedulerAdmin extends Component {
 
     }
 
+    //Crée les Shifts (9h, 14h, 19h) sur la timeline du Scheduler, selon le mois
     createTimeline() {
 
         let days = DayPilot.Date.today().daysInMonth();
@@ -282,14 +293,13 @@ class SchedulerAdmin extends Component {
         return result;
     }
 
+    //JSX
     render() {
-
         const rooms = this.state.rooms;
         const {...config} = this.state;
 
         return (
             <>
-
                 <Box
                     sx={{display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center"}}
                 >
@@ -366,7 +376,6 @@ class SchedulerAdmin extends Component {
                             </FormHelperText>
                         </Card>
                     </Box>
-
                 </Box>
                 <Footer />
             </>

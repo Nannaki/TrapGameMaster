@@ -1,17 +1,21 @@
+//Imports
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import React, {useState} from 'react';
 import {Checkbox} from "@mui/material";
 import {green, amber} from "@mui/material/colors";
 
+//Instanciation du composent avec props (parent : ScheduleDays.js)
 const CheckBoxForScheduleAvailablity = (props) => {
 
+    //Déclaration de constantes et states
     const [dispo, setDispo] = useState(true);
     const [dispoAllDay, setDispoAllDay] = useState(false)
     const [checkedAllDay, setCheckedAllDay] = useState(true)
     const [icon, setIcon] = useState(<EventAvailableIcon/>);
     const [checked, setChecked] = useState(false);
 
+    //Gère les icons et state des checkbox
     const handleDispo = (e) => {
         if(e.target.value === false) {
             setDispo(true);
@@ -25,7 +29,7 @@ const CheckBoxForScheduleAvailablity = (props) => {
         }
     }
 
-
+    //JSX
     return (
         <>
             {!props.alldayCheck ? (
@@ -42,7 +46,6 @@ const CheckBoxForScheduleAvailablity = (props) => {
                         color: amber[700],
                     },
                     '& .MuiSvgIcon-root': { fontSize: {xs: "28px", md:"32px"} },
-
                 }}
             />): (
                 <Checkbox
@@ -56,7 +59,6 @@ const CheckBoxForScheduleAvailablity = (props) => {
                         '&.Mui-checked': {
                             color: amber[700]},
                         '& .MuiSvgIcon-root': { fontSize: {xs: "28px", md:"32px"} },
-
                     }}
                 />
             )}

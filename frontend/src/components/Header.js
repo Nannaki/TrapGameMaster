@@ -1,3 +1,4 @@
+//Imports
 import {AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuItem, Button} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, {useState} from "react";
@@ -6,8 +7,10 @@ import { useNavigate} from "react-router-dom";
 import {logout, reset} from "../features/auth/authSlice";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
-
+//Instanciation du composent
 const Header = () => {
+
+    //Déclaration de constantes et states
     const [anchorNav, setAnchorNav] = useState(null);
     const {user} = useSelector((state) => state.auth);
     const optionsAdmin = ['Planning', 'Salles', 'GM']
@@ -15,14 +18,11 @@ const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleOpenBurgerMenu = (e) => {
-        setAnchorNav(e.currentTarget);
-    };
+    //Gestion du burger menu
+    const handleOpenBurgerMenu = (e) => {setAnchorNav(e.currentTarget)};
+    const handleCloseBurgerMenu = () => {setAnchorNav(null)};
 
-    const handleCloseBurgerMenu = () => {
-        setAnchorNav(null);
-    };
-
+    //Gestion de clique de navigation
     const handleNavigate = (e) => {
         if(e.target.value === 'GM') {
             navigate('/gm')
@@ -48,12 +48,14 @@ const Header = () => {
         }
     }
 
+    //Gestion de la déconection de l'utilisateur
     const onLogout = () => {
         dispatch(logout());
         dispatch(reset());
         navigate('/');
     }
 
+    //JSX
     if (user) {
         return (
             <AppBar elevation={12} position="fixed" enableColorOnDark sx={{ backgroundColor: "#358135" }}>
@@ -184,6 +186,5 @@ const Header = () => {
         return null;
     }
 }
-
 
 export default Header;

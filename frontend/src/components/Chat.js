@@ -1,3 +1,4 @@
+//Imports
 import {Chip, Stack, Typography, Box, Paper, Container, FormHelperText, TextField, Button} from "@mui/material";
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import ScrollToBottom from "react-scroll-to-bottom";
@@ -6,9 +7,10 @@ import {useWebSocket} from "../WebsocketContext";
 import {useEffect, useState} from "react";
 import {getMessages} from "../features/auth/authSlice";
 
-
+//Instanciation du composent
 const Chat = () => {
 
+    //Déclarations de constantes et states
     const {user, chatMessages} = useSelector(state => state.auth);
     const {ws} = useWebSocket();
     const dispatch = useDispatch();
@@ -16,10 +18,13 @@ const Chat = () => {
     const [room, setRoom] = useState("");
     const [messageList, setMessageList] = useState([]);
 
+    //Charge les conversations d'un utilisateur selon son id
     useEffect(() => {
         dispatch(getMessages({id:user._id}))
     }, [])
 
+    //Permet de déterminer la room (Socket.io) de l'utilisateur
+    //@Dépendance: user, room
     useEffect(() => {
 
         if(user.isAdmin === true) {
@@ -32,6 +37,7 @@ const Chat = () => {
     }, [user, room])
 
 
+    //Permet de gérer l'envoie d'un message dans le chat depuis l'input
     const sendMessage = async (e) => {
         e.preventDefault();
 
@@ -48,13 +54,14 @@ const Chat = () => {
         }
     }
 
+    //Permet d'afficher les messages reçus dans le chat
     useEffect(() => {
         ws.on("receive_message", (data) => {
             setMessageList((list) => [...list, data]);
         })
     }, [ws])
 
-
+    //JSX
     return (
         <>
             <Box
@@ -92,7 +99,7 @@ const Chat = () => {
                     >
                         <Chip
                             label="GM"
-                            color="error"
+                            sx={{ backgroundColor: "#8d6e63"}}
                             variant="contained"
                         />
                     </Stack>
@@ -228,7 +235,6 @@ const Chat = () => {
                         <ArrowCircleRightOutlinedIcon fontSize={"inherit"}/>
                     </Button>
                 </Box>
-
             </Box>
         </>
     );

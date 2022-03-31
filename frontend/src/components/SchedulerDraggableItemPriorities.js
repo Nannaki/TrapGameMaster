@@ -1,8 +1,12 @@
+//Imports
 import React from 'react';
 import {DayPilot} from "daypilot-pro-react";
 import {Chip} from "@mui/material";
 
+//Instanciation du composent avec props (parent: SchedulerAdmin.js)
 const SchedulerDraggableItemPriorities = (props) => {
+
+    //JSX
     return (
         <>
             <Chip
@@ -12,6 +16,7 @@ const SchedulerDraggableItemPriorities = (props) => {
                     if(!element) {
                         return;
                     }
+                    //makeDraggable provient de "DayPilot" et rend un composent draggable
                     DayPilot.Scheduler.makeDraggable({
                         element: element,
                         text: props.text.substring(0,3),

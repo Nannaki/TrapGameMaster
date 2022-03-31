@@ -1,6 +1,10 @@
+//Imports
 import {Box, CircularProgress} from "@mui/material";
 
+//Instanciation du composent
 const Loading = () => {
+
+    //JSX
     return (
         <>
             <Box

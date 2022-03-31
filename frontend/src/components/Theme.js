@@ -1,10 +1,11 @@
+//Imports
 import {createTheme, ThemeProvider} from "@mui/material";
 import {CssBaseline} from "@mui/material";
-import {green, amber, purple, grey} from "@mui/material/colors";
+import {green, amber, purple, grey, brown} from "@mui/material/colors";
 
-
-
+//Instanciation du Theme MUI
 const Theme = createTheme( {
+    //Gestion des couleurs pour les composents
     palette: {
         mode: "dark",
         primary: {
@@ -19,7 +20,11 @@ const Theme = createTheme( {
         lightHover: {
             main: grey[50]
         },
+        gmColor: {
+            main: brown[400]
+        },
     },
+    //Styles pour les inputs
     components: {
         MuiOutlinedInput: {
             styleOverrides: {
@@ -34,6 +39,7 @@ const Theme = createTheme( {
     }
 });
 
+//Export du provider pour le theme MUI
 export default ({ children }) => (
     <ThemeProvider theme={Theme}>
         <CssBaseline />
