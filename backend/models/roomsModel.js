@@ -7,6 +7,7 @@ const roomSchema = mongoose.Schema({
         type: String,
         required: [true, 'Merci d\'indiquer le nom de la salle'],
         unique: true,
+        trim: true
     },
     description: {
         type: String,

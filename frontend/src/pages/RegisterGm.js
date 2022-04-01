@@ -107,8 +107,10 @@ const RegisterGm = () => {
             dispatch(register(userData));
         }
 
-        navigate('/gm')
-        toast.success('Le nouveau GameMaster a bien été enregistré');
+        if(isSuccess) {
+            navigate('/gm')
+            toast.success('Le nouveau GameMaster a bien été enregistré');
+        }
 
         formData.rooms= [];
     }

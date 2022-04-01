@@ -25,14 +25,12 @@ const getRoomById = asyncHandler( async (req, res) =>{
 const registerRoom = asyncHandler( async (req, res) => {
     const { name, description, isActive } = req.body;
     if(!name) {
-        res.status(400);
-        throw new Error('Merci de remplir les champs marqués d\'une étoile');
+        res.status(400).json({message:'Merci de remplir les champs marqués d\'une étoile'});
     }
 
     const roomExists = await Room.findOne({name});
     if(roomExists) {
-        res.status(400);
-        throw new Error('La salle existe déjà');
+        res.status(400).json({message:'La salle existe déjà'});
     }
     const room = await Room.create({
         name,
@@ -48,8 +46,7 @@ const registerRoom = asyncHandler( async (req, res) => {
         })
     }
     else {
-        res.status(400);
-        throw new Error('Données invalides');
+        res.status(400).json({message:'Données invalides'});
     }
 });
 
@@ -58,8 +55,7 @@ const registerRoom = asyncHandler( async (req, res) => {
 const updateRoom = asyncHandler(async (req,res) => {
     const room = await Room.findById(req.body.id);
     if(!room) {
-        res.status(400);
-        throw new Error('La salle n\'a pas été trouvée');
+        res.status(400).json({message:'La salle n\'a pas été trouvée'});
     }
 
     if(req.body.data.name === '') {
@@ -83,8 +79,7 @@ const updateRoom = asyncHandler(async (req,res) => {
 const deleteRoom = asyncHandler(async (req,res) => {
     const room = await Room.findById(req.params.id);
     if(!room) {
-        res.status(400);
-        throw new Error('La salle n\'a pas été trouvée');
+        res.status(400).json({message:'La salle n\'a pas été trouvée'});
     }
     await room.remove();
     res.status(200).json({id: req.params.id});

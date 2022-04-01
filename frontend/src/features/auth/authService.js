@@ -42,7 +42,6 @@ const register = async (userData) => {
         },
     });
     return response.data;
-
 };
 
 //Fonction qui modifie un utilisateur, appel en BDD

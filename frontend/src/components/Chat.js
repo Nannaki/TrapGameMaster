@@ -169,6 +169,7 @@ const Chat = () => {
                                     sx={{my: 4, ml:4, p:1, border: "0.5px solid #ffd54f", borderRadius: "10px" , display: "flex",  flexWrap: "wrap", justifyContent:"right", width: "80%"}}
                                 >
                                     <Typography
+                                        key={user.name}
                                         variant="body2"
                                         sx={{textAlign: "right"}}
                                         className="message-container"
@@ -177,6 +178,7 @@ const Chat = () => {
                                     </Typography>
                                     <span key={index} style={{width: "100%"}}/>
                                     <FormHelperText
+                                        key={user.email}
                                         sx={{fontSize: "10px", textAlign: "right"}}
                                     >
                                         {"Vous à " + messageContent.time }

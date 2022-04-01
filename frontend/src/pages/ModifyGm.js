@@ -7,7 +7,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import {useDispatch, useSelector} from "react-redux";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {useNavigate} from "react-router-dom";
-import {getUserById, getUsers, updateUser} from "../features/auth/authSlice";
+import {getUserById, getUsers, reset, updateUser} from "../features/auth/authSlice";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import {toast} from "react-toastify";
 import Footer from "../components/Footer";
@@ -43,6 +43,18 @@ const ModifyGm = () => {
             [e.target.name]: e.target.value,
         }))
     }
+
+    useEffect(() => {
+        if(isError) {
+            toast.error(message)
+        }
+
+        if(isSuccess) {
+            navigate('/gm')
+            toast.success('Les données du GameMaster '+userInfo.name+' a bien été mis à jour')
+            dispatch(reset())
+        }
+    }, [isError, isSuccess, message, dispatch])
 
     //JSX
     return (
@@ -111,14 +123,6 @@ const ModifyGm = () => {
                             id: userInfo._id
                         }));
 
-                        if(isError) {
-                            toast.error(message)
-                        }
-
-                        if(isSuccess) {
-                            navigate('/gm')
-                            toast.success('Les données du GameMaster '+userInfo.name+' a bien été mis à jour')
-                        }
                     }}
                     onClose={handleCloseModal}
                     onBackdropClick={handleCloseModal}

@@ -88,8 +88,7 @@ const getEventsFromSchedule = asyncHandler( async (req, res) => {
     const events = await DataScheduler.find()
 
     if(!events) {
-        res.status(400)
-        throw new Error("Aucun évènements trouvés")
+        res.status(400).json({message: "Aucun évènements trouvés"})
     }
     else {
         res.status(201).json(events)

@@ -10,15 +10,26 @@ const Rooms = require('../models/roomsModel');
 const registerUser = asyncHandler( async (req, res) => {
     const { name, email, password, isAdmin, rooms} = req.body;
 
+    //Validation
     if(!name || !email || !password || isAdmin === null) {
-        res.status(400)
-        throw new Error('Merci de remplir tous les champs')
+        res.status(400).json({message:"Merci de remplir tous les champs"})
     }
-    const userExists = await User.findOne({email});
 
+    if(!name.match(/^[\p{L} ,.'-]+$/u)) {
+        res.status(400).json({message:"le nom est incorrecte"})
+    }
+
+    if(!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+        res.status(400).json({message:"l'adresse email est incorrecte"})
+    }
+
+    if(password.length < 4) {
+        res.status(400).json({message:"le mot de passe doit contenir au moins 4 caractères"})
+    }
+
+    const userExists = await User.findOne({email});
     if(userExists) {
-        res.status(400)
-        throw new Error('L\'utilisateur existe déjà')
+        res.status(400).json({message:'L\'utilisateur existe déjà'})
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -43,8 +54,7 @@ const registerUser = asyncHandler( async (req, res) => {
         })
 
     }else {
-        res.status(400);
-        throw new Error('Données d\'utilisateur invalides');
+        res.status(400).json({message: "Données d\'utilisateur invalides"});
     }
 })
 
@@ -66,8 +76,7 @@ const loginUser = asyncHandler( async (req, res) => {
         })
 
     }else {
-        res.status(400);
-        throw new Error('Données incorrectes');
+        res.status(400).json({message:"Vos données de connexion sont incorrectes"});
     }
 })
 
@@ -84,8 +93,7 @@ const getUserById = asyncHandler( async (req, res) => {
     const user = await User.findById(req.params.id)
 
     if(!user) {
-        res.status(400);
-        throw new Error('L\'utilisateur n\'a pas été trouvé');
+        res.status(400).json({message:'L\'utilisateur n\'a pas été trouvé'});
     }
     res.status(200).json(user);
 })
@@ -100,8 +108,7 @@ const getUnmasterizedRoomOfUser = asyncHandler( async (req, res) => {
     const roomsUnmasterized = [];
 
     if(!user) {
-        res.status(400);
-        throw new Error('L\'utilisateur n\'a pas été trouvé');
+        res.status(400).json({message:'L\'utilisateur n\'a pas été trouvé'});
     }
 
     for (let i = 0; i < allRooms.length; i++) {
@@ -127,20 +134,34 @@ const getUnmasterizedRoomOfUser = asyncHandler( async (req, res) => {
 // @route   PUT /api/users/modifyuser
 const updateUser = asyncHandler( async (req, res) => {
     const user = await User.findById(req.body.id)
+    let error;
 
     if(req.body.data.name === '') {
         req.body.data.name = user.name
+
+        if(!req.body.data.email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+            error = true;
+            res.status(400).json({message:"l'adresse email est incorrecte"})
+        }
     }
 
     if(req.body.data.email === '') {
         req.body.data.email = user.email
+
+        if (!req.body.data.name.match(/^[\p{L} ,.'-]+$/u)) {
+            error = true
+            res.status(400).json({message:"le nom est incorrecte"})
+        }
     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.body.id, {
-        name: req.body.data.name,
-        email: req.body.data.email,
-    })
-    res.status(200).json(updatedUser)
+    if(!error) {
+        const updatedUser = await User.findByIdAndUpdate(req.body.id, {
+            name: req.body.data.name,
+            email: req.body.data.email,
+        })
+        res.status(200).json(updatedUser)
+    }
+
 })
 
 // @desc    Supprimer un utilisateur
@@ -149,8 +170,7 @@ const deleteUser = asyncHandler( async (req, res) => {
     const user = await User.findById(req.params.id);
 
     if(!user) {
-        res.status(400);
-        throw new Error('L\'utilisateur recherché n\'existe pas');
+        res.status(400).json({message:'L\'utilisateur recherché n\'existe pas'});
     }
     await user.remove();
     res.status(200).json({id: req.params.id});
@@ -164,8 +184,7 @@ const addRoomToUser = asyncHandler( async (req, res) => {
     const addedRoom = req.body.roomsToSend;
 
     if(!user) {
-        res.status(400)
-        throw new Error('L\'utilisateur n\'a pas été trouvé')
+        res.status(400).json({message:'L\'utilisateur n\'a pas été trouvé'})
     }
 
     for (let i = 0; i < addedRoom.length; i++) {
