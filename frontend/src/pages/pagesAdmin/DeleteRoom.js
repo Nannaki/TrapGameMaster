@@ -1,29 +1,29 @@
 //Imports
-import {Box, IconButton, List, ListItem, Typography, Paper, Card, Button} from "@mui/material";
-import Header from "../components/Header";
-import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
-import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {getUsers, deleteUser} from "../features/auth/authSlice"
-import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import {useDispatch, useSelector} from "react-redux";
+import {toast} from "react-toastify";
+import {getRooms, deleteRoom} from "../../store/slices/rooms/roomsSlice";
+import {Box, IconButton, List, ListItem, Typography, Paper, Card, Button} from "@mui/material";
+import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
+import React, {useEffect} from "react";
+import Header from "../../components/header/Header";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
-import Loading from "../components/Loading";
-import Footer from "../components/Footer";
+import Loading from "../../components/utils/Loading";
+import Footer from "../../components/footer/Footer";
 
 //Instanciation du composent
-const DeleteGm = () => {
+const DeleteRoom = () => {
 
-    //Déclaration de constantes et states
+    //Déclaration de constante et states
+    const navigate = useNavigate();
     const dispatch = useDispatch();
-    const navigate = useNavigate()
-    const { users, isLoading } = useSelector((state) => state.auth);
+    const { rooms, isLoading } = useSelector((state) => state.rooms);
+    const { user } = useSelector((state)=> state.auth);
 
-    //Charge les utilisateurs depuis la BDD pour redux
-    //@Dépendance: dispatch
+    //Charge les rooms depuis la BDD pour redux
+    //Dépendance: dispatch
     useEffect(() => {
-        dispatch(getUsers());
+        dispatch(getRooms());
     }, [dispatch])
 
     //Composent de chargement
@@ -44,13 +44,13 @@ const DeleteGm = () => {
                     component='div'
                     sx={{mt: 3, mb:3, color: 'white', textAlign: 'center', fontSize: {xs: '18px', md: 'xx-large'}, width: "100%"}}
                 >
-                    <PersonRemoveOutlinedIcon sx={{ fontSize: {xs: "18px", md: "xx-large"}}}/> Supprimer une GM du système
+                    <NoMeetingRoomOutlinedIcon sx={{ fontSize: {xs: "18px", md: "xx-large"}}}/> Supprimer une salle du système
                 </Typography>
                 <Paper elevation={6} sx={{ width: {xs: "225px", md: "300px"} }}>
                     <List>
-                        {users.map((user) => (
+                        {rooms.map((room) => (
                             <Card
-                                key={user.name}
+                                key={room.name}
                                 sx={{ maxWidth: 345, m:4, border: "1px solid #f2f2f2"}}
                                 elevation={18}
                             >
@@ -59,30 +59,29 @@ const DeleteGm = () => {
                                     variant="outlined"
                                     secondaryAction={
                                     <IconButton
-                                        onClick={() => dispatch(deleteUser(user._id)) && toast.success('Le gameMaster a bien été supprimé du système') && navigate('/deletegm')}
+                                        onClick={user.isAdmin ? () => {dispatch(deleteRoom(room._id)) && toast.success('La salle '+room.name+' a bien été supprimée')}: () => {navigate('/')}}
                                         variant="outlined"
                                         color="error"
                                         edge="end"
-                                        aria-label="delete"
-                                    >
-                                        <DeleteForeverOutlinedIcon sx={{ fontSize: {xs: "28px", md: "xx-large"}}} />
+                                        aria-label="delete">
+                                        <NoMeetingRoomOutlinedIcon sx={{ fontSize: {xs: "28px", md: "xx-large"}}} color = "error"/>
                                     </IconButton>
                                 }
                                 >
-                                    {user.name}
+                                    {room.name}
                                 </ListItem>
                             </Card>
                         ))}
-                    </List>
-                    <Button
-                        variant='contained'
-                        color='secondary'
-                        sx={{ mb: 3 }}
-                        startIcon={<BackspaceOutlinedIcon />}
-                        onClick={() => navigate('/gm')}
-                    >
-                        Retour
-                    </Button>
+                            </List>
+                        <Button
+                            variant='contained'
+                            color='secondary'
+                            sx={{ mb: 3 }}
+                            startIcon={<BackspaceOutlinedIcon />}
+                            onClick={() => navigate('/rooms')}
+                        >
+                            Retour
+                        </Button>
                 </Paper>
             </Box>
             <Footer />
@@ -90,4 +89,4 @@ const DeleteGm = () => {
     );
 };
 
-export default DeleteGm;
+export default DeleteRoom;

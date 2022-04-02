@@ -1,5 +1,5 @@
 //Imports
-import Header from '../components/Header';
+import Header from '../../components/header/Header';
 import {Box, Button, Card, Checkbox, FormControlLabel, TextField, Typography} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
@@ -8,9 +8,9 @@ import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
-import Loading from "../components/Loading";
-import {addRoom, reset} from "../features/rooms/roomsSlice";
-import Footer from "../components/Footer";
+import Loading from "../../components/utils/Loading";
+import {addRoom, reset} from "../../store/slices/rooms/roomsSlice";
+import Footer from "../../components/footer/Footer";
 
 //Instanciation du composent
 const AddRoom = () => {

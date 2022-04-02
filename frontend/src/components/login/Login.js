@@ -3,10 +3,10 @@ import React, {useEffect, useState} from 'react';
 import {Box, Button, Paper, TextField, Typography} from "@mui/material";
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
-import { login, reset } from "../features/auth/authSlice";
+import { login, reset } from "../../store/slices/auth/authSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
-import Loading from "../components/Loading";
+import Loading from "../utils/Loading";
 
 //Instanciation du composent
 const Login = () => {

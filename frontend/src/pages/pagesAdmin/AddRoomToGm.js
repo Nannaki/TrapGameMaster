@@ -1,17 +1,17 @@
 //Imports
 import {Box, Button, Card, CardContent, Checkbox, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, ListItem, Typography} from "@mui/material"
-import Header from "../components/Header";
+import Header from "../../components/header/Header";
 import MeetingRoomOutlinedIcon from "@mui/icons-material/MeetingRoomOutlined";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {addRoomToUser, getUnmasterizedRoomsFromUser, getUserById, getUsers, reset} from "../features/auth/authSlice";
+import {addRoomToUser, getUnmasterizedRoomsFromUser, getUserById, getUsers, reset} from "../../store/slices/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {toast} from "react-toastify";
-import Loading from "../components/Loading";
+import Loading from "../../components/utils/Loading";
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
-import Footer from "../components/Footer";
+import Footer from "../../components/footer/Footer";
 
 //Instanciation du composent
 const AddRoomToGm = () => {

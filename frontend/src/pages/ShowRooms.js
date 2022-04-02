@@ -2,14 +2,14 @@
 import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getRooms } from "../features/rooms/roomsSlice";
-import Header from "../components/Header";
+import { getRooms } from "../store/slices/rooms/roomsSlice";
+import Header from "../components/header/Header";
 import {Box, Button, Card, CardActions, CardContent, CardMedia, Typography} from "@mui/material"
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
-import Loading from "../components/Loading";
+import Loading from "../components/utils/Loading";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
-import {getUserById} from "../features/auth/authSlice";
-import Footer from "../components/Footer";
+import {getUserById} from "../store/slices/auth/authSlice";
+import Footer from "../components/footer/Footer";
 
 //Initialisation du composent
 const ShowRooms = () => {

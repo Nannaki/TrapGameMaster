@@ -1,7 +1,7 @@
 //Imports
-import Header from "../components/Header";
+import Header from "../../components/header/Header";
 import {Box, Button, Typography} from "@mui/material";
-import SchedulerAdmin from "../components/SchedulerAdmin";
+import SchedulerAdmin from "../../components/schedule/admin/SchedulerAdmin";
 import HistoryToggleOffOutlinedIcon from '@mui/icons-material/HistoryToggleOffOutlined';
 import React from "react";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";

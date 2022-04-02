@@ -1,16 +1,16 @@
 //Imports
-import Header from "../components/Header";
+import Header from "../../components/header/Header";
 import {Box, Typography, Paper, Card, ListItem, IconButton, List, Button, Dialog, DialogTitle, TextField, DialogContent, Checkbox, FormControlLabel} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {updateRoom, getRoomById, getRooms} from "../features/rooms/roomsSlice";
-import Loading from "../components/Loading";
+import {updateRoom, getRoomById, getRooms} from "../../store/slices/rooms/roomsSlice";
+import Loading from "../../components/utils/Loading";
 import {toast} from "react-toastify";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import RoomPreferencesOutlinedIcon from '@mui/icons-material/RoomPreferencesOutlined';
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
-import Footer from "../components/Footer";
+import Footer from "../../components/footer/Footer";
 
 //Instanciation du composent
 const ModifyRoom = () => {

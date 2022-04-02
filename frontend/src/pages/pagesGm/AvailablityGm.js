@@ -1,18 +1,18 @@
 //Imports
-import Header from "../components/Header";
+import Header from "../../components/header/Header";
 import {Box, Card, FormControl, InputLabel, Select, Typography, MenuItem, FormHelperText, Button} from "@mui/material";
-import ScheduleDays from "../components/SheduleDays"
+import ScheduleDays from "../../components/availbilitysGm/SheduleDays"
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {getActualsMonths, getAllDaysInMonth, registerUserAvailblity, reset} from "../features/schedule/scheduleSlice";
-import {getUserById} from "../features/auth/authSlice";
-import Loading from "../components/Loading";
+import {getActualsMonths, getAllDaysInMonth, registerUserAvailblity, reset} from "../../store/slices/schedule/scheduleSlice";
+import {getUserById} from "../../store/slices/auth/authSlice";
+import Loading from "../../components/utils/Loading";
 import {toast} from "react-toastify";
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
-import Footer from "../components/Footer";
+import Footer from "../../components/footer/Footer";
 
 //Instaciation du composent
 const AvailablityGm = () => {

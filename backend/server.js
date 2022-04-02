@@ -16,7 +16,7 @@ const app = express();
 //Connection Bdd
 connectDB();
 
-//Use de l'app pour JSON routes et cors
+//Use de l'store pour JSON routes et cors
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));

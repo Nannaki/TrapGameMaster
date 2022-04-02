@@ -1,6 +1,6 @@
 //Imports
 import React from 'react';
-import Header from "./Header";
+import Header from "../../header/Header";
 import {Box, Button, Typography} from "@mui/material";
 import HistoryToggleOffOutlinedIcon from "@mui/icons-material/HistoryToggleOffOutlined";
 import {SchedulerGm} from "./SchedulerGm";

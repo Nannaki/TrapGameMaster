@@ -7,11 +7,11 @@ import {Box, Button, Card, Checkbox, FormControl, FormControlLabel, FormGroup, F
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
-import {register, reset} from "../features/auth/authSlice";
-import Header from "../components/Header";
-import Loading from "../components/Loading";
-import {getRooms} from "../features/rooms/roomsSlice";
-import Footer from "../components/Footer";
+import {register, reset} from "../../store/slices/auth/authSlice";
+import Header from "../../components/header/Header";
+import Loading from "../../components/utils/Loading";
+import {getRooms} from "../../store/slices/rooms/roomsSlice";
+import Footer from "../../components/footer/Footer";
 
 //Instanciation du composent
 const RegisterGm = () => {

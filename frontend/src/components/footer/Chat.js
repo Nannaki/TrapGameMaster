@@ -3,9 +3,9 @@ import {Chip, Stack, Typography, Box, Paper, Container, FormHelperText, TextFiel
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import ScrollToBottom from "react-scroll-to-bottom";
 import {useDispatch, useSelector} from "react-redux";
-import {useWebSocket} from "../WebsocketContext";
+import {useWebSocket} from "../../WebsocketContext";
 import {useEffect, useState} from "react";
-import {getMessages} from "../features/auth/authSlice";
+import {getMessages} from "../../store/slices/auth/authSlice";
 
 //Instanciation du composent
 const Chat = () => {

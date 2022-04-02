@@ -3,24 +3,24 @@ import React from 'react';
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import {ToastContainer, Slide} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import DashBoardAdmin from "./pages/DashBoardAdmin";
-import Login from "./pages/Login";
-import RegisterGm from "./pages/RegisterGm";
-import DashBoardGM from "./pages/DashBoardGM";
-import Rooms from "./pages/Rooms";
-import GM from "./pages/GM";
+import DashBoardAdmin from "./pages/pagesAdmin/DashBoardAdmin";
+import Login from "./components/login/Login";
+import RegisterGm from "./pages/pagesAdmin/RegisterGm";
+import DashBoardGM from "./pages/pagesGm/DashBoardGM";
+import Rooms from "./pages/pagesAdmin/Rooms";
+import GM from "./pages/pagesAdmin/GM";
 import ShowRooms from "./pages/ShowRooms";
-import ShowGm from "./pages/ShowGm";
-import DeleteRoom from "./pages/DeleteRoom"
-import AddRoom from "./pages/AddRoom";
-import ModifyRoom from "./pages/ModifyRoom";
-import DeleteGm from "./pages/DeleteGm";
-import ModifyGm from "./pages/ModifyGm";
-import DeleteRoomOfGm from "./pages/DeleteRoomOfGm"
-import AddRoomToGm from "./pages/AddRoomToGm";
-import AvailablityGm from "./pages/AvailablityGm";
-import EditSchedule from "./pages/EditSchedule";
-import ShowScheduleGm from "./components/ShowScheduleGm";
+import ShowGm from "./pages/pagesAdmin/ShowGm";
+import DeleteRoom from "./pages/pagesAdmin/DeleteRoom"
+import AddRoom from "./pages/pagesAdmin/AddRoom";
+import ModifyRoom from "./pages/pagesAdmin/ModifyRoom";
+import DeleteGm from "./pages/pagesAdmin/DeleteGm";
+import ModifyGm from "./pages/pagesAdmin/ModifyGm";
+import DeleteRoomOfGm from "./pages/pagesAdmin/DeleteRoomOfGm"
+import AddRoomToGm from "./pages/pagesAdmin/AddRoomToGm";
+import AvailablityGm from "./pages/pagesGm/AvailablityGm";
+import EditSchedule from "./pages/pagesAdmin/EditSchedule";
+import ShowScheduleGm from "./components/schedule/gm/ShowScheduleGm";
 import {useSelector} from "react-redux";
 import { WebSocketProvider } from './WebsocketContext';
 

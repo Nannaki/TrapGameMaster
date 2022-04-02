@@ -1,11 +1,13 @@
 //Imports
 import React, {Component} from 'react';
 import {DayPilot, DayPilotScheduler} from "daypilot-pro-react";
+import SchedulerDraggableItemRooms from "../SchedulerDraggableItemRooms";
 import axios from "axios";
-import {Box, Button, Paper} from "@mui/material";
+import {Box, Button, Card, FormHelperText, Paper} from "@mui/material";
+import SchedulerDraggableItemPriorities from "../SchedulerDraggableItemPriorities";
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
-import Footer from "./Footer";
+import Footer from "../../footer/Footer";
 
 //Ajout de l'utilisateur dans le Header pour l'autorisation d'accès aux pages
 if(localStorage.getItem("user")) {
@@ -15,7 +17,7 @@ if(localStorage.getItem("user")) {
 }
 
 //Instanciation de la classe étendu de "Component" (props de component)
-export class SchedulerGm extends Component {
+class SchedulerAdmin extends Component {
     constructor(props) {
         super(props);
 
@@ -26,6 +28,12 @@ export class SchedulerGm extends Component {
             days: DayPilot.Date.today().daysInYear(),
             scale: "Manual",
             timeHeaders: [{groupBy: "Month"},{groupBy: "Day", format: "d/M"},{groupBy: "Cell"}],
+            //Permets d'appeler la fonction de suppression d'évènement avec clique droit
+            contextMenu: new DayPilot.Menu({
+                    items: [
+                        {text: "Effacer", onClick: args => this.deleteEvent(args)}
+                    ]
+                }),
             timeline: this.createTimeline(),
             businessEndsHour: 24,
             cellWidth: 30,
@@ -35,8 +43,6 @@ export class SchedulerGm extends Component {
             rowMarginBottom: 15,
             treeEnabled: true,
             eventResizeHandling: "disabled",
-            eventMoveHandling: "disabled",
-            timeRangeSelectedHandling: "disabled",
             rowHeaderColumns: [
                 {name: "GameMaster", display: "gameMaster"},
                 {name: "Langues", display: "langues"},
@@ -54,8 +60,34 @@ export class SchedulerGm extends Component {
                         args.loaded()
                     }
                 },
+
             }),
-        }
+            //Permet de supprimer un évènement avec un clique droit
+            onEventMove: async function (args) {
+                console.log(args)
+                this.events.remove(args.e.data)
+                await axios.delete("http://localhost:5000/api/schedule/deleteEvent"+args.e.data.id)
+            },
+            //Permet d'enregister un évènement avec le drag and drop
+            onEventMoved: function (args) {
+                args.e.data.id = DayPilot.guid()
+                const eventData = {
+                    id: args.e.data.id,
+                    start: args.e.data.start,
+                    end: args.e.data.end,
+                    text: args.e.data.text,
+                    resource: args.e.data.resource,
+                    backColor: args.e.data.backColor,
+                }
+
+                //Enregistre les évènements dans la BDD
+                async function addNewEventInBdd(){
+                    await axios.post("http://localhost:5000/api/schedule/addNewEventSchedule", eventData)
+
+                }
+               addNewEventInBdd()
+            },
+        };
     }
 
     //Charge les données utilisateur, évènements et salles au montage du composent
@@ -180,6 +212,14 @@ export class SchedulerGm extends Component {
         return this.setState({events: finalEvents})
     }
 
+    //Retire l'évènement du Scheduler
+    async deleteEvent(args) {
+        this.scheduler.events.remove(args.source)
+        await axios.delete("http://localhost:5000/api/schedule/deleteEvent"+args.source.data.id)
+
+
+    }
+
     //Crée les Shifts (9h, 14h, 19h) sur la timeline du Scheduler, selon le mois
     createTimeline() {
 
@@ -255,9 +295,9 @@ export class SchedulerGm extends Component {
 
     //JSX
     render() {
-
-        //Charge les configurations du Sheduler
+        const rooms = this.state.rooms;
         const {...config} = this.state;
+
         return (
             <>
                 <Box
@@ -303,9 +343,45 @@ export class SchedulerGm extends Component {
                         }}
                         heightSpec="Max"
                     />
+                    <Box
+                        sx={{display: "flex",flexWrap: "wrap", justifyContent: "center"}}
+                    >
+                        <Card
+                            elevation={18}
+                            sx={{width: "40%", m:2, display: "flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center"}}
+                        >
+                            {rooms.map((room, index) => (
+                                <SchedulerDraggableItemPriorities key={room.id} text={("P")+(index+1).toString()} color="#388e3c" />
+                            ))}
+                            <span style={{width: "100%"}}/>
+                            <FormHelperText
+                                sx={{m: "0 auto", mt: 1, width: "100%", textAlign: "center"}}
+                            >
+                                Glissez la priorité sur le planning pour l'attribuer
+                            </FormHelperText>
+                        </Card>
+                        <Card
+                            elevation={18}
+                            sx={{width: "40%", m:2, display: "flex", flexWrap:"wrap", justifyContent:"center", alignItems:"center"}}
+                        >
+                            {rooms.map((el) => (
+                                <SchedulerDraggableItemRooms key={el.id} text={el.name} color={el.color}/>
+                            ))}
+                            <SchedulerDraggableItemRooms key="formation" text="formation" color="#ec407a" />
+                            <span style={{width: "100%"}}/>
+                            <FormHelperText
+                                sx={{m: "0 auto", mt: 1, width: "100%", textAlign: "center"}}
+                            >
+                                Glissez la salle sur le planning pour l'attribuer
+                            </FormHelperText>
+                        </Card>
+                    </Box>
                 </Box>
                 <Footer />
             </>
         )
     }
 }
+
+export default SchedulerAdmin
+

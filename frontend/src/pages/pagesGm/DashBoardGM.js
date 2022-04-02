@@ -1,16 +1,15 @@
 //Imports
 import {Box, Card, CardContent, CardMedia, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import Header from "../components/Header";
-import Loading from "../components/Loading";
-import Footer from "../components/Footer";
+import Header from "../../components/header/Header";
+import Loading from "../../components/utils/Loading";
+import Footer from "../../components/footer/Footer";
 import React, {useEffect} from "react";
-import {getLastRecord} from "../features/auth/authSlice";
-import {getLastRecordsRoom} from "../features/rooms/roomsSlice";
-
+import {getLastRecord} from "../../store/slices/auth/authSlice";
+import {getLastRecordsRoom} from "../../store/slices/rooms/roomsSlice";
 
 //Instanciation du composent
-const DashBoardAdmin = () => {
+const DashBoardGm = () => {
 
     //Déclaration states et constantes
     const {user, isLoading, lastUsers} = useSelector((state) => state.auth);
@@ -33,6 +32,7 @@ const DashBoardAdmin = () => {
     }
 
     //JSX
+//JSX
     return (
         <>
             <Header/>
@@ -73,21 +73,6 @@ const DashBoardAdmin = () => {
                                 component="div"
                             >
                                 {user.name}
-                            </Typography>
-                            <div style={ {maxWidth: "345px", borderBottom: "1px solid #f1f1f1"}}/>
-                            <Typography
-                                component="div"
-                                sx={{ mt: 2, fontSize: {xs: '16px', md: '18px'} }}
-                                color="secondary"
-                            >
-                                Adresse email :
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                sx={{ mb: 2, fontSize: {xs: '16px', md: 'medium'} }}
-                            >
-                                {user.email}
                             </Typography>
                             <div style={ {maxWidth: "345px", borderBottom: "1px solid #f1f1f1"}}/>
                             <Typography
@@ -147,7 +132,7 @@ const DashBoardAdmin = () => {
                                 {room.description}
                             </Typography>
                         </CardContent>
-                            <div style={ {maxWidth: "345px", borderBottom: "1px solid #f1f1f1", marginTop:"15px"}}/>
+                        <div style={ {maxWidth: "345px", borderBottom: "1px solid #f1f1f1", marginTop:"15px"}}/>
                     </Card>
                 ))}
             </Box>
@@ -156,4 +141,4 @@ const DashBoardAdmin = () => {
     );
 };
 
-export default DashBoardAdmin;
+export default DashBoardGm;

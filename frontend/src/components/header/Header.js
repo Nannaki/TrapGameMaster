@@ -4,7 +4,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { useNavigate} from "react-router-dom";
-import {logout, reset} from "../features/auth/authSlice";
+import {logout, reset} from "../../store/slices/auth/authSlice";
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 //Instanciation du composent

@@ -1,7 +1,7 @@
 //Imports
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../../components/header/Header";
 import {Typography, Box, Button, Card, CardContent} from "@mui/material";
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
@@ -10,9 +10,9 @@ import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import NoMeetingRoomOutlinedIcon from '@mui/icons-material/NoMeetingRoomOutlined';
 import MeetingRoomOutlinedIcon from '@mui/icons-material/MeetingRoomOutlined';
-import Loading from "../components/Loading";
+import Loading from "../../components/utils/Loading";
 import React from "react";
-import Footer from "../components/Footer";
+import Footer from "../../components/footer/Footer";
 
 //Instanciation du composent
 const Gm = () => {

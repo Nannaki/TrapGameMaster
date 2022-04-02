@@ -1,13 +1,13 @@
 //Imports
 import {Box, Button, Card, CardContent, Typography} from "@mui/material"
-import Header from "../components/Header";
+import Header from "../../components/header/Header";
 import InsertEmoticonOutlinedIcon from '@mui/icons-material/InsertEmoticonOutlined';
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getUsers} from "../features/auth/authSlice";
+import {getUsers} from "../../store/slices/auth/authSlice";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
-import Footer from "../components/Footer";
+import Footer from "../../components/footer/Footer";
 
 //Instanciation du composent
 const ShowGm = () => {

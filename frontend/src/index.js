@@ -2,11 +2,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { store } from './app/store';
+import { store } from './store/store';
 import { Provider } from 'react-redux';
-import Theme from "./components/Theme";
+import Theme from "./Theme";
 
-//Rendu de l'app avec les provider et le thème MUI
+//Rendu de l'store avec les provider et le thème MUI
 ReactDOM.render(
   <React.StrictMode>
       <Theme>

@@ -1,16 +1,16 @@
 //Imports
 import {Box, Typography, Paper, Card, ListItem, IconButton, List, Button, Dialog, DialogTitle, DialogContent, TextField} from "@mui/material";
-import Header from "../components/Header";
+import Header from "../../components/header/Header";
 import React, {useEffect, useState} from "react";
 import AutoFixHighOutlinedIcon from '@mui/icons-material/AutoFixHighOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import {useDispatch, useSelector} from "react-redux";
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import {useNavigate} from "react-router-dom";
-import {getUserById, getUsers, reset, updateUser} from "../features/auth/authSlice";
+import {getUserById, getUsers, reset, updateUser} from "../../store/slices/auth/authSlice";
 import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import {toast} from "react-toastify";
-import Footer from "../components/Footer";
+import Footer from "../../components/footer/Footer";
 
 //Instanciation du composant
 const ModifyGm = () => {
