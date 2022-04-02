@@ -7,11 +7,17 @@ GitHub.
 
 ## Available Scripts
 
-Dans le dossier du projet vous pouvez lancer :
+Dans les dossier frontend et backend du projet vous pouvez lancer :
+
+### `npm install`
+
+afin d'installer les diffentes dépendances.
+
+Une fois cela fait, vous pouvez lancer :
 
 ### `npm start`
 
-Lance l'application en mode développement.<br />
+depuis les deux dossiers également afin de démarrer le server et l'application
 Ouvrez [http://localhost:3000](http://localhost:3000) pour l'afficher dans le navigateur.
 
 La page va recharger si vous faites des modifications sur le frontEnd.<br />
