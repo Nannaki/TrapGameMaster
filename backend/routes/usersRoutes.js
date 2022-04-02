@@ -3,7 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 //Méthodes appelées selon routes
-const { registerUser, loginUser, getUsers, deleteUser, getUserById, updateUser, deleteRoomFromUser, addRoomToUser, getUnmasterizedRoomOfUser, getMessages } = require('../controllers/usersController');
+const { registerUser, loginUser, getUsers, deleteUser, getUserById, updateUser, deleteRoomFromUser, addRoomToUser, getUnmasterizedRoomOfUser, getMessages,
+    getLastRecords
+} = require('../controllers/usersController');
 
 //Appel du middleware de protection des routes
 const {authMiddleware} = require('../middleware/authMiddleware')
@@ -14,6 +16,7 @@ const {authMiddleware} = require('../middleware/authMiddleware')
     router.get('/show', authMiddleware, getUsers)
     router.get('/getOne:id', authMiddleware,getUserById);
     router.get('/getunmasterizedroomsfromuser:id',authMiddleware, getUnmasterizedRoomOfUser)
+    router.get('/lastRecords', authMiddleware, getLastRecords)
 
     //Routes en POST
     router.post('/login', loginUser);

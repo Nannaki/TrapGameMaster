@@ -84,6 +84,16 @@ const deleteUser = async (userId) => {
     return response.data
 }
 
+//Fonction qui charge les trois derniers utilisateurs enregistrés
+const getLastRecords = async () => {
+    const response = await axios.get( API_URL + "/lastRecords", {
+        headers: {
+            Authorization: JSON.parse(localStorage.getItem("user")).token
+        },
+    });
+    return response.data
+}
+
 //Fonction qui charge les messages (socket.io) d'un utilisateur, appel en BDD
 const getMessages = async (userId) => {
     const response = await axios.post( API_URL + "messages" , userId, {
@@ -116,6 +126,7 @@ const authService = {
     getUserById,
     getUnmasterizedRoomFromUser,
     getMessages,
+    getLastRecords,
     updateUser,
     deleteUser,
     addRoomToUser,

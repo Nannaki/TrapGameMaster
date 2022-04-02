@@ -65,7 +65,7 @@ const Chat = () => {
     return (
         <>
             <Box
-                sx={{p:2, position: "fixed", bottom: 75, right: 20, display:"flex", justifyContent: "center", flexWrap: "wrap", backgroundColor: "#171717", border: "1px solid #ce93d8", width: {xs:"280px", md: "400px"}}}
+                sx={{p:2, position: "fixed", bottom: 75, right: 20, display:"flex", justifyContent: "center", flexWrap: "wrap", backgroundColor: "#171717", border: "1px solid #ce93d8", width: {xs:"280px", md: "350px"}}}
             >
                 <Typography
                     variant='h6'
@@ -106,16 +106,17 @@ const Chat = () => {
                 )}
                 </Box>
                 <ScrollToBottom className="message-container">
-                    <Container
-                        sx={{maxHeight: "30vh", my: 2, display: "flex", flexWrap: "wrap", justifyContent: "center"}}
-                    >
+                    <Container sx={{maxHeight: "30vh"}}>
                         {chatMessages.map((message, index) => (
-                            <>
+                            <Box
+                                key={user._id+index}
+                                sx={{display: "flex", flexWrap: "wrap", justifyContent: "center"}}
+                            >
                                 {message.author === user.name ? (
                                     <Paper
                                         key={user._id}
                                         variant="outlined"
-                                        sx={{my: 4, ml:4, p:1, border: "0.5px solid #ffd54f", borderRadius: "10px" , display: "flex",  flexWrap: "wrap", justifyContent:"right", width: "80%"}}
+                                        sx={{my: 2, ml:8, p:1, border: "0.5px solid #ffd54f", borderRadius: "10px" ,  width: "80%", wordWrap: "break-word"}}
                                     >
                                         <Typography
                                             key={user.name}
@@ -125,9 +126,9 @@ const Chat = () => {
                                         >
                                             {message.message}
                                         </Typography>
-                                        <span key={index} style={{width: "100%"}}/>
+                                        <span key={user.email} style={{width: "100%"}}/>
                                         <FormHelperText
-                                            key={user.email}
+                                            key={index}
                                             sx={{fontSize: "10px", textAlign: "right"}}
                                         >
                                             {"Vous à " + message.time }
@@ -137,48 +138,50 @@ const Chat = () => {
                                     <Paper
                                         key={user._id}
                                         variant="outlined"
-                                        sx={{my: 2, mr:4, p:1, border: "0.5px solid #43a047",  borderRadius: "10px", display: "flex",  flexWrap: "wrap", justifyContent:"left", width: "80%"}}
+                                        sx={{my: 2, mr:8, p:1, border: "0.5px solid #43a047",  borderRadius: "10px", width: "80%", wordWrap: "break-word"}}
                                     >
                                         <Typography
-                                            key={user.name}
+                                            key={user.email}
                                             variant="body2"
                                             sx={{textAlign:"left"}}
                                             className="message-container"
+                                            paragraph={true}
                                         >
                                             {message.message}
                                         </Typography>
-                                        <span key={index} style={{width: "100%"}}/>
+                                        <span key={user.name} style={{width: "100%"}}/>
                                         <FormHelperText
-                                            key={user.email}
+                                            key={index}
                                             sx={{fontSize: "10px", textAlign: "left"}}
                                         >
                                             {message.author + " à " + message.time }
                                         </FormHelperText>
                                     </Paper>
                                 )}
-
-                            </>
+                            </Box>
                         ))}
-
                         {messageList.map((messageContent, index) => (
-                            <>
+                            <Box
+                                sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center"}}
+                                key={user._id+index}
+                            >
                             {messageContent.author === user.name ? (
                                 <Paper
                                     key={user._id}
                                     variant="outlined"
-                                    sx={{my: 4, ml:4, p:1, border: "0.5px solid #ffd54f", borderRadius: "10px" , display: "flex",  flexWrap: "wrap", justifyContent:"right", width: "80%"}}
+                                    sx={{my: 2, ml:4, p:1, border: "0.5px solid #ffd54f", borderRadius: "10px" , width: "80%", wordWrap: "break-word"}}
                                 >
                                     <Typography
-                                        key={user.name}
+                                        key={user.email}
                                         variant="body2"
                                         sx={{textAlign: "right"}}
                                         className="message-container"
                                     >
                                         {messageContent.message}
                                     </Typography>
-                                    <span key={index} style={{width: "100%"}}/>
+                                    <span key={user.name} style={{width: "100%"}}/>
                                     <FormHelperText
-                                        key={user.email}
+                                        key={index}
                                         sx={{fontSize: "10px", textAlign: "right"}}
                                     >
                                         {"Vous à " + messageContent.time }
@@ -188,24 +191,26 @@ const Chat = () => {
                                 <Paper
                                     key={user._id}
                                     variant="outlined"
-                                    sx={{my: 2, mr:4, p:1, border: "0.5px solid #43a047",  borderRadius: "10px", display: "flex",  flexWrap: "wrap", justifyContent:"left", width: "80%"}}
+                                    sx={{my: 2, mr:4, p:1, border: "0.5px solid #43a047",  borderRadius: "10px", width: "80%", wordWrap: "break-word"}}
                                 >
                                     <Typography
+                                        key={user.name}
                                     variant="body2"
                                     sx={{textAlign:"left"}}
                                     className="message-container"
                                     >
                                         {messageContent.message}
                                     </Typography>
-                                    <span key={index} style={{width: "100%"}}/>
+                                    <span key={user.email} style={{width: "100%"}}/>
                                     <FormHelperText
-                                    sx={{fontSize: "10px", textAlign: "left"}}
+                                        key={index}
+                                        sx={{fontSize: "10px", textAlign: "left"}}
                                     >
                                         {messageContent.author + " à " + messageContent.time }
                                     </FormHelperText>
                                 </Paper>
                             )}
-                            </>
+                            </Box>
                             ))}
                     <span style={{width: "100%"}}/>
                     </Container>
@@ -221,7 +226,8 @@ const Chat = () => {
                         name="sendMessage"
                         value={currentMessage}
                         multiline
-                        sx={{my:2}}
+                        maxRows={4}
+                        sx={{my:2, overflow: "auto"}}
                         onChange={(e) => {
                             setCurrentMessage(e.target.value)
                         }}

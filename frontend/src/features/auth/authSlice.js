@@ -96,6 +96,17 @@ export const deleteUser = createAsyncThunk('auth/delete', async (userId, thunkAP
     }
 })
 
+//Appel fonction pour charger trois derniers utilisateurs enregistrés dans le service "auth"
+export const getLastRecord = createAsyncThunk('auth/lastRecords', async (_, thunkAPI) =>{
+    try {
+        return await authService.getLastRecords();
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
 //Appel fonction pour charger les messages (Socket.io) d'un utilisateur dans le service "auth"
 export const getMessages = createAsyncThunk('auth/messages', async (userId, thunkAPI) =>{
     try {
@@ -146,6 +157,7 @@ export const authSlice = createSlice({
             state.userInfo = []
             state.rooms = []
             state.unmasterized = []
+            state.lastUsers = []
         }
     },
     extraReducers: (builder) => {
@@ -260,6 +272,20 @@ export const authSlice = createSlice({
                 state.isSuccess = true
             })
             .addCase(register.rejected,(state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+
+            //Builder getLastRecords
+            .addCase(getLastRecord.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getLastRecord.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.lastUsers = action.payload
+            })
+            .addCase(getLastRecord.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
