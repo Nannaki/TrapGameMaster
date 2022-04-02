@@ -99,8 +99,7 @@ const getEventsFromSchedule = asyncHandler( async (req, res) => {
 // @route   Post /api/schedule/registerUserAvailblity
 const registerUserAvailblity = asyncHandler(async (req, res) => {
     const {name, availblity} = req.body
-    const month = req.body.choosedMonth
-    const exists = await AvailblitySchedule.findOne({month})
+    const exists = await AvailblitySchedule.findOne({name:req.body.name, month:req.body.choosedMonth})
 
     if(exists) {
         res.status(400)

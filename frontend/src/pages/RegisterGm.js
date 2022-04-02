@@ -79,10 +79,14 @@ const RegisterGm = () => {
         if(isError) {
             toast.error(message)
         }
+        if(isSuccess) {
+            navigate('/gm')
+            toast.success('Le nouveau GameMaster a bien été enregistré');
+        }
 
         dispatch(reset());
 
-    }, [isError,message,dispatch])
+    }, [isError, isSuccess, message,dispatch, navigate])
 
 
     //Gestion du formulaire pour envoie en BDD
@@ -105,11 +109,6 @@ const RegisterGm = () => {
                 rooms: formData.rooms
             }
             dispatch(register(userData));
-        }
-
-        if(isSuccess) {
-            navigate('/gm')
-            toast.success('Le nouveau GameMaster a bien été enregistré');
         }
 
         formData.rooms= [];

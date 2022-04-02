@@ -25,7 +25,7 @@ const Footer = () => {
     return (
         <>
             <Box
-                sx={{width: {xs: "50px", md: "150px"}, position: "fixed", bottom: 10, right: 15}}
+                sx={{width: {xs: "50px", md: "50px"}, position: "fixed", bottom: 10, right: 15}}
             >
                 {!hidden ? <Chat /> : null}
                 <BottomNavigation
@@ -34,7 +34,7 @@ const Footer = () => {
                 >
                     <BottomNavigationAction
                         sx={{ color: "#ce93d8"}}
-                        icon={<ForumOutlinedIcon />}
+                        icon={<ForumOutlinedIcon sx={{fontSize: "40px"}} />}
                         label="Chat"
                         value="Chat"
                         onClick={() => setHidden(!hidden)}

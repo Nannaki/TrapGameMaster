@@ -1,5 +1,5 @@
 //Imports
-import {Box, Card, CardContent, Typography} from "@mui/material";
+import {Box, Card, CardContent, CardMedia, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
@@ -63,7 +63,7 @@ const DashBoardAdmin = () => {
                 {lastUsers ? lastUsers.map((user) => (
                     <Card
                         key={user._id}
-                        sx={{ width: {xs: 220, md: 220}, m:4, display: "flex", justifyContent: {xs: "center", md: "left"}}}
+                        sx={{ width: {xs: 220, md: 350}, m:4, display: "flex", justifyContent: {xs: "center", md: "left"}}}
                         square
                     >
                         <CardContent>
@@ -125,36 +125,29 @@ const DashBoardAdmin = () => {
                 </Typography>
                 <span style={{width: "100%"}}/>
                 {lastRooms.map((room) => (
-                    <Card
-                        key={room._id}
-                        sx={{ width: {xs: 220, md: 220}, m:4, display: "flex", justifyContent: {xs: "center", md: "left"}}}
-                        square
-                    >
+                    <Card sx={{ width: 345, height: 400, m:4, overflow: "auto" }} key={room.name}>
+                        <CardMedia
+                            component="img"
+                            height="250"
+                            alt={room.name}
+                            src="https://cdn.pixabay.com/photo/2016/01/22/11/50/live-escape-game-1155620_1280.jpg"
+                        />
                         <CardContent>
                             <Typography
-                                sx={{ mb: 2, fontSize: {xs: '18px', md: '22px'} }}
+                                gutterBottom
                                 variant="h5"
                                 component="div"
                             >
                                 {room.name}
                             </Typography>
-                            <div style={ {maxWidth: "345px", borderBottom: "1px solid #f1f1f1"}}/>
                             <Typography
-                                variant={"h6"}
-                                sx={{ mt: 2, fontSize: {xs: '16px', md: '18px'} }}
-                                color="secondary"
-                            >
-                                Description :
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                sx={{ mb: 2, fontSize: {xs: '16px', md: '18px'} }}
+                                variant="body2"
+                                color="text.secondary"
                             >
                                 {room.description}
                             </Typography>
-                            <div style={ {maxWidth: "345px", borderBottom: "1px solid #f1f1f1", marginTop:"15px"}}/>
                         </CardContent>
+                            <div style={ {maxWidth: "345px", borderBottom: "1px solid #f1f1f1", marginTop:"15px"}}/>
                     </Card>
                 ))}
             </Box>

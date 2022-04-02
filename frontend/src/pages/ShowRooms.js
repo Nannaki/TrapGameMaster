@@ -57,11 +57,12 @@ const ShowRooms = () => {
                 </Typography>
 
                 {user.isAdmin ? rooms.map((room) => (
-                    <Card sx={{ maxWidth: 345, m:4 }} key={room.name}>
+                    <Card sx={{ width: 345, height: 400, m:4, overflow: "auto" }} key={room.name}>
                         <CardMedia
                             component="img"
-                            height="140"
-                            alt="Room Sherlock Holmes"
+                            height="250"
+                            alt={room.name}
+                            src="https://cdn.pixabay.com/photo/2016/01/22/11/50/live-escape-game-1155620_1280.jpg"
                         />
                         <CardContent>
                             <Typography
@@ -100,12 +101,12 @@ const ShowRooms = () => {
                         </CardActions>
                     </Card>
                 )):userInfo.rooms ? userInfo.rooms.map((room) => (
-                    <Card sx={{ maxWidth: 345, m:4 }} key={room}>
+                    <Card sx={{ width: 345, height: 400, m:4, overflow: "auto" }} key={room.name}>
                         <CardMedia
                             component="img"
                             height="140"
-                            //image={SherlockImg}
-                            alt="Room Sherlock Holmes"
+                            src="https://cdn.pixabay.com/photo/2016/01/22/11/50/live-escape-game-1155620_1280.jpg"
+                            alt={room}
                         />
                         <CardContent>
                             <Typography
