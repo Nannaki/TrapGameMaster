@@ -18,33 +18,33 @@ La page va recharger si vous faites des modifications sur le frontEnd.<br />
 Les erreurs seront affichées dans la console.
 
 
-##Backend
+## Backend
 
 Si vous effectuez des modifications dans le backend, la dépendance "nodemon" permet de relancer le serveur.
 Cependant, il est parfois nécessaire de relancer le serveur de façon manuelle.
 
 
-##Login
+## Login
 Afin de pouvoir tester l'application, des utilisateurs fictifs ont été inscrits dans la BDD. L'application étant un logiciel
 métier, il est impossible de s'inscrire sur l'application sans être administrateur.
 
 Utilisez les logs suivant pour vous connecter :
 
-####ADMIN:
+#### ADMIN:
 `julien@gmail.com` 
 password : 123456
 
 `elodie@gmail.com`
 password : 123456
 
-####USERS:
+#### USERS:
 `alex@gmail.com`
 password : 123456
 
 `malika@gmail.com`
 password : 123456
 
-##Dependances server
+## Dependances server
 axios : 0.26.1</br>
 bcryptjs : 2.4.3</br>
 colors : 1.4.0</br>
@@ -57,7 +57,7 @@ mongoose : 6.2.3</br>
 socket.io : 4.4.1 </br>
 nodemon : 2.0.15
 
-##Dépendances client
+## Dépendances client
 emotion/react : 11.8.1 </br>
 emotion/styled : 11.8.1</br>
 mui/icons-material : 5.4.2</br>
