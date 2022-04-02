@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
-#TrapGameMaster
+# TrapGameMaster
 Projet réalisé dans le cadre de l'apprentissage de React.js, Node, express et tout autre librairies compatibles
 Afin d'assurer les tests dans les meilleures conditions, la base de données est en libre accès et les ficher `.env` sont intégrés au directory
 GitHub.
