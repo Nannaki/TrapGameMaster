@@ -2,10 +2,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import roomsService from './roomsService'
 
+
 //Déclarations des states initiaux
 const initialState = {
     rooms: [],
     room: [],
+    lastRooms: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -51,6 +53,17 @@ export const updateRoom = createAsyncThunk('rooms/updateroom', async ( roomData,
     try {
         return await roomsService.updateRoom(roomData);
 
+    }
+    catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+//Appel fonction pour charger trois derniers utilisateurs enregistrés dans le service "auth"
+export const getLastRecordsRoom = createAsyncThunk('rooms/lastRecords', async (_, thunkAPI) =>{
+    try {
+        return await roomsService.getLastRecordsRoom();
     }
     catch (error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
@@ -136,6 +149,20 @@ export const roomsSlice = createSlice({
               state.isSuccess = true
           })
           .addCase(updateRoom.rejected, (state, action) => {
+              state.isLoading = false
+              state.isError = true
+              state.message = action.payload
+          })
+
+          //Builder getLastRecords
+          .addCase(getLastRecordsRoom.pending, (state) => {
+              state.isLoading = true
+          })
+          .addCase(getLastRecordsRoom.fulfilled, (state, action) => {
+              state.isLoading = false
+              state.lastRooms = action.payload
+          })
+          .addCase(getLastRecordsRoom.rejected, (state, action) => {
               state.isLoading = false
               state.isError = true
               state.message = action.payload

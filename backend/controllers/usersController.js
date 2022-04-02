@@ -216,13 +216,10 @@ const deleteRoomFromUser = asyncHandler ( async (req, res) => {
 // @route   Get /api/users/lastRecords
 const getLastRecords = asyncHandler (async (req,res) => {
     const users = await User.find().sort({$natural:-1}).limit(3).select("-password -messages");
-
     if(!users) {
         res.status(400).json({message:'Aucun gm trouvés'})
     }
-
     res.status(201).json(users)
-
 })
 
 // @desc    Charger la conversation d'un utilisateur

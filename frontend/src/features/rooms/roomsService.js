@@ -44,6 +44,16 @@ const updateRoom = async (roomData) => {
     return response.data;
 }
 
+//Fonction qui charge les trois dernières salles enregistrées
+const getLastRecordsRoom = async () => {
+    const response = await axios.get( API_URL + "lastRecords", {
+        headers: {
+            Authorization: JSON.parse(localStorage.getItem("user")).token
+        },
+    });
+    return response.data
+}
+
 //Fonction qui supprime une salle, appel en BDD
 const deleteRoom = async (roomId) => {
     const response = await axios.delete(API_URL + "delete" +roomId, {
@@ -58,6 +68,7 @@ const deleteRoom = async (roomId) => {
 const roomsService = {
     getRooms,
     getRoomById,
+    getLastRecordsRoom,
     addRoom,
     updateRoom,
     deleteRoom,

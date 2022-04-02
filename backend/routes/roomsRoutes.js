@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 //Méthodes appelées selon routes
-const { registerRoom, getRooms, getRoomById, updateRoom, deleteRoom } = require('../controllers/roomsController');
+const { registerRoom, getRooms, getRoomById, updateRoom, deleteRoom, getLastRecords} = require('../controllers/roomsController');
 
 //Appel du middleware de protection des routes
 const {authMiddleware} = require("../middleware/authMiddleware");
@@ -13,6 +13,7 @@ const {authMiddleware} = require("../middleware/authMiddleware");
     //Routes en GET
     router.get('/show', authMiddleware, getRooms );
     router.get('/getOne:id',authMiddleware, getRoomById)
+    router.get('/lastRecords', authMiddleware, getLastRecords)
 
     //Route en POST
     router.post('/addroom',authMiddleware, registerRoom);

@@ -86,7 +86,7 @@ const deleteUser = async (userId) => {
 
 //Fonction qui charge les trois derniers utilisateurs enregistrés
 const getLastRecords = async () => {
-    const response = await axios.get( API_URL + "/lastRecords", {
+    const response = await axios.get( API_URL + "lastRecords", {
         headers: {
             Authorization: JSON.parse(localStorage.getItem("user")).token
         },

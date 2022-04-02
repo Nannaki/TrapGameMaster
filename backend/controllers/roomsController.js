@@ -1,6 +1,7 @@
 //Déclaration constantes et requis
 const asyncHandler = require('express-async-handler');
 const Room = require('../models/roomsModel');
+const User = require("../models/usersModel");
 
 // @desc    Charger les salles
 // @route   GET /api/rooms
@@ -74,6 +75,17 @@ const updateRoom = asyncHandler(async (req,res) => {
         res.status(200).json(updatedRoom);
 })
 
+// @desc    Charger les 3 dernières salles enregistrées
+// @route   Get /api/users/lastRecords
+const getLastRecords = asyncHandler (async (req,res) => {
+    const rooms = await Room.find().sort({$natural:-1}).limit(3);
+    if(!rooms) {
+        res.status(400).json({message:'Aucune salles trouvées'})
+    }
+    res.status(201).json(rooms)
+})
+
+
 // @desc    Supprimer une salle
 // @route   DELETE /api/rooms/:id
 const deleteRoom = asyncHandler(async (req,res) => {
@@ -90,6 +102,7 @@ module.exports = {
     registerRoom,
     getRooms,
     getRoomById,
+    getLastRecords,
     updateRoom,
     deleteRoom,
 }
